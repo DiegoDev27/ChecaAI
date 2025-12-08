@@ -1,0 +1,6 @@
+@ChecaAI.Api_HostAddress = http://localhost:5252
+
+GET {{ChecaAI.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

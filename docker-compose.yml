@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: checa-ai-postgres
+    environment:
+      POSTGRES_DB: checaai
+      POSTGRES_USER: checaai_user
+      POSTGRES_PASSWORD: dev_password123
+      PGDATA: /data/postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/data/postgres
+    restart: unless-stopped
+    networks:
+      - checaai_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: checa-ai-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@checaai.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: unless-stopped
+    networks:
+      - checaai_network
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  checaai_network:
+    driver: bridge
