@@ -1,4 +1,4 @@
-# Checa.AI - Transparência Política Brasileira
+# checa-ai — Transparência Política Brasileira
 
 API .NET para verificação de transparência política de senadores, deputados e vereadores brasileiros.
 
@@ -22,14 +22,14 @@ docker-compose up -d
 ```
 
 3. Acesse o PgAdmin em: http://localhost:8080
-   - Email: admin@checaai.com  
+   - Email: admin@checa-ai.com  
    - Senha: admin123
 
 ### 3. Conexão com o Banco
 - Host: localhost
 - Port: 5432
-- Database: checaai
-- User: checaai_user
+- Database: checa_ai
+- User: checa_ai_user
 - Password: dev_password123
 
 ## Como Executar
@@ -41,12 +41,12 @@ docker-compose up -d
 
 ### 2. Executar as migrações do banco
 ```bash
-dotnet ef database update --project ChecaAI.Infrastructure --startup-project ChecaAI.Api
+dotnet ef database update --project backend/ChecaAI.Infrastructure --startup-project backend/ChecaAI.Api
 ```
 
 ### 3. Executar a API
 ```bash
-dotnet run --project ChecaAI.Api
+dotnet run --project backend/ChecaAI.Api
 ```
 
 ### 4. Acessar a documentação
@@ -95,15 +95,15 @@ docker-compose down -v
 
 ### .NET
 ```bash
-# Build do projeto
-dotnet build
+# Build do projeto (dentro de backend/)
+cd backend && dotnet build
 
 # Executar API
-dotnet run --project ChecaAI.Api
+dotnet run --project backend/ChecaAI.Api
 
 # Criar nova migração
-dotnet ef migrations add <NomeDaMigracao> --project ChecaAI.Infrastructure --startup-project ChecaAI.Api
+dotnet ef migrations add <NomeDaMigracao> --project backend/ChecaAI.Infrastructure --startup-project backend/ChecaAI.Api
 
 # Atualizar banco
-dotnet ef database update --project ChecaAI.Infrastructure --startup-project ChecaAI.Api
+dotnet ef database update --project backend/ChecaAI.Infrastructure --startup-project backend/ChecaAI.Api
 ```
