@@ -3,6 +3,7 @@ using System;
 using ChecaAI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ChecaAI.Infrastructure.Migrations
 {
     [DbContext(typeof(ChecaAIDbContext))]
-    partial class ChecaAIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260324231424_AddFederalDeputyExternalIdLength")]
+    partial class AddFederalDeputyExternalIdLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

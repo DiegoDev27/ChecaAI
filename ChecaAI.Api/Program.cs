@@ -13,12 +13,12 @@ builder.Services.AddDbContext<ChecaAIDbContext>(options =>
 
 // HTTP Client configuration
 builder.Services.AddHttpClient<IChamberOfDeputiesService, ChamberOfDeputiesService>();
-builder.Services.AddHttpClient<ISenateService, SenadoApiService>();
+builder.Services.AddHttpClient<ISenateService, SenateApiService>();
 builder.Services.AddHttpClient<IWebScrapingService, WebScrapingService>();
 
 // Service registration
 builder.Services.AddScoped<IChamberOfDeputiesService, ChamberOfDeputiesService>();
-builder.Services.AddScoped<ISenateService, SenadoApiService>();
+builder.Services.AddScoped<ISenateService, SenateApiService>();
 builder.Services.AddScoped<IWebScrapingService, WebScrapingService>();
 
 builder.Services.AddControllers();

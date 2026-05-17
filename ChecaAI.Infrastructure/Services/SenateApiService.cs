@@ -7,17 +7,17 @@ using ChecaAI.Infrastructure.Data;
 
 namespace ChecaAI.Infrastructure.Services;
 
-public class SenadoApiService : ISenateService
+public class SenateApiService : ISenateService
 {
     private readonly HttpClient _httpClient;
     private readonly ChecaAIDbContext _context;
-    private readonly ILogger<SenadoApiService> _logger;
+    private readonly ILogger<SenateApiService> _logger;
     private const string SENATE_API_BASE_URL = "https://legis.senado.leg.br/dadosabertos";
 
-    public SenadoApiService(
+    public SenateApiService(
         HttpClient httpClient,
         ChecaAIDbContext context,
-        ILogger<SenadoApiService> logger)
+        ILogger<SenateApiService> logger)
     {
         _httpClient = httpClient;
         _context = context;

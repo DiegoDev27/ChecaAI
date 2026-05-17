@@ -26,7 +26,7 @@ public class Politician
     [MaxLength(100)]
     public string? City { get; set; }
     
-    [MaxLength(20)]
+    [MaxLength(50)]
     public string? ExternalId { get; set; } // ID from government APIs (CodigoParlamentar for Senate)
     
     [MaxLength(500)]
