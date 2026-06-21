@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="API + Worker + Frontend" type="CompoundRunConfigurationType">
+    <toRun name="ChecaAI.Api" type="DotNetProject" />
+    <toRun name="ChecaAI.Worker" type="DotNetProject" />
+    <toRun name="Frontend (Next.js)" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

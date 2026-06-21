@@ -51,6 +51,7 @@ public class AlmgScrapperService : IStateDeputyScrapperService
             {
                 try
                 {
+                    await Task.Delay(300); // ALMG rate limit
                     var endpoint = string.Format(DeputiesEndpointTemplate, party.Id);
                     var deputiesJson = await _httpClient.GetStringAsync($"{BaseUrl}{endpoint}");
                     var deputiesResponse = JsonSerializer.Deserialize<AlmgListResponse<AlmgDeputyDto>>(deputiesJson, JsonOptions);

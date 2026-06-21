@@ -1,129 +1,156 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ChecaAI.Infrastructure.Data;
-using ChecaAI.Domain.Entities;
+using ChecaAI.Api.Dtos;
 
 namespace ChecaAI.Api.Controllers;
 
+/// <summary>
+/// Endpoints for voting sessions (votações nominais e simbólicas) from Câmara and Senado.
+/// </summary>
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/sessions")]
 public class VotingSessionsController : ControllerBase
 {
-    private readonly ChecaAIDbContext _context;
+    private readonly ChecaAIDbContext _db;
 
-    public VotingSessionsController(ChecaAIDbContext context)
+    public VotingSessionsController(ChecaAIDbContext db)
     {
-        _context = context;
+        _db = db;
     }
 
+    /// <summary>
+    /// Returns a paginated list of voting sessions, newest first.
+    /// </summary>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<VotingSession>>> GetVotingSessions(
+    [ProducesResponseType(typeof(PagedResponse<VotingSessionListDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<PagedResponse<VotingSessionListDto>>> GetSessions(
         [FromQuery] string? chamber = null,
-        [FromQuery] DateTime? fromDate = null,
-        [FromQuery] DateTime? toDate = null)
+        [FromQuery] DateTime? from = null,
+        [FromQuery] DateTime? to = null,
+        [FromQuery] string? result = null,
+        [FromQuery] bool? hasAlert = null,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 20,
+        CancellationToken ct = default)
     {
-        var query = _context.VotingSessions
+        page = Math.Max(1, page);
+        pageSize = Math.Clamp(pageSize, 1, 100);
+
+        var query = _db.VotingSessions
             .Include(vs => vs.Proposal)
+            .AsNoTracking()
             .AsQueryable();
 
-        if (!string.IsNullOrEmpty(chamber))
+        if (!string.IsNullOrWhiteSpace(chamber))
             query = query.Where(vs => vs.Chamber == chamber);
 
-        if (fromDate.HasValue)
-            query = query.Where(vs => vs.VotingDate >= fromDate.Value);
+        if (from.HasValue)
+            query = query.Where(vs => vs.VotingDate >= from.Value);
 
-        if (toDate.HasValue)
-            query = query.Where(vs => vs.VotingDate <= toDate.Value);
+        if (to.HasValue)
+            query = query.Where(vs => vs.VotingDate <= to.Value);
 
-        return await query
+        if (!string.IsNullOrWhiteSpace(result))
+            query = query.Where(vs => vs.Result == result);
+
+        if (hasAlert.HasValue)
+            query = hasAlert.Value
+                ? query.Where(vs => vs.Alerts.Any())
+                : query.Where(vs => !vs.Alerts.Any());
+
+        var totalCount = await query.CountAsync(ct);
+
+        var items = await query
             .OrderByDescending(vs => vs.VotingDate)
-            .ToListAsync();
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(vs => new VotingSessionListDto
+            {
+                Id = vs.Id,
+                ExternalId = vs.ExternalId,
+                Description = vs.Description,
+                VotingDate = vs.VotingDate,
+                SessionType = vs.SessionType,
+                TotalVotes = vs.TotalVotes,
+                VotesYes = vs.VotesYes,
+                VotesNo = vs.VotesNo,
+                VotesAbstention = vs.VotesAbstention,
+                VotesAbsent = vs.VotesAbsent,
+                Result = vs.Result,
+                Chamber = vs.Chamber,
+                ProposalId = vs.ProposalId,
+                ProposalTitle = vs.Proposal != null ? vs.Proposal.Title : null,
+                ProposalType = vs.Proposal != null ? vs.Proposal.Type : null,
+                HasAlert = vs.Alerts.Any()
+            })
+            .ToListAsync(ct);
+
+        return Ok(new PagedResponse<VotingSessionListDto>
+        {
+            Data = items, Page = page, PageSize = pageSize, TotalCount = totalCount
+        });
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<VotingSession>> GetVotingSession(int id)
+    /// <summary>Returns a voting session with vote breakdown by politician.</summary>
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetSession(int id, CancellationToken ct)
     {
-        var votingSession = await _context.VotingSessions
+        var session = await _db.VotingSessions
             .Include(vs => vs.Proposal)
-            .Include(vs => vs.Votes)
-                .ThenInclude(v => v.Politician)
-            .FirstOrDefaultAsync(vs => vs.Id == id);
+            .AsNoTracking()
+            .FirstOrDefaultAsync(vs => vs.Id == id, ct);
 
-        if (votingSession == null)
-        {
-            return NotFound();
-        }
+        if (session == null) return NotFound(new { message = "Sessão de votação não encontrada" });
 
-        return votingSession;
-    }
-
-    [HttpGet("{id}/votes")]
-    public async Task<ActionResult<IEnumerable<Vote>>> GetVotingSessionVotes(int id)
-    {
-        var votingSession = await _context.VotingSessions.FindAsync(id);
-        if (votingSession == null)
-        {
-            return NotFound();
-        }
-
-        var votes = await _context.Votes
-            .Include(v => v.Politician)
+        // Individual votes (paginated to first 50 for perf)
+        var votes = await _db.Votes
             .Where(v => v.VotingSessionId == id)
+            .Include(v => v.Politician)
             .OrderBy(v => v.Politician.FullName)
-            .ToListAsync();
+            .AsNoTracking()
+            .Select(v => new
+            {
+                v.Id,
+                v.VoteValue,
+                Politician = new { v.Politician.Id, v.Politician.FullName, v.Politician.Party, v.Politician.State }
+            })
+            .Take(600) // Nominal session in Câmara has at most 513 votes
+            .ToListAsync(ct);
 
-        return votes;
-    }
-
-    [HttpGet("{id}/results")]
-    public async Task<ActionResult<object>> GetVotingSessionResults(int id)
-    {
-        var votingSession = await _context.VotingSessions
-            .Include(vs => vs.Proposal)
-            .Include(vs => vs.Votes)
-                .ThenInclude(v => v.Politician)
-            .FirstOrDefaultAsync(vs => vs.Id == id);
-
-        if (votingSession == null)
+        return Ok(new
         {
-            return NotFound();
-        }
-
-        var votesByValue = votingSession.Votes
-            .GroupBy(v => v.VoteValue)
-            .ToDictionary(g => g.Key, g => g.Select(v => new
+            session.Id,
+            session.ExternalId,
+            session.Description,
+            session.VotingDate,
+            session.SessionType,
+            session.TotalVotes,
+            session.VotesYes,
+            session.VotesNo,
+            session.VotesAbstention,
+            session.VotesAbsent,
+            session.Result,
+            session.Chamber,
+            Proposal = session.Proposal == null ? null : new
             {
-                PoliticianId = v.Politician.Id,
-                PoliticianName = v.Politician.FullName,
-                Party = v.Politician.Party,
-                State = v.Politician.State
-            }).ToList());
-
-        var result = new
-        {
-            VotingSession = new
-            {
-                votingSession.Id,
-                votingSession.Description,
-                votingSession.VotingDate,
-                votingSession.Result,
-                votingSession.TotalVotes,
-                votingSession.VotesYes,
-                votingSession.VotesNo,
-                votingSession.VotesAbstention,
-                votingSession.VotesAbsent
+                session.Proposal.Id,
+                session.Proposal.Title,
+                session.Proposal.Type,
+                session.Proposal.Number,
+                session.Proposal.Year,
+                session.Proposal.Status
             },
-            Proposal = new
+            Votes = votes,
+            VotesSummary = new
             {
-                votingSession.Proposal.Id,
-                votingSession.Proposal.Title,
-                votingSession.Proposal.Type,
-                votingSession.Proposal.Number,
-                votingSession.Proposal.Year
-            },
-            VotesByValue = votesByValue
-        };
-
-        return result;
+                Yes = votes.Count(v => v.VoteValue == "Yes"),
+                No = votes.Count(v => v.VoteValue == "No"),
+                Abstention = votes.Count(v => v.VoteValue == "Abstention"),
+                Absent = votes.Count(v => v.VoteValue == "Absent")
+            }
+        });
     }
 }

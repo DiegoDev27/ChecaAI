@@ -64,9 +64,11 @@ public class Politician
     
     // Foreign Keys
     public int? PoliticalBlocId { get; set; }
-    
+    public int? PartyId { get; set; } // FK → Party (rich entity; Party string field kept as fallback)
+
     // Navigation properties
     public virtual PoliticalBloc? PoliticalBloc { get; set; }
+    public virtual Party? PartyEntity { get; set; }
     public virtual ICollection<PoliticianPhone> Phones { get; set; } = new List<PoliticianPhone>();
     public virtual ICollection<PoliticianMandate> Mandates { get; set; } = new List<PoliticianMandate>();
     public virtual ICollection<Vote> Votes { get; set; } = new List<Vote>();

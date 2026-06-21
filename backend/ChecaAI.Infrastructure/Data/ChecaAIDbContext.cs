@@ -21,6 +21,21 @@ public class ChecaAIDbContext : DbContext
     public DbSet<Vote> Votes { get; set; }
     public DbSet<PoliticianExpense> PoliticianExpenses { get; set; }
 
+    // Backlog entities — transparency & institutional data
+    public DbSet<PoliticianSalary> PoliticianSalaries { get; set; }
+    public DbSet<CampaignExpense> CampaignExpenses { get; set; }
+    public DbSet<AssetDeclaration> AssetDeclarations { get; set; }
+    public DbSet<ElectionResult> ElectionResults { get; set; }
+    public DbSet<SessionAttendance> SessionAttendances { get; set; }
+    public DbSet<Committee> Committees { get; set; }
+    public DbSet<CommitteeMembership> CommitteeMemberships { get; set; }
+    public DbSet<VotingAlert> VotingAlerts { get; set; }
+
+    // New entities — parties, cabinet staff, allowances
+    public DbSet<Party> Parties { get; set; }
+    public DbSet<CabinetStaff> CabinetStaff { get; set; }
+    public DbSet<Allowance> Allowances { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -34,10 +49,16 @@ public class ChecaAIDbContext : DbContext
             entity.HasIndex(e => e.Email);
             entity.Property(e => e.FullName).IsRequired();
             entity.Property(e => e.PoliticalPosition).IsRequired();
+            entity.Property(e => e.ExternalId).HasMaxLength(50);
 
             entity.HasOne(e => e.PoliticalBloc)
                 .WithMany(b => b.Politicians)
                 .HasForeignKey(e => e.PoliticalBlocId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(e => e.PartyEntity)
+                .WithMany(p => p.Politicians)
+                .HasForeignKey(e => e.PartyId)
                 .OnDelete(DeleteBehavior.SetNull);
         });
 
@@ -177,6 +198,169 @@ public class ChecaAIDbContext : DbContext
             entity.HasOne(e => e.Mandate)
                 .WithMany(m => m.Exercises)
                 .HasForeignKey(e => e.MandateId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // PoliticianSalary configuration — indexes match AddBacklogEntities migration
+        modelBuilder.Entity<PoliticianSalary>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.HasIndex(e => new { e.PoliticianId, e.Year, e.Month });
+            entity.Property(e => e.GrossSalary).HasPrecision(15, 2);
+            entity.Property(e => e.NetSalary).HasPrecision(15, 2);
+            entity.Property(e => e.Allowances).HasPrecision(15, 2);
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // CampaignExpense configuration — indexes match AddBacklogEntities migration
+        modelBuilder.Entity<CampaignExpense>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.HasIndex(e => e.PoliticianId);
+            entity.Property(e => e.Category).IsRequired();
+            entity.Property(e => e.Amount).HasPrecision(15, 2);
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // AssetDeclaration configuration — indexes match AddBacklogEntities migration
+        modelBuilder.Entity<AssetDeclaration>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.HasIndex(e => e.PoliticianId);
+            entity.Property(e => e.AssetType).IsRequired();
+            entity.Property(e => e.DeclaredValue).HasPrecision(15, 2);
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ElectionResult configuration — indexes match AddBacklogEntities migration
+        modelBuilder.Entity<ElectionResult>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.HasIndex(e => new { e.PoliticianId, e.ElectionYear });
+            entity.Property(e => e.Position).IsRequired();
+            entity.Property(e => e.VoteShare).HasPrecision(8, 4);
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // SessionAttendance configuration — indexes match AddBacklogEntities migration
+        modelBuilder.Entity<SessionAttendance>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.HasIndex(e => new { e.PoliticianId, e.SessionDate });
+            entity.Property(e => e.Chamber).IsRequired();
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Committee configuration — indexes match AddBacklogEntities migration
+        modelBuilder.Entity<Committee>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.Property(e => e.Name).IsRequired();
+            entity.Property(e => e.CommitteeType).IsRequired();
+            entity.Property(e => e.Chamber).IsRequired();
+        });
+
+        // CommitteeMembership configuration — indexes match AddBacklogEntities migration
+        modelBuilder.Entity<CommitteeMembership>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.CommitteeId, e.PoliticianId });
+            entity.HasIndex(e => e.PoliticianId);
+            entity.Property(e => e.Role).IsRequired();
+
+            entity.HasOne(e => e.Committee)
+                .WithMany(c => c.Members)
+                .HasForeignKey(e => e.CommitteeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Party configuration
+        modelBuilder.Entity<Party>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Acronym).IsUnique();
+            entity.HasIndex(e => e.Number);
+            entity.HasIndex(e => e.ExternalId);
+            entity.Property(e => e.Acronym).IsRequired();
+            entity.Property(e => e.FullName).IsRequired();
+        });
+
+        // CabinetStaff configuration
+        modelBuilder.Entity<CabinetStaff>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.HasIndex(e => new { e.PoliticianId, e.Year, e.Month });
+            entity.Property(e => e.FullName).IsRequired();
+            entity.Property(e => e.GrossSalary).HasPrecision(15, 2);
+            entity.Property(e => e.NetSalary).HasPrecision(15, 2);
+
+            entity.Property(e => e.PoliticianId).IsRequired(false);
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // Allowance configuration
+        modelBuilder.Entity<Allowance>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.ExternalId);
+            entity.HasIndex(e => new { e.PoliticianId, e.Year, e.Month, e.AllowanceType });
+            entity.Property(e => e.AllowanceType).IsRequired();
+            entity.Property(e => e.Amount).HasPrecision(15, 2);
+
+            entity.HasOne(e => e.Politician)
+                .WithMany()
+                .HasForeignKey(e => e.PoliticianId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // VotingAlert configuration — indexes match AddVotingAlert migration (non-unique session index)
+        modelBuilder.Entity<VotingAlert>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.VotingSessionId);
+            entity.HasIndex(e => e.DetectedAt);
+            entity.Property(e => e.AlertLevel).IsRequired();
+
+            entity.HasOne(e => e.VotingSession)
+                .WithMany(vs => vs.Alerts)
+                .HasForeignKey(e => e.VotingSessionId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }

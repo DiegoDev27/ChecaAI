@@ -40,4 +40,5 @@ public class VotingSession
     // Navigation properties
     public virtual Proposal Proposal { get; set; } = null!;
     public virtual ICollection<Vote> Votes { get; set; } = new List<Vote>();
+    public virtual ICollection<VotingAlert> Alerts { get; set; } = new List<VotingAlert>();
 }

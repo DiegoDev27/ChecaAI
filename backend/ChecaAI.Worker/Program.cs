@@ -1,8 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ChecaAI.Infrastructure.Data;
 using ChecaAI.Worker.Configuration;
 using ChecaAI.Worker.Services;
 using ChecaAI.Worker.Services.StateDeputy;
+using ChecaAI.Application.Interfaces;
+using ChecaAI.Application.Services;
+using ChecaAI.Infrastructure.Services;
+
+// Allow DateTime with Kind=Unspecified to be written as UTC to PostgreSQL
+// (Npgsql 9.x rejects Unspecified by default for timestamp with time zone)
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -18,6 +26,8 @@ builder.Services.Configure<SenateApiOptions>(
     builder.Configuration.GetSection(SenateApiOptions.SectionName));
 builder.Services.Configure<ChamberApiOptions>(
     builder.Configuration.GetSection(ChamberApiOptions.SectionName));
+builder.Services.Configure<PlenaryWatcherOptions>(
+    builder.Configuration.GetSection(PlenaryWatcherOptions.SectionName));
 
 // Configure Entity Framework
 builder.Services.AddDbContext<ChecaAIDbContext>(options =>
@@ -47,6 +57,15 @@ builder.Services.AddHttpClient("StateDeputy", client =>
     client.Timeout = TimeSpan.FromMinutes(3);
 });
 
+// Named client for Câmara dos Deputados dadosabertos API
+builder.Services.AddHttpClient("Chamber", client =>
+{
+    client.BaseAddress = new Uri("https://dadosabertos.camara.leg.br");
+    client.DefaultRequestHeaders.Add("User-Agent", "ChecaAI-Worker/1.0");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 // SSL-bypass client for government APIs with invalid/self-signed certificates (ES, CE)
 builder.Services.AddHttpClient("StateDeputyInsecure", client =>
 {
@@ -57,12 +76,55 @@ builder.Services.AddHttpClient("StateDeputyInsecure", client =>
     ServerCertificateCustomValidationCallback = (_, _, _, _) => true
 });
 
+// HTTP client for PlenaryWatcher (polling Câmara + Senado APIs)
+builder.Services.AddHttpClient("PlenaryWatcher", client =>
+{
+    client.DefaultRequestHeaders.Add("User-Agent", "ChecaAI-Worker/1.0");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+// HTTP client for TseSeed (CDN ZIP downloads — large files, long timeout)
+builder.Services.AddHttpClient("TseSeed", client =>
+{
+    client.DefaultRequestHeaders.Add("User-Agent", "ChecaAI-Worker/1.0");
+    client.Timeout = TimeSpan.FromMinutes(15);
+});
+
+// HTTP client for CGU Portal da Transparência (requires chave-api-dados header)
+// To bypass AWS WAF: get aws-waf-token cookie from portaldatransparencia.gov.br in Chrome
+// (F12 → Application → Cookies) and paste the value into appsettings.json "CguWafToken".
+builder.Services.AddHttpClient("Cgu", (sp, client) =>
+{
+    var cfg = sp.GetRequiredService<IConfiguration>();
+    client.BaseAddress = new Uri("https://api.portaldatransparencia.gov.br");
+    client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36");
+    client.DefaultRequestHeaders.Add("Accept", "application/json, text/plain, */*");
+    client.DefaultRequestHeaders.Add("Accept-Language", "pt-BR,pt;q=0.9,en;q=0.8");
+    client.DefaultRequestHeaders.Add("Referer", "https://portaldatransparencia.gov.br/");
+    client.Timeout = TimeSpan.FromSeconds(30);
+    var apiKey = cfg["CguApiKey"];
+    if (!string.IsNullOrWhiteSpace(apiKey))
+        client.DefaultRequestHeaders.TryAddWithoutValidation("chave-api-dados", apiKey);
+    var wafToken = cfg["CguWafToken"];
+    if (!string.IsNullOrWhiteSpace(wafToken))
+        client.DefaultRequestHeaders.TryAddWithoutValidation("Cookie", $"aws-waf-token={wafToken}");
+});
+
+// HTTP client for push notifications (Expo Push API)
+builder.Services.AddHttpClient<IPushNotificationService, PushNotificationService>(client =>
+{
+    client.DefaultRequestHeaders.Add("User-Agent", "ChecaAI-Worker/1.0");
+});
+
 // Configure application services
 builder.Services.AddScoped<ISenateScrapperService, SenateScrapperService>();
 builder.Services.AddScoped<IDataPersistenceService, DataPersistenceService>();
 builder.Services.AddScoped<IChamberScrapperService, ChamberScrapperService>();
 builder.Services.AddScoped<IChamberPersistenceService, ChamberDataPersistenceService>();
 builder.Services.AddScoped<IStateDeputyPersistenceService, StateDeputyPersistenceService>();
+builder.Services.AddScoped<IVotingAlertEngine, VotingAlertEngine>();
+builder.Services.AddScoped<IPushNotificationService, PushNotificationService>();
+
 // Tier 1 — dedicated REST scrapers (SP XML, MG party-iteration, PE/ES/CE JSON, DF REST, PR SSL-bypass)
 builder.Services.AddScoped<IStateDeputyScrapperService, AlespScrapperService>();
 builder.Services.AddScoped<IStateDeputyScrapperService, AlmgScrapperService>();
@@ -111,6 +173,20 @@ foreach (var assembly in saplAssemblies)
 builder.Services.AddHostedService<SenateDataSyncService>();
 builder.Services.AddHostedService<ChamberDataSyncService>();
 builder.Services.AddHostedService<StateDeputySyncService>();
+builder.Services.AddHostedService<TsePoliticianSeedService>();
+builder.Services.AddHostedService<PlenaryWatcherService>();
+builder.Services.AddHostedService<PartyDataSyncService>();
+builder.Services.AddHostedService<ChamberExpenseSyncService>();
+builder.Services.AddHostedService<SenateExpenseSyncService>();
+builder.Services.AddHostedService<CguSalarySyncService>();
+builder.Services.AddHostedService<CguCabinetStaffSyncService>();
+builder.Services.AddHostedService<CguAllowanceSyncService>();
+builder.Services.AddHostedService<TseTransparencySyncService>();
+builder.Services.AddHostedService<TseElectionResultSyncService>();
+builder.Services.AddHostedService<AttendanceSyncService>();
+builder.Services.AddHostedService<CommitteeSyncService>();
+builder.Services.AddHostedService<VoteProposalSyncService>();
+builder.Services.AddHostedService<CpfBackfillService>();
 
 // Build and configure host
 var host = builder.Build();
@@ -122,17 +198,17 @@ using (var scope = host.Services.CreateScope())
     {
         var context = scope.ServiceProvider.GetRequiredService<ChecaAIDbContext>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        
+
         logger.LogInformation("Checking database connectivity...");
-        
+
         if (await context.Database.CanConnectAsync())
         {
             logger.LogInformation("Database connectivity confirmed");
-            
+
             var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
             if (pendingMigrations.Any())
             {
-                logger.LogInformation("Applying pending migrations: {Migrations}", 
+                logger.LogInformation("Applying pending migrations: {Migrations}",
                     string.Join(", ", pendingMigrations));
                 await context.Database.MigrateAsync();
             }
@@ -157,7 +233,7 @@ using (var scope = host.Services.CreateScope())
 
 // Log application startup
 var appLogger = host.Services.GetRequiredService<ILogger<Program>>();
-appLogger.LogInformation("ChecaAI Data Worker started successfully (Senate + Federal Deputies + State Deputies)");
+appLogger.LogInformation("ChecaAI Data Worker started successfully (Senate + Federal Deputies + State Deputies + TSE Seed + Plenary Watcher)");
 
 // Run the application
 try

@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="API + Worker" type="CompoundRunConfigurationType">
+    <toRun name="ChecaAI.Api" type="DotNetProject" />
+    <toRun name="ChecaAI.Worker" type="DotNetProject" />
+    <method v="2" />
+  </configuration>
+</component>

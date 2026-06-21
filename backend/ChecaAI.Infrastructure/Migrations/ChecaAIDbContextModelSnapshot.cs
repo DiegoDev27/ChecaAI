@@ -17,10 +17,358 @@ namespace ChecaAI.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.Allowance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AllowanceType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("PoliticianId", "Year", "Month", "AllowanceType");
+
+                    b.ToTable("Allowances");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.AssetDeclaration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AssetType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("DeclaredValue")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("ElectionYear")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("PoliticianId");
+
+                    b.ToTable("AssetDeclarations");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.CabinetStaff", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Cpf")
+                        .HasMaxLength(14)
+                        .HasColumnType("character varying(14)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<decimal>("GrossSalary")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<int?>("Month")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("NetSalary")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<int?>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Role")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("PoliticianId", "Year", "Month");
+
+                    b.ToTable("CabinetStaff");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.CampaignExpense", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("ElectionYear")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Provider")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("ProviderCnpj")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("PoliticianId");
+
+                    b.ToTable("CampaignExpenses");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.Committee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Acronym")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Chamber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("CommitteeType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.ToTable("Committees");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.CommitteeMembership", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CommitteeId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PoliticianId");
+
+                    b.HasIndex("CommitteeId", "PoliticianId");
+
+                    b.ToTable("CommitteeMemberships");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.ElectionResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ElectionYear")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("IsElected")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)");
+
+                    b.Property<long>("TotalVotes")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("VoteShare")
+                        .HasPrecision(8, 4)
+                        .HasColumnType("decimal(8,4)");
+
+                    b.Property<long>("VotesReceived")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("PoliticianId", "ElectionYear");
+
+                    b.ToTable("ElectionResults");
+                });
 
             modelBuilder.Entity("ChecaAI.Domain.Entities.Legislature", b =>
                 {
@@ -140,6 +488,59 @@ namespace ChecaAI.Infrastructure.Migrations
                     b.ToTable("MandateSubstitutes");
                 });
 
+            modelBuilder.Entity("ChecaAI.Domain.Entities.Party", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Acronym")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateOnly?>("FoundedDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("President")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Acronym")
+                        .IsUnique();
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("Number");
+
+                    b.ToTable("Parties");
+                });
+
             modelBuilder.Entity("ChecaAI.Domain.Entities.PoliticalBloc", b =>
                 {
                     b.Property<int>("Id")
@@ -238,6 +639,9 @@ namespace ChecaAI.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int?>("PartyId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("PersonalPageUrl")
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
@@ -272,6 +676,8 @@ namespace ChecaAI.Infrastructure.Migrations
                     b.HasIndex("Email");
 
                     b.HasIndex("ExternalId");
+
+                    b.HasIndex("PartyId");
 
                     b.HasIndex("PoliticalBlocId");
 
@@ -416,6 +822,55 @@ namespace ChecaAI.Infrastructure.Migrations
                     b.ToTable("PoliticianPhones");
                 });
 
+            modelBuilder.Entity("ChecaAI.Domain.Entities.PoliticianSalary", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Allowances")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<decimal>("GrossSalary")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<int>("Month")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("NetSalary")
+                        .HasPrecision(15, 2)
+                        .HasColumnType("decimal(15,2)");
+
+                    b.Property<int>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("PoliticianId", "Year", "Month");
+
+                    b.ToTable("PoliticianSalaries");
+                });
+
             modelBuilder.Entity("ChecaAI.Domain.Entities.Proposal", b =>
                 {
                     b.Property<int>("Id")
@@ -483,6 +938,52 @@ namespace ChecaAI.Infrastructure.Migrations
                     b.ToTable("Proposals");
                 });
 
+            modelBuilder.Entity("ChecaAI.Domain.Entities.SessionAttendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AbsenceJustification")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("AbsenceReason")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Chamber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("IsPresent")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("PoliticianId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("SessionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalId");
+
+                    b.HasIndex("PoliticianId", "SessionDate");
+
+                    b.ToTable("SessionAttendances");
+                });
+
             modelBuilder.Entity("ChecaAI.Domain.Entities.Vote", b =>
                 {
                     b.Property<int>("Id")
@@ -517,6 +1018,54 @@ namespace ChecaAI.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Votes");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.VotingAlert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AlertLevel")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DetectedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("PushSent")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ScoreBreakdown")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<bool>("SignalRSent")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SummaryText")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("VotingSessionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DetectedAt");
+
+                    b.HasIndex("VotingSessionId");
+
+                    b.ToTable("VotingAlerts");
                 });
 
             modelBuilder.Entity("ChecaAI.Domain.Entities.VotingSession", b =>
@@ -587,6 +1136,79 @@ namespace ChecaAI.Infrastructure.Migrations
                     b.ToTable("VotingSessions");
                 });
 
+            modelBuilder.Entity("ChecaAI.Domain.Entities.Allowance", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Politician");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.AssetDeclaration", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Politician");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.CabinetStaff", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Politician");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.CampaignExpense", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Politician");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.CommitteeMembership", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Committee", "Committee")
+                        .WithMany("Members")
+                        .HasForeignKey("CommitteeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Committee");
+
+                    b.Navigation("Politician");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.ElectionResult", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Politician");
+                });
+
             modelBuilder.Entity("ChecaAI.Domain.Entities.Legislature", b =>
                 {
                     b.HasOne("ChecaAI.Domain.Entities.PoliticianMandate", "Mandate")
@@ -630,10 +1252,17 @@ namespace ChecaAI.Infrastructure.Migrations
 
             modelBuilder.Entity("ChecaAI.Domain.Entities.Politician", b =>
                 {
+                    b.HasOne("ChecaAI.Domain.Entities.Party", "PartyEntity")
+                        .WithMany("Politicians")
+                        .HasForeignKey("PartyId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("ChecaAI.Domain.Entities.PoliticalBloc", "PoliticalBloc")
                         .WithMany("Politicians")
                         .HasForeignKey("PoliticalBlocId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("PartyEntity");
 
                     b.Navigation("PoliticalBloc");
                 });
@@ -678,6 +1307,28 @@ namespace ChecaAI.Infrastructure.Migrations
                     b.Navigation("Politician");
                 });
 
+            modelBuilder.Entity("ChecaAI.Domain.Entities.PoliticianSalary", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Politician");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.SessionAttendance", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
+                        .WithMany()
+                        .HasForeignKey("PoliticianId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Politician");
+                });
+
             modelBuilder.Entity("ChecaAI.Domain.Entities.Vote", b =>
                 {
                     b.HasOne("ChecaAI.Domain.Entities.Politician", "Politician")
@@ -697,6 +1348,17 @@ namespace ChecaAI.Infrastructure.Migrations
                     b.Navigation("VotingSession");
                 });
 
+            modelBuilder.Entity("ChecaAI.Domain.Entities.VotingAlert", b =>
+                {
+                    b.HasOne("ChecaAI.Domain.Entities.VotingSession", "VotingSession")
+                        .WithMany("Alerts")
+                        .HasForeignKey("VotingSessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("VotingSession");
+                });
+
             modelBuilder.Entity("ChecaAI.Domain.Entities.VotingSession", b =>
                 {
                     b.HasOne("ChecaAI.Domain.Entities.Proposal", "Proposal")
@@ -706,6 +1368,16 @@ namespace ChecaAI.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Proposal");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.Committee", b =>
+                {
+                    b.Navigation("Members");
+                });
+
+            modelBuilder.Entity("ChecaAI.Domain.Entities.Party", b =>
+                {
+                    b.Navigation("Politicians");
                 });
 
             modelBuilder.Entity("ChecaAI.Domain.Entities.PoliticalBloc", b =>
@@ -740,6 +1412,8 @@ namespace ChecaAI.Infrastructure.Migrations
 
             modelBuilder.Entity("ChecaAI.Domain.Entities.VotingSession", b =>
                 {
+                    b.Navigation("Alerts");
+
                     b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618

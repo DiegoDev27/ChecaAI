@@ -39,15 +39,13 @@ public class SaplScrapperService : IStateDeputyScrapperService
             _logger.LogInformation("Fetching deputies from SAPL ({State} - {Assembly})...",
                 _config.StateCode, _config.AssemblyName);
 
-            // Fetch party map and active mandate set in parallel
-            var partyMapTask = FetchPartyMapAsync();
-            var activeMandateIdsTask = FetchActiveMandateSetAsync();
-            await Task.WhenAll(partyMapTask, activeMandateIdsTask);
-            var partyMap = partyMapTask.Result;
-            var activeMandateIds = activeMandateIdsTask.Result;
+            // Fetch sequentially to avoid 429 on rate-limited SAPL instances
+            var partyMap = await FetchPartyMapAsync();
+            var activeMandateIds = await FetchActiveMandateSetAsync();
 
             while (!string.IsNullOrEmpty(nextUrl))
             {
+                await Task.Delay(500);
                 var response = await _httpClient.GetAsync(nextUrl);
                 response.EnsureSuccessStatusCode();
 
@@ -125,6 +123,7 @@ public class SaplScrapperService : IStateDeputyScrapperService
         {
             while (!string.IsNullOrEmpty(nextUrl))
             {
+                await Task.Delay(500);
                 var response = await _httpClient.GetAsync(nextUrl);
                 if (!response.IsSuccessStatusCode)
                     break;
@@ -178,6 +177,7 @@ public class SaplScrapperService : IStateDeputyScrapperService
         {
             while (!string.IsNullOrEmpty(nextUrl))
             {
+                await Task.Delay(500);
                 var response = await _httpClient.GetAsync(nextUrl);
                 if (!response.IsSuccessStatusCode) break;
 
