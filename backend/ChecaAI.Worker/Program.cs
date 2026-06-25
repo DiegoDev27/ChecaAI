@@ -17,7 +17,6 @@ var builder = Host.CreateApplicationBuilder(args);
 // Configure logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
-builder.Logging.AddEventLog(); // For Windows Event Log
 
 // Configure options
 builder.Services.Configure<DataSyncOptions>(
