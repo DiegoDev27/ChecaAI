@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Checa AI — Transparência Política Brasileira',
-    template: '%s | Checa AI',
+    default: 'ChecaAI — Transparência Política Brasileira',
+    template: '%s | ChecaAI',
   },
   description:
     'Plataforma de transparência política: acompanhe votos, despesas, salários e comportamento de todos os parlamentares brasileiros.',
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    siteName: 'Checa AI',
+    siteName: 'ChecaAI',
   },
 };
 
@@ -37,7 +37,7 @@ export default function RootLayout({
           <footer className="border-t bg-white py-6 mt-12">
             <div className="container mx-auto px-4 text-center text-sm text-gray-500">
               <p>
-                Checa AI — Dados de fontes públicas: Câmara dos Deputados, Senado Federal,
+                ChecaAI — Dados de fontes públicas: Câmara dos Deputados, Senado Federal,
                 Portal da Transparência (CGU), TSE.
               </p>
               <p className="mt-1">

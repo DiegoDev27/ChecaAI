@@ -8,7 +8,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
-    title: `Partido ${params.acronym} | Checa AI`,
+    title: `Partido ${params.acronym} | ChecaAI`,
     description: `Membros, líderes e informações do ${params.acronym}.`,
   };
 }

@@ -3,7 +3,7 @@ import { PartiesList } from '@/components/common/PartiesList';
 import { Flag } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Partidos Políticos | Checa AI',
+  title: 'Partidos Políticos | ChecaAI',
   description:
     'Todos os partidos políticos brasileiros: sigla, número eleitoral, presidente e total de membros.',
 };
