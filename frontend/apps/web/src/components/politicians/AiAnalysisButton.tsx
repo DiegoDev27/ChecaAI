@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { Bot, X, Loader2 } from 'lucide-react';
@@ -73,7 +73,7 @@ export function AiAnalysisButton({ politicianId, politicianName }: Props) {
             </div>
 
             <div className="p-3 border-t text-xs text-gray-400 text-center">
-              Análise gerada por Claude AI com dados reais do Checa AI
+              Análise gerada por Claude AI com dados reais do Checa Aí
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,7 +25,7 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-xl text-brand-700">
-            <span>Checa AI</span>
+            <span>Checa Aí</span>
           </Link>
 
           {/* Desktop nav */}

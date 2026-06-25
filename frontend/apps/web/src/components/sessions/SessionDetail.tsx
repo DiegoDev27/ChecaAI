@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useQuery } from '@tanstack/react-query';
 import { sessionsApi } from '@checa-ai/api-client';
@@ -325,7 +325,7 @@ export function SessionDetail({ id }: Props) {
               )}
             </div>
             <div className="p-3 border-t text-xs text-gray-400 text-center">
-              Análise gerada por Claude AI com dados reais do Checa AI
+              Análise gerada por Claude AI com dados reais do Checa Aí
             </div>
           </div>
         </div>

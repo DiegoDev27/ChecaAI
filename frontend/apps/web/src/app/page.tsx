@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { Search, AlertTriangle, BarChart3, Users, FileText, ShieldCheck, Bot } from 'lucide-react';
 import { HomeDashboard } from '@/components/home/HomeDashboard';
 
@@ -91,7 +91,7 @@ export default function HomePage() {
       <section className="py-16 px-4 bg-gray-50 border-t">
         <div className="container mx-auto max-w-5xl">
           <h2 className="text-3xl font-bold text-center mb-3 text-gray-900">
-            O que você pode fazer no Checa AI
+            O que você pode fazer no Checa Aí
           </h2>
           <p className="text-center text-gray-500 mb-10 text-sm">
             Dados de fontes oficiais, atualizados automaticamente, prontos para o cidadão.

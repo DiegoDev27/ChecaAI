@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -209,7 +209,7 @@ export function PoliticianCompare() {
                     </div>
                   )}
                   <div className="text-xs text-gray-400 text-center pt-2 border-t">
-                    Análise gerada por Claude AI com dados reais do Checa AI
+                    Análise gerada por Claude AI com dados reais do Checa Aí
                   </div>
                 </div>
               )}
