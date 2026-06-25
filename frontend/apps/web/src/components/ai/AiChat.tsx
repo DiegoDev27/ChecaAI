@@ -26,7 +26,7 @@ export function AiChat() {
           id: 'welcome',
           role: 'assistant',
           content:
-            'Olá! Sou o assistente de transparência política do ChecaAI. Posso te ajudar a entender votações parlamentares, gastos públicos, propostas legislativas e muito mais.\n\nO que você gostaria de saber sobre a política brasileira?',
+            'Olá! Sou o assistente de transparência política do Checa AI. Posso te ajudar a entender votações parlamentares, gastos públicos, propostas legislativas e muito mais.\n\nO que você gostaria de saber sobre a política brasileira?',
         },
       ],
     });
@@ -52,7 +52,7 @@ export function AiChat() {
           <Bot className="h-5 w-5 text-civic-700" />
         </div>
         <div>
-          <div className="font-semibold text-gray-900 text-sm">ChecaAI — Assistente Político</div>
+          <div className="font-semibold text-gray-900 text-sm">Checa AI — Assistente Político</div>
           <div className="text-xs text-gray-500">Powered by Claude AI · transparência parlamentar</div>
         </div>
         <div className="ml-auto flex items-center gap-1.5">

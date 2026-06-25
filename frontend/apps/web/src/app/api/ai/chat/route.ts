@@ -5,7 +5,7 @@ const anthropic = createAnthropic({
   apiKey: process.env.ANTHROPIC_API_KEY ?? '',
 });
 
-const SYSTEM_PROMPT = `Você é o assistente de transparência política do ChecaAI, uma plataforma brasileira de monitoramento parlamentar.
+const SYSTEM_PROMPT = `Você é o assistente de transparência política do Checa AI, uma plataforma brasileira de monitoramento parlamentar.
 
 Seu papel é ajudar cidadãos a entender:
 - Como parlamentares brasileiros votam (deputados federais, senadores, deputados estaduais, vereadores)

@@ -325,7 +325,7 @@ export function SessionDetail({ id }: Props) {
               )}
             </div>
             <div className="p-3 border-t text-xs text-gray-400 text-center">
-              Análise gerada por Claude AI com dados reais do ChecaAI
+              Análise gerada por Claude AI com dados reais do Checa AI
             </div>
           </div>
         </div>

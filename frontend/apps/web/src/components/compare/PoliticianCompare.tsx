@@ -209,7 +209,7 @@ export function PoliticianCompare() {
                     </div>
                   )}
                   <div className="text-xs text-gray-400 text-center pt-2 border-t">
-                    Análise gerada por Claude AI com dados reais do ChecaAI
+                    Análise gerada por Claude AI com dados reais do Checa AI
                   </div>
                 </div>
               )}

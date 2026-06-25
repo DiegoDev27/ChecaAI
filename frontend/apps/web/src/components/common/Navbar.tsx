@@ -25,8 +25,7 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-bold text-xl text-brand-700">
-            <span className="text-2xl">🇧🇷</span>
-            <span>ChecaAI</span>
+            <span>Checa AI</span>
           </Link>
 
           {/* Desktop nav */}
