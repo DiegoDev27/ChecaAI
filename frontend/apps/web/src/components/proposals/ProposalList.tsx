@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { proposalsApi } from '@checa-ai/api-client';
+import { proposalsApi } from '@checaai/api-client';
 import Link from 'next/link';
 import { formatDate, cn } from '@/lib/utils';
 import { Loader2, ChevronLeft, ChevronRight, FileText, Search } from 'lucide-react';

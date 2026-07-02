@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
+import { politiciansApi } from '@checaai/api-client';
 import Link from 'next/link';
 import { formatDate, voteColor, voteLabel, isApproved, resultLabel, cn } from '@/lib/utils';
 import { Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { VoteStats } from '@checa-ai/types';
+import type { VoteStats } from '@checaai/types';
 import { VoteStatsBar } from '../VoteStatsBar';
 
 interface Props { id: number; voteStats?: VoteStats | null }

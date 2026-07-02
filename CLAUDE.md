@@ -64,7 +64,7 @@ dotnet test <TestProjectPath>
 - **Government APIs**: 
   - Câmara dos Deputados: https://dadosabertos.camara.leg.br/api/v2
   - Senado Federal: https://legis.senado.leg.br/dadosabertos
-- **PgAdmin**: http://localhost:8080 (admin@checa-ai.com / admin123)
+- **PgAdmin**: http://localhost:8080 (admin@checa.ai / admin123)
 
 ## Key Features Implementation
 1. **Government API Integration**: Services to fetch data from Brazilian government transparency APIs
@@ -86,7 +86,7 @@ dotnet test <TestProjectPath>
 │   │   ├── Models/DTOs/       # XML deserialization models
 │   │   ├── Services/          # Data scraping services
 │   │   └── Configuration/     # Worker settings
-│   └── checa-ai.sln           # Solution file
+│   └── ChecaAI.sln            # Solution file
 ├── frontend/                  # Frontend (web + mobile — em construção)
 ├── docker-compose.yml         # PostgreSQL setup
 └── .env.example               # Environment variables template

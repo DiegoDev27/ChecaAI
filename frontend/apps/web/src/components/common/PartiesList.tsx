@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { partiesApi } from '@checa-ai/api-client';
-import type { Party } from '@checa-ai/types';
+import { partiesApi } from '@checaai/api-client';
+import type { Party } from '@checaai/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Loader2, Users, Search, ArrowUpDown } from 'lucide-react';

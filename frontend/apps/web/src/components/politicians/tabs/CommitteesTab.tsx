@@ -1,6 +1,6 @@
 'use client';
 
-import type { CommitteeMembership } from '@checa-ai/types';
+import type { CommitteeMembership } from '@checaai/types';
 import { Briefcase } from 'lucide-react';
 
 interface Props {

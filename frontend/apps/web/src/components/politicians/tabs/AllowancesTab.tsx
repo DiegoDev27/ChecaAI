@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { transparencyApi } from '@checa-ai/api-client';
+import { transparencyApi } from '@checaai/api-client';
 import { formatBRL } from '@/lib/utils';
 import { Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 

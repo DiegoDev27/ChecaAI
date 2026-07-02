@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { partiesApi } from '@checa-ai/api-client';
-import type { PoliticianListItem } from '@checa-ai/types';
+import { partiesApi } from '@checaai/api-client';
+import type { PoliticianListItem } from '@checaai/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import {

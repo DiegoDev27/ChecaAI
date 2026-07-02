@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using ChecaAI.Infrastructure.Data;
 using ChecaAI.Worker.Configuration;
@@ -29,8 +30,12 @@ builder.Services.Configure<PlenaryWatcherOptions>(
     builder.Configuration.GetSection(PlenaryWatcherOptions.SectionName));
 
 // Configure Entity Framework
+// PendingModelChangesWarning is suppressed here because Npgsql.EnableLegacyTimestampBehavior
+// (set above) makes the runtime model diverge from the design-time snapshot even though
+// `dotnet ef migrations has-pending-model-changes` confirms there is no real drift.
 builder.Services.AddDbContext<ChecaAIDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+        .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
 // Configure HTTP clients
 builder.Services.AddHttpClient<ISenateScrapperService, SenateScrapperService>(client =>

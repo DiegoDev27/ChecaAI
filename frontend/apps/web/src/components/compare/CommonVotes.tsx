@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
+import { politiciansApi } from '@checaai/api-client';
 import Link from 'next/link';
 import { formatDate, voteColor, voteLabel, cn } from '@/lib/utils';
 import { Loader2, CheckCircle2, XCircle, ThumbsUp, ThumbsDown } from 'lucide-react';

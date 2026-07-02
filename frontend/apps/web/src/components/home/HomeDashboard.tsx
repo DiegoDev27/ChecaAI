@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi, alertsApi, sessionsApi, proposalsApi } from '@checa-ai/api-client';
+import { politiciansApi, alertsApi, sessionsApi, proposalsApi } from '@checaai/api-client';
 import Link from 'next/link';
 import { alertLevelColor, formatDate, voteColor, voteLabel, cn } from '@/lib/utils';
 import {

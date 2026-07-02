@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { alertsApi } from '@checa-ai/api-client';
+import { alertsApi } from '@checaai/api-client';
 import Link from 'next/link';
 import { alertLevelColor, formatDate } from '@/lib/utils';
 import { Radio, AlertTriangle } from 'lucide-react';

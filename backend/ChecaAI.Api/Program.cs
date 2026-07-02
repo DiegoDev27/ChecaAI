@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var extraOrigins = (builder.Configuration["ALLOWED_ORIGINS"] ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
 var allowedOrigins = builder.Environment.IsProduction()
     ? new[] { "https://checa.ai", "https://www.checa.ai" }.Concat(extraOrigins).ToArray()
-    : new[] { "http://localhost:3000", "http://localhost:3001", "http://localhost:19006", "https://checa-ai.vercel.app" };
+    : new[] { "http://localhost:3000", "http://localhost:3001", "http://localhost:19006" };
 
 builder.Services.AddCors(options =>
 {

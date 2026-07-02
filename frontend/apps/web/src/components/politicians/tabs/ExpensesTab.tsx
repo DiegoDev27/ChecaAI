@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
+import { politiciansApi } from '@checaai/api-client';
 import { formatBRL, formatDate, cn } from '@/lib/utils';
 import { Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { ExpenseSummary } from '@checa-ai/types';
+import type { ExpenseSummary } from '@checaai/types';
 
 interface Props { id: number; expenseSummary?: ExpenseSummary | null }
 

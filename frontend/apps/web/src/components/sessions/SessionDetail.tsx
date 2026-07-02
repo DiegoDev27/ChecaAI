@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { sessionsApi } from '@checa-ai/api-client';
+import { sessionsApi } from '@checaai/api-client';
 import Link from 'next/link';
 import { formatDate, formatBRL, voteColor, voteLabel, alertLevelColor, isApproved, resultLabel, cn } from '@/lib/utils';
 import {

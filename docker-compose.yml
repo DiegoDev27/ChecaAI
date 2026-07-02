@@ -3,40 +3,77 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: checa-ai-postgres
+    container_name: checaai-postgres
     environment:
-      POSTGRES_DB: checa_ai
-      POSTGRES_USER: checa_ai_user
-      POSTGRES_PASSWORD: dev_password123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /data/postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/data/postgres
     restart: unless-stopped
     networks:
-      - checa_ai_network
+      - checaai_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: checa-ai-pgadmin
+    container_name: checaai-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@checa-ai.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "8080:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     restart: unless-stopped
     networks:
-      - checa_ai_network
+      - checaai_network
     depends_on:
       - postgres
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: ChecaAI.Api/Dockerfile
+    container_name: checaai-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+    ports:
+      - "7001:8080"
+    restart: unless-stopped
+    networks:
+      - checaai_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: ChecaAI.Worker/Dockerfile
+    container_name: checaai-worker
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+    restart: unless-stopped
+    networks:
+      - checaai_network
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
   pgadmin_data:
 
 networks:
-  checa_ai_network:
+  checaai_network:
     driver: bridge

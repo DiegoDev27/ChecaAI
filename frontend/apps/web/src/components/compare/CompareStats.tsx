@@ -1,6 +1,6 @@
 'use client';
 
-import type { PoliticianDetail } from '@checa-ai/types';
+import type { PoliticianDetail } from '@checaai/types';
 import { formatBRL, presenceBadgeColor, cn } from '@/lib/utils';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 

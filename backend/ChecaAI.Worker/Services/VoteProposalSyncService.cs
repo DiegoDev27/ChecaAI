@@ -558,22 +558,50 @@ public class VoteProposalSyncService : BackgroundService
             .ToDictionary(p => p.ExternalId!, p => p.Id, StringComparer.OrdinalIgnoreCase);
     }
 
+    // Retries transient failures (network errors, 5xx, 429) so a single hiccup mid-backfill
+    // doesn't get misread by callers as "no more pages" and silently truncate the sync.
     private async Task<T?> FetchJsonAsync<T>(HttpClient client, string url, CancellationToken ct)
     {
-        try
+        const int maxAttempts = 3;
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
-            var response = await client.GetAsync(url, ct);
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound ||
-                response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+            try
+            {
+                var response = await client.GetAsync(url, ct);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return default;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync(ct);
+                    return JsonSerializer.Deserialize<T>(json, JsonOpts);
+                }
+
+                if (attempt == maxAttempts)
+                {
+                    _logger.LogWarning("[VoteProposalSync] Giving up after {Attempts} attempts, HTTP {Status}: {Url}",
+                        maxAttempts, response.StatusCode, url);
+                    return default;
+                }
+
+                _logger.LogWarning("[VoteProposalSync] HTTP {Status} on attempt {Attempt}/{Max}, retrying: {Url}",
+                    response.StatusCode, attempt, maxAttempts, url);
+            }
+            catch (Exception ex) when (attempt < maxAttempts)
+            {
+                _logger.LogWarning(ex, "[VoteProposalSync] Fetch failed on attempt {Attempt}/{Max}, retrying: {Url}",
+                    attempt, maxAttempts, url);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[VoteProposalSync] Giving up after {Attempts} attempts: {Url}", maxAttempts, url);
                 return default;
-            if (!response.IsSuccessStatusCode) return default;
-            var json = await response.Content.ReadAsStringAsync(ct);
-            return JsonSerializer.Deserialize<T>(json, JsonOpts);
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
         }
-        catch
-        {
-            return default;
-        }
+
+        return default;
     }
 
     private static string MapCamaraVoteValue(string? tipoVoto) =>

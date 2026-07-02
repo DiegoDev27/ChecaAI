@@ -1,5 +1,5 @@
 {
-  "name": "checa-ai-frontend",
+  "name": "checaai-frontend",
   "private": true,
   "scripts": {
     "dev": "turbo run dev",

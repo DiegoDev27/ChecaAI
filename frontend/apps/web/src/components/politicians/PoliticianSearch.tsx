@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
-import { BR_STATES, POLITICAL_POSITIONS } from '@checa-ai/types';
+import { politiciansApi } from '@checaai/api-client';
+import { BR_STATES, POLITICAL_POSITIONS } from '@checaai/types';
 import { positionLabel, cn } from '@/lib/utils';
 import { useDebounce } from '@/lib/useDebounce';
 import { PoliticianCard } from './PoliticianCard';

@@ -1,6 +1,6 @@
 'use client';
 
-import type { VoteStats } from '@checa-ai/types';
+import type { VoteStats } from '@checaai/types';
 import { cn } from '@/lib/utils';
 
 interface Props { stats: VoteStats }

@@ -1,6 +1,6 @@
 'use client';
 
-import type { PoliticianDetail } from '@checa-ai/types';
+import type { PoliticianDetail } from '@checaai/types';
 import Link from 'next/link';
 import { formatBRL, formatDate, voteColor, voteLabel, isApproved, resultLabel, cn } from '@/lib/utils';
 import { Vote, DollarSign, TrendingUp } from 'lucide-react';

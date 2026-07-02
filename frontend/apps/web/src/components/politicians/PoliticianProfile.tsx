@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
+import { politiciansApi } from '@checaai/api-client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { positionLabel, presenceBadgeColor, cn } from '@/lib/utils';

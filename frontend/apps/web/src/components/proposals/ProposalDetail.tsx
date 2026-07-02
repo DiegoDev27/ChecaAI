@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { proposalsApi } from '@checa-ai/api-client';
+import { proposalsApi } from '@checaai/api-client';
 import Link from 'next/link';
 import { formatDate, isApproved, resultLabel, cn } from '@/lib/utils';
 import {

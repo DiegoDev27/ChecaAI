@@ -1,4 +1,4 @@
-# checa-ai — Transparência Política Brasileira
+# ChecaAI — Transparência Política Brasileira
 
 API .NET para verificação de transparência política de senadores, deputados e vereadores brasileiros.
 
@@ -22,14 +22,14 @@ docker-compose up -d
 ```
 
 3. Acesse o PgAdmin em: http://localhost:8080
-   - Email: admin@checa-ai.com  
+   - Email: admin@checa.ai  
    - Senha: admin123
 
 ### 3. Conexão com o Banco
 - Host: localhost
-- Port: 5432
-- Database: checa_ai
-- User: checa_ai_user
+- Port: 5433
+- Database: checaai
+- User: checaai_user
 - Password: dev_password123
 
 ## Como Executar

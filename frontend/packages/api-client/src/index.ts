@@ -21,7 +21,7 @@ import type {
   SessionFilters,
   ProposalFilters,
   ChatMessage,
-} from '@checa-ai/types';
+} from '@checaai/types';
 
 // ── Base config ───────────────────────────────────────────────────────────────
 
@@ -209,4 +209,4 @@ export const aiApi = {
     }),
 };
 
-export type { PagedResponse } from '@checa-ai/types';
+export type { PagedResponse } from '@checaai/types';

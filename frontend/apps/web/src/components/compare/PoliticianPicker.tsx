@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
-import type { PoliticianListItem } from '@checa-ai/types';
+import { politiciansApi } from '@checaai/api-client';
+import type { PoliticianListItem } from '@checaai/types';
 import Image from 'next/image';
 import { Search, User, X, Loader2 } from 'lucide-react';
 import { positionLabel } from '@/lib/utils';

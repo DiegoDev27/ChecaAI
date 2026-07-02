@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
+import { politiciansApi } from '@checaai/api-client';
 import { formatBRL, cn } from '@/lib/utils';
 import { Loader2, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 

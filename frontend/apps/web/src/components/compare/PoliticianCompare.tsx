@@ -2,8 +2,8 @@
 
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { politiciansApi } from '@checa-ai/api-client';
-import type { PoliticianListItem } from '@checa-ai/types';
+import { politiciansApi } from '@checaai/api-client';
+import type { PoliticianListItem } from '@checaai/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCompletion } from 'ai/react';
