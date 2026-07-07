@@ -231,6 +231,7 @@ public class CguCabinetStaffSyncService : BackgroundService
 
         var added = 0;
         var linked = 0;
+        var unmatchedSamplesLogged = 0;
         var now = DateTime.UtcNow;
         var currentYear = now.Year;
         var currentMonth = now.Month;
@@ -246,7 +247,17 @@ public class CguCabinetStaffSyncService : BackgroundService
             // Try to link to a politician via uorgExercicio name
             int? politicianId = TryMatchPolitician(record.UorgExercicioNome, politiciansByName);
             if (politicianId.HasValue)
+            {
                 linked++;
+            }
+            else if (unmatchedSamplesLogged < 10)
+            {
+                // Diagnostic: log a sample of raw uorgExercicio values so we can see the real
+                // format CGU returns and tune the GabinetePatterns regex accordingly.
+                _logger.LogInformation("[CguCabinetStaffSync] No match for uorgExercicio=\"{UorgExercicio}\" (nome={Nome})",
+                    record.UorgExercicioNome, record.Nome);
+                unmatchedSamplesLogged++;
+            }
 
             var role = record.CargoNome?.Length > 100 ? record.CargoNome[..100] : record.CargoNome;
             var fullName = record.Nome?.Length > 300 ? record.Nome[..300] : record.Nome ?? "Desconhecido";
