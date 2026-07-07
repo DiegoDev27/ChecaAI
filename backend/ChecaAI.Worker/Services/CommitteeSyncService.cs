@@ -283,6 +283,13 @@ public class CommitteeSyncService : BackgroundService
 
     // ── Senado ────────────────────────────────────────────────────────────────
 
+    // Only these substrings of DescricaoTipoColegiado count as a "committee" for our domain.
+    // The Senado's /comissao/lista/colegiados endpoint returns 200+ collegiate bodies, most of
+    // which are Grupos Parlamentares (friendship groups), Frentes Parlamentares, Conselhos,
+    // Mesa, Plenário, etc. — not committees.
+    private static readonly string[] RelevantSenadoTypeKeywords =
+        ["COMISSÃO", "COMISSAO", "SUBCOMISSÃO", "SUBCOMISSAO", "CPI", "COMITÊ", "COMITE"];
+
     private async Task<int> SyncSenadoCommitteesAsync(HttpClient client, CancellationToken ct)
     {
         _logger.LogInformation("[CommitteeSync] Fetching Senado committees...");
@@ -290,49 +297,49 @@ public class CommitteeSyncService : BackgroundService
         // Build senator lookup: Senate ExternalId → our PoliticianId
         var senatorToId = await BuildSenatorLookupAsync(ct);
 
-        var tipos = new[] { "P", "T", "M" }; // Permanente, Temporária, Mista
+        var allColegiados = await FetchSenadoColegiadosAsync(client, ct);
+        var committees = allColegiados
+            .Where(c => !string.IsNullOrWhiteSpace(c.Codigo) && !string.IsNullOrWhiteSpace(c.Sigla))
+            .Where(c => RelevantSenadoTypeKeywords.Any(k =>
+                (c.DescricaoTipoColegiado ?? "").Contains(k, StringComparison.OrdinalIgnoreCase)))
+            .ToList();
+
+        _logger.LogInformation("[CommitteeSync] Found {Count} relevant committees in Senado (of {Total} colegiados)",
+            committees.Count, allColegiados.Count);
+
         var added = 0;
         var membersSynced = 0;
 
-        foreach (var tipo in tipos)
+        foreach (var comm in committees)
         {
             if (ct.IsCancellationRequested) break;
 
-            var committees = await FetchSenadoCommitteesAsync(client, tipo, ct);
-            _logger.LogDebug("[CommitteeSync] Senado tipo={Tipo}: {Count} committees", tipo, committees.Count);
-
-            foreach (var comm in committees)
+            try
             {
-                if (ct.IsCancellationRequested) break;
-                if (string.IsNullOrWhiteSpace(comm.Sigla)) continue;
+                var committeeId = await UpsertCommitteeAsync(
+                    externalId: $"senado-{comm.Sigla}",
+                    name: comm.Nome ?? comm.Sigla!,
+                    acronym: comm.Sigla,
+                    committeeType: MapSenadoType(comm.DescricaoTipoColegiado),
+                    chamber: comm.SiglaCasa == "CN" ? "Mista" : "Senado",
+                    isActive: true,
+                    ct);
 
-                try
+                if (committeeId > 0) added++;
+
+                var members = await FetchSenadoMembersAsync(client, comm.Codigo!, ct);
+                if (members.Count > 0)
                 {
-                    var committeeId = await UpsertCommitteeAsync(
-                        externalId: $"senado-{comm.Sigla}",
-                        name: comm.Nome ?? comm.Sigla,
-                        acronym: comm.Sigla,
-                        committeeType: MapSenadoType(tipo),
-                        chamber: "Senado",
-                        isActive: true,
-                        ct);
-
-                    if (committeeId > 0) added++;
-
-                    var members = await FetchSenadoMembersAsync(client, comm.Sigla, ct);
-                    if (members.Count > 0)
-                    {
-                        var synced = await UpsertSenadoMembershipsAsync(committeeId, members, senatorToId, ct);
-                        membersSynced += synced;
-                    }
+                    var synced = await UpsertSenadoMembershipsAsync(committeeId, members, senatorToId, ct);
+                    membersSynced += synced;
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "[CommitteeSync] Failed to sync Senado committee {Sigla}", comm.Sigla);
-                }
-
-                await Task.Delay(RateLimitDelay, ct);
             }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[CommitteeSync] Failed to sync Senado committee {Sigla}", comm.Sigla);
+            }
+
+            await Task.Delay(RateLimitDelay, ct);
         }
 
         _logger.LogInformation("[CommitteeSync] Senado: processed {Committees} committees, {Members} memberships",
@@ -340,17 +347,18 @@ public class CommitteeSyncService : BackgroundService
         return added;
     }
 
-    private async Task<List<SenadoCommitteeDto>> FetchSenadoCommitteesAsync(
-        HttpClient client, string tipo, CancellationToken ct)
+    private async Task<List<SenadoColegiadoDto>> FetchSenadoColegiadosAsync(HttpClient client, CancellationToken ct)
     {
-        // Senado endpoint: /comissao/lista.json?tipo=P (Permanente), T (Temporária), M (Mista)
-        var url = $"{SenadoBaseUrl}/comissao/lista.json?tipo={tipo}";
+        // Senado restructured their API — the old /comissao/lista.json?tipo=X is gone.
+        // Current endpoint: /comissao/lista/colegiados (single call, returns every collegiate
+        // body of the Congresso Nacional, filtered client-side by DescricaoTipoColegiado).
+        var url = $"{SenadoBaseUrl}/comissao/lista/colegiados";
         try
         {
             var response = await client.GetAsync(url, ct);
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("[CommitteeSync] Senado committee list HTTP {Status} url={Url}", (int)response.StatusCode, url);
+                _logger.LogWarning("[CommitteeSync] Senado colegiados list HTTP {Status} url={Url}", (int)response.StatusCode, url);
                 return [];
             }
 
@@ -358,42 +366,51 @@ public class CommitteeSyncService : BackgroundService
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
 
-            // Navigate: ListaComissoes.Comissoes.Comissao[...]
-            if (!root.TryGetProperty("ListaComissoes", out var lista)) return [];
-            if (!lista.TryGetProperty("Comissoes", out var comissoes)) return [];
-            if (!comissoes.TryGetProperty("Comissao", out var comissaoEl)) return [];
+            // Navigate: ListaColegiados.Colegiados.Colegiado[...]
+            if (!root.TryGetProperty("ListaColegiados", out var lista)) return [];
+            if (!lista.TryGetProperty("Colegiados", out var colegiados)) return [];
+            if (!colegiados.TryGetProperty("Colegiado", out var colegiadoEl)) return [];
 
-            var result = new List<SenadoCommitteeDto>();
+            var result = new List<SenadoColegiadoDto>();
 
-            void ParseComissao(JsonElement el)
+            void ParseColegiado(JsonElement el)
             {
-                var sigla = el.TryGetProperty("SiglaComissao", out var s) ? s.GetString() : null
-                            ?? (el.TryGetProperty("Sigla", out var s2) ? s2.GetString() : null);
-                var nome = el.TryGetProperty("NomeComissao", out var n) ? n.GetString() : null
-                           ?? (el.TryGetProperty("Nome", out var n2) ? n2.GetString() : null);
+                string? Get(string prop) => el.TryGetProperty(prop, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() : null;
 
-                if (!string.IsNullOrWhiteSpace(sigla))
-                    result.Add(new SenadoCommitteeDto { Sigla = sigla, Nome = nome });
+                var codigo = Get("Codigo");
+                var sigla = Get("Sigla");
+                if (string.IsNullOrWhiteSpace(codigo) || string.IsNullOrWhiteSpace(sigla)) return;
+
+                result.Add(new SenadoColegiadoDto
+                {
+                    Codigo = codigo,
+                    Sigla = sigla,
+                    Nome = Get("Nome"),
+                    DescricaoTipoColegiado = Get("DescricaoTipoColegiado"),
+                    SiglaCasa = Get("SiglaCasa"),
+                });
             }
 
-            if (comissaoEl.ValueKind == JsonValueKind.Array)
-                foreach (var el in comissaoEl.EnumerateArray()) ParseComissao(el);
-            else if (comissaoEl.ValueKind == JsonValueKind.Object)
-                ParseComissao(comissaoEl);
+            if (colegiadoEl.ValueKind == JsonValueKind.Array)
+                foreach (var el in colegiadoEl.EnumerateArray()) ParseColegiado(el);
+            else if (colegiadoEl.ValueKind == JsonValueKind.Object)
+                ParseColegiado(colegiadoEl);
 
             return result;
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "[CommitteeSync] Failed to fetch Senado committees tipo={Tipo}", tipo);
+            _logger.LogWarning(ex, "[CommitteeSync] Failed to fetch Senado colegiados");
             return [];
         }
     }
 
     private async Task<List<SenadoMemberDto>> FetchSenadoMembersAsync(
-        HttpClient client, string sigla, CancellationToken ct)
+        HttpClient client, string codigoComissao, CancellationToken ct)
     {
-        var url = $"{SenadoBaseUrl}/comissao/{sigla}/membros.json";
+        // Old endpoint /comissao/{sigla}/membros.json is gone (404). Current one takes the
+        // numeric Codigo (not Sigla) and requires the "ativas" query param.
+        var url = $"{SenadoBaseUrl}/composicao/comissao/{codigoComissao}?ativas=S";
         try
         {
             var response = await client.GetAsync(url, ct);
@@ -403,37 +420,27 @@ public class CommitteeSyncService : BackgroundService
             using var doc = JsonDocument.Parse(json);
             var root = doc.RootElement;
 
-            // Navigate: MembroComissao.Parlamentares.Parlamentar[...]
-            JsonElement parlamentares;
-            if (root.TryGetProperty("MembroComissao", out var mc) && mc.TryGetProperty("Parlamentares", out parlamentares))
-            { /* ok */ }
-            else return [];
-
-            if (!parlamentares.TryGetProperty("Parlamentar", out var parlEl)) return [];
+            // Navigate: ComposicaoAtivaComissaoSf.ComposicaoComissao.Membros.Membro[...]
+            if (!root.TryGetProperty("ComposicaoAtivaComissaoSf", out var comp)) return [];
+            if (!comp.TryGetProperty("ComposicaoComissao", out var composicao)) return [];
+            if (!composicao.TryGetProperty("Membros", out var membrosEl)) return [];
+            if (!membrosEl.TryGetProperty("Membro", out var membroEl)) return [];
 
             var result = new List<SenadoMemberDto>();
 
             void ParseMember(JsonElement el)
             {
-                var codigoEl = el.TryGetProperty("Parlamentar", out var p)
-                    ? (p.TryGetProperty("CodigoParlamentar", out var c) ? c : default)
-                    : (el.TryGetProperty("CodigoParlamentar", out var c2) ? c2 : default);
-
-                var codigo = codigoEl.ValueKind == JsonValueKind.String ? codigoEl.GetString()
-                    : codigoEl.ValueKind == JsonValueKind.Number ? codigoEl.GetInt32().ToString()
-                    : null;
-
-                var cargoEl = el.TryGetProperty("DescricaoCargo", out var cr) ? cr : default;
-                var cargo = cargoEl.ValueKind == JsonValueKind.String ? cargoEl.GetString() : null;
+                var codigo = el.TryGetProperty("CodigoMembro", out var c) && c.ValueKind == JsonValueKind.String ? c.GetString() : null;
+                var tipoVaga = el.TryGetProperty("TipoVaga", out var t) && t.ValueKind == JsonValueKind.String ? t.GetString() : null;
 
                 if (!string.IsNullOrWhiteSpace(codigo))
-                    result.Add(new SenadoMemberDto { CodigoParlamentar = codigo, DescricaoCargo = cargo });
+                    result.Add(new SenadoMemberDto { CodigoParlamentar = codigo, DescricaoCargo = tipoVaga });
             }
 
-            if (parlEl.ValueKind == JsonValueKind.Array)
-                foreach (var el in parlEl.EnumerateArray()) ParseMember(el);
-            else if (parlEl.ValueKind == JsonValueKind.Object)
-                ParseMember(parlEl);
+            if (membroEl.ValueKind == JsonValueKind.Array)
+                foreach (var el in membroEl.EnumerateArray()) ParseMember(el);
+            else if (membroEl.ValueKind == JsonValueKind.Object)
+                ParseMember(membroEl);
 
             return result;
         }
@@ -565,13 +572,13 @@ public class CommitteeSyncService : BackgroundService
         }
     };
 
-    private static string MapSenadoType(string tipo) => tipo.ToUpperInvariant() switch
+    private static string MapSenadoType(string? descricaoTipoColegiado)
     {
-        "P" => "Permanente",
-        "T" => "Especial",
-        "M" => "Mista",
-        _ => "Especial"
-    };
+        var d = (descricaoTipoColegiado ?? "").ToUpperInvariant();
+        if (d.Contains("INQUÉRITO") || d.Contains("INQUERITO") || d.Contains("CPI")) return "CPI";
+        if (d.Contains("PERMANENTE")) return "Permanente";
+        return "Especial";
+    }
 
     private static string MapCamaraRole(string? titulo)
     {
@@ -645,10 +652,13 @@ public class CommitteeSyncService : BackgroundService
         public string? DataFim { get; set; }
     }
 
-    private sealed class SenadoCommitteeDto
+    private sealed class SenadoColegiadoDto
     {
+        public string? Codigo { get; set; }
         public string? Sigla { get; set; }
         public string? Nome { get; set; }
+        public string? DescricaoTipoColegiado { get; set; }
+        public string? SiglaCasa { get; set; }
     }
 
     private sealed class SenadoMemberDto
