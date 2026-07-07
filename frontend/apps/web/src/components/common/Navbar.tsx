@@ -26,7 +26,7 @@ export function Navbar() {
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image src="/logo.png" alt="ChecaAI" width={280} height={140} className="h-16 w-auto" priority />
+            <Image src="/logo.png" alt="ChecaAI" width={280} height={140} className="h-16 w-auto mix-blend-multiply" priority />
           </Link>
 
           {/* Desktop nav */}
