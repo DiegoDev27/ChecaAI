@@ -13,9 +13,11 @@ namespace ChecaAI.Worker.Services;
 
 /// <summary>
 /// Syncs cabinet staff (assessores de gabinete) from Portal da Transparência CGU.
-/// Fetches all civil servants of Câmara (orgaoExercicio=26242) and Senado (orgaoExercicio=20101),
-/// then attempts to link each staff member to a politician by parsing the uorgExercicio field
-/// (e.g. "GABINETE DO DEP. NOME DO DEPUTADO").
+/// Fetches all civil servants of Câmara (orgaoServidorExercicio=99015) and Senado
+/// (orgaoServidorExercicio=99016) — confirmed via /orgaos-siape?descricao=... (the previous
+/// codes 26242/20101 were wrong and returned unrelated Executive-branch organs), then attempts
+/// to link each staff member to a politician by parsing the uorgExercicio field inside their
+/// first fichaCargoEfetivo entry (e.g. "GABINETE DO DEP. NOME DO DEPUTADO").
 /// Requires CguApiKey in appsettings. Runs once at startup (after 15min), then every 24h.
 /// </summary>
 public class CguCabinetStaffSyncService : BackgroundService
@@ -30,11 +32,11 @@ public class CguCabinetStaffSyncService : BackgroundService
     private static readonly TimeSpan SyncInterval = TimeSpan.FromHours(24);
     private static readonly TimeSpan RateLimitDelay = TimeSpan.FromMilliseconds(200);
 
-    // CGU organ codes
+    // CGU organ codes (orgaos-siape) — confirmed live via /orgaos-siape?descricao=...
     private static readonly (string OrgCode, string Label)[] Organs =
     [
-        ("26242", "Câmara dos Deputados"),
-        ("20101", "Senado Federal")
+        ("99015", "Câmara dos Deputados"),
+        ("99016", "Senado Federal")
     ];
 
     // Patterns to extract politician name from uorgExercicio
@@ -144,10 +146,9 @@ public class CguCabinetStaffSyncService : BackgroundService
     {
         var all = new List<CguStaffRecord>();
         var page = 1;
-        // /servidores does not accept tamanhoPagina; returns a fixed page size (~500).
-        // Correct param name is orgaoServidorExercicio (SIAPE code), not orgaoExercicio.
+        const int MaxPages = 2000; // safety net — real page size observed is ~15, not the ~500 previously assumed
 
-        while (true)
+        while (page <= MaxPages)
         {
             if (ct.IsCancellationRequested) break;
 
@@ -210,11 +211,6 @@ public class CguCabinetStaffSyncService : BackgroundService
             }
 
             all.AddRange(batch);
-
-            // The API uses a fixed internal page size (~500). When the batch is smaller,
-            // we've reached the last page.
-            if (batch.Count < 500)
-                break;
 
             page++;
             await Task.Delay(RateLimitDelay, ct);
@@ -343,41 +339,54 @@ public class CguCabinetStaffSyncService : BackgroundService
 
     // ---- Internal DTOs ----
 
+    // Real shape confirmed live against /api-de-dados/servidores: the top-level object wraps
+    // everything under "servidor" (id, pessoa.nome, pessoa.cpfFormatado) plus a separate
+    // "fichasCargoEfetivo" array whose first entry carries uorgExercicio/cargo/dataIngressoCargo
+    // for the servant's current position. There is no top-level id/nome/cpf/uorgExercicio at all
+    // — that's why every record was previously skipped as unmatched (extId always null).
     private sealed class CguStaffRecord
     {
-        [JsonPropertyName("id")]
-        public string? Id { get; set; }
+        [JsonPropertyName("servidor")]
+        public CguServidor? Servidor { get; set; }
 
+        [JsonPropertyName("fichasCargoEfetivo")]
+        public List<CguFichaCargo>? FichasCargoEfetivo { get; set; }
+
+        public string? Id => Servidor?.Id.ToString();
+        public string? Nome => Servidor?.Pessoa?.Nome;
+        public string? Cpf => Servidor?.Pessoa?.CpfFormatado; // masked (***.123.456-**), display only
+        public string? UorgExercicioNome => FichasCargoEfetivo?.FirstOrDefault()?.UorgExercicio;
+        public string? CargoNome => FichasCargoEfetivo?.FirstOrDefault()?.Cargo;
+        public string? DataInicioOcupacao => FichasCargoEfetivo?.FirstOrDefault()?.DataIngressoCargo;
+    }
+
+    private sealed class CguServidor
+    {
+        [JsonPropertyName("id")]
+        public long Id { get; set; }
+
+        [JsonPropertyName("pessoa")]
+        public CguPessoa? Pessoa { get; set; }
+    }
+
+    private sealed class CguPessoa
+    {
         [JsonPropertyName("nome")]
         public string? Nome { get; set; }
 
-        [JsonPropertyName("cpf")]
-        public string? Cpf { get; set; }
+        [JsonPropertyName("cpfFormatado")]
+        public string? CpfFormatado { get; set; }
+    }
 
-        // uorgExercicio can be an object { "nome": "..." } or a plain string depending on API version
+    private sealed class CguFichaCargo
+    {
         [JsonPropertyName("uorgExercicio")]
-        public JsonElement UorgExercicioRaw { get; set; }
+        public string? UorgExercicio { get; set; }
 
         [JsonPropertyName("cargo")]
-        public JsonElement CargoRaw { get; set; }
+        public string? Cargo { get; set; }
 
-        [JsonPropertyName("situacaoVinculo")]
-        public JsonElement SituacaoVinculoRaw { get; set; }
-
-        [JsonPropertyName("dataInicioOcupacao")]
-        public string? DataInicioOcupacao { get; set; }
-
-        /// <summary>Extracts nome from uorgExercicio regardless of whether it's a string or object.</summary>
-        public string? UorgExercicioNome => ExtractStringOrObject(UorgExercicioRaw);
-
-        /// <summary>Extracts nome from cargo.</summary>
-        public string? CargoNome => ExtractStringOrObject(CargoRaw);
-
-        private static string? ExtractStringOrObject(JsonElement el) => el.ValueKind switch
-        {
-            JsonValueKind.String => el.GetString(),
-            JsonValueKind.Object when el.TryGetProperty("nome", out var n) => n.GetString(),
-            _ => null
-        };
+        [JsonPropertyName("dataIngressoCargo")]
+        public string? DataIngressoCargo { get; set; }
     }
 }
