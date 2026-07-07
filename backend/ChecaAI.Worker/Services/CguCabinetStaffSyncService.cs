@@ -200,6 +200,15 @@ public class CguCabinetStaffSyncService : BackgroundService
             if (batch == null || batch.Count == 0)
                 break;
 
+            // Diagnostic: dump the raw JSON of the first page so we can see the actual field
+            // names/shapes CGU returns (our DTO's "id"/"cpf"/"uorgExercicio" mappings are guesses
+            // based on docs, and every fetched record has come back with no id AND no cpf so far).
+            if (page == 1)
+            {
+                var sample = json.Length > 1500 ? json[..1500] : json;
+                _logger.LogInformation("[CguCabinetStaffSync] Raw JSON sample for organ {Code}: {Sample}", orgCode, sample);
+            }
+
             all.AddRange(batch);
 
             // The API uses a fixed internal page size (~500). When the batch is smaller,
