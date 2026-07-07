@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { AiChat } from '@/components/ai/AiChat';
-import { Bot, Sparkles, ShieldCheck } from 'lucide-react';
+import { Sparkles, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Busca Inteligente com IA',
@@ -14,12 +14,12 @@ export default function BuscaPage() {
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-3">
-          <div className="bg-civic-100 rounded-xl p-2.5">
-            <Bot className="h-6 w-6 text-civic-700" />
+          <div className="bg-primary-100 rounded-xl p-2.5">
+            <Sparkles className="h-6 w-6 text-primary-700" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Busca Inteligente com IA</h1>
-            <p className="text-gray-500 text-sm">
+            <h1 className="text-2xl font-bold text-slate-900">Busca Inteligente com IA</h1>
+            <p className="text-slate-500 text-sm">
               Pergunte sobre política brasileira em linguagem natural
             </p>
           </div>
@@ -27,11 +27,11 @@ export default function BuscaPage() {
 
         {/* Info chips */}
         <div className="flex flex-wrap gap-2 mt-3">
-          <span className="flex items-center gap-1.5 text-xs bg-brand-50 text-brand-700 border border-brand-200 px-3 py-1 rounded-full">
+          <span className="flex items-center gap-1.5 text-xs bg-primary-50 text-primary-700 border border-primary-200 px-3 py-1 rounded-full">
             <Sparkles className="h-3 w-3" />
             Powered by Claude AI (Anthropic)
           </span>
-          <span className="flex items-center gap-1.5 text-xs bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 rounded-full">
+          <span className="flex items-center gap-1.5 text-xs bg-slate-100 text-slate-600 border border-slate-200 px-3 py-1 rounded-full">
             <ShieldCheck className="h-3 w-3" />
             Dados reais do Congresso Nacional
           </span>
@@ -42,7 +42,7 @@ export default function BuscaPage() {
       <AiChat />
 
       {/* Disclaimer */}
-      <p className="text-center text-xs text-gray-400 mt-4">
+      <p className="text-center text-xs text-slate-400 mt-4">
         As respostas são geradas por IA e podem conter imprecisões. Sempre verifique em fontes
         oficiais. Os dados de votações, gastos e salários são obtidos diretamente das APIs do
         governo federal.

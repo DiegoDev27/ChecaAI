@@ -23,7 +23,7 @@ export function AttendanceTab({ id }: Props) {
   });
 
   if (isLoading) {
-    return <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-brand-600" /></div>;
+    return <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-primary-600" /></div>;
   }
 
   if (isError) {
@@ -33,7 +33,7 @@ export function AttendanceTab({ id }: Props) {
   if (!data || data.totalCount === 0) {
     return (
       <div className="bg-white rounded-xl border p-8 text-center">
-        <div className="text-gray-400 text-sm">
+        <div className="text-slate-400 text-sm">
           Nenhum dado de presença disponível para {year}. Os dados são obtidos da API da Câmara dos Deputados (somente deputados federais).
         </div>
       </div>
@@ -47,11 +47,11 @@ export function AttendanceTab({ id }: Props) {
 
   return (
     <div className="bg-white rounded-xl border overflow-hidden">
-      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-gray-50">
+      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-slate-50">
         <select
           value={year}
           onChange={(e) => { setYear(Number(e.target.value)); setPage(1); }}
-          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
           {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
         </select>
@@ -66,7 +66,7 @@ export function AttendanceTab({ id }: Props) {
           )}>
             {presenceRate}% de presença em {year}
           </span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-slate-500">
             {overallPresent} presente{overallPresent !== 1 ? 's' : ''} / {overallTotal} sessões
           </span>
         </div>
@@ -74,14 +74,14 @@ export function AttendanceTab({ id }: Props) {
 
       <div className="divide-y">
         {data.data.map((a, i) => (
-          <div key={`${a.id}-${i}`} className="flex items-center gap-4 px-5 py-3 hover:bg-gray-50 transition-colors">
+          <div key={`${a.id}-${i}`} className="flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors">
             {a.isPresent ? (
               <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
             ) : (
               <XCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
             )}
             <div className="flex-1 min-w-0">
-              <div className="text-sm text-gray-800">
+              <div className="text-sm text-slate-800">
                 {formatDate(a.sessionDate)} — {a.chamber}
               </div>
               {!a.isPresent && (a.absenceReason || a.absenceJustification) && (
@@ -101,7 +101,7 @@ export function AttendanceTab({ id }: Props) {
       </div>
 
       {data.totalPages > 1 && (
-        <div className="flex items-center justify-between px-5 py-3 border-t bg-gray-50">
+        <div className="flex items-center justify-between px-5 py-3 border-t bg-slate-50">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={!data.hasPrevPage}
@@ -110,7 +110,7 @@ export function AttendanceTab({ id }: Props) {
             <ChevronLeft className="h-4 w-4" />
             Anterior
           </button>
-          <span className="text-sm text-gray-500">Página {data.page} de {data.totalPages}</span>
+          <span className="text-sm text-slate-500">Página {data.page} de {data.totalPages}</span>
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={!data.hasNextPage}

@@ -43,19 +43,19 @@ export function PoliticianPicker({ label, selected, onSelect, excludeId }: Props
 
   if (selected) {
     return (
-      <div className="bg-white rounded-xl border-2 border-brand-200 p-4 flex items-center gap-4">
-        <div className="relative w-14 h-14 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+      <div className="bg-white rounded-xl border-2 border-primary-200 p-4 flex items-center gap-4">
+        <div className="relative w-14 h-14 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
           {selected.photoUrl ? (
             <Image src={selected.photoUrl} alt={selected.fullName} fill className="object-cover object-top" sizes="56px" />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <User className="h-8 w-8 text-gray-300" />
+              <User className="h-8 w-8 text-slate-300" />
             </div>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-gray-900 truncate">{selected.fullName}</div>
-          <div className="text-sm text-gray-500 mt-0.5">
+          <div className="font-semibold text-slate-900 truncate">{selected.fullName}</div>
+          <div className="text-sm text-slate-500 mt-0.5">
             {positionLabel(selected.politicalPosition)}
             {selected.party && ` • ${selected.party}`}
             {selected.state && ` • ${selected.state}`}
@@ -63,7 +63,7 @@ export function PoliticianPicker({ label, selected, onSelect, excludeId }: Props
         </div>
         <button
           onClick={() => onSelect(null)}
-          className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 flex-shrink-0"
+          className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex-shrink-0"
           title="Remover"
         >
           <X className="h-4 w-4" />
@@ -74,20 +74,20 @@ export function PoliticianPicker({ label, selected, onSelect, excludeId }: Props
 
   return (
     <div ref={containerRef} className="relative">
-      <div className="bg-white rounded-xl border-2 border-dashed border-gray-200 p-4 hover:border-brand-300 transition-colors">
-        <div className="text-xs font-medium text-gray-500 mb-2 uppercase tracking-wide">{label}</div>
+      <div className="bg-white rounded-xl border-2 border-dashed border-slate-200 p-4 hover:border-primary-300 transition-colors">
+        <div className="text-xs font-medium text-slate-500 mb-2 uppercase tracking-wide">{label}</div>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
             type="text"
             value={q}
             onChange={(e) => { setQ(e.target.value); setOpen(true); }}
             onFocus={() => setOpen(true)}
             placeholder="Buscar parlamentar..."
-            className="w-full pl-9 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-gray-50"
+            className="w-full pl-9 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-slate-50"
           />
           {isLoading && (
-            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 animate-spin" />
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 animate-spin" />
           )}
         </div>
       </div>
@@ -100,20 +100,20 @@ export function PoliticianPicker({ label, selected, onSelect, excludeId }: Props
               key={p.id}
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => { onSelect(p); setQ(''); setOpen(false); }}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors text-left"
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors text-left"
             >
-              <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-100 flex-shrink-0">
+              <div className="relative w-8 h-8 rounded-full overflow-hidden bg-slate-100 flex-shrink-0">
                 {p.photoUrl ? (
                   <Image src={p.photoUrl} alt={p.fullName} fill className="object-cover object-top" sizes="32px" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <User className="h-4 w-4 text-gray-300" />
+                    <User className="h-4 w-4 text-slate-300" />
                   </div>
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium text-gray-900 truncate">{p.fullName}</div>
-                <div className="text-xs text-gray-500">
+                <div className="text-sm font-medium text-slate-900 truncate">{p.fullName}</div>
+                <div className="text-xs text-slate-500">
                   {positionLabel(p.politicalPosition)}{p.party && ` • ${p.party}`}{p.state && ` • ${p.state}`}
                 </div>
               </div>

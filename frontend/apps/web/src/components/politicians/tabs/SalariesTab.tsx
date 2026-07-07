@@ -17,7 +17,7 @@ export function SalariesTab({ id }: Props) {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-brand-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
       </div>
     );
   }
@@ -29,7 +29,7 @@ export function SalariesTab({ id }: Props) {
   if (!data || data.length === 0) {
     return (
       <div className="bg-white rounded-xl border p-8 text-center">
-        <div className="text-gray-400 text-sm">
+        <div className="text-slate-400 text-sm">
           Nenhum dado salarial disponível. Os dados são obtidos do Portal da Transparência (CGU) e requerem o CPF do parlamentar.
         </div>
       </div>
@@ -42,9 +42,9 @@ export function SalariesTab({ id }: Props) {
 
   return (
     <div className="bg-white rounded-xl border overflow-hidden">
-      <div className="px-5 py-4 border-b bg-gray-50">
-        <h3 className="font-semibold text-gray-800">Histórico salarial (CGU)</h3>
-        <p className="text-xs text-gray-500 mt-0.5">
+      <div className="px-5 py-4 border-b bg-slate-50">
+        <h3 className="font-semibold text-slate-800">Histórico salarial (CGU)</h3>
+        <p className="text-xs text-slate-500 mt-0.5">
           Fonte: Portal da Transparência do Governo Federal
         </p>
       </div>
@@ -52,7 +52,7 @@ export function SalariesTab({ id }: Props) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-xs text-gray-400 border-b bg-gray-50">
+            <tr className="text-left text-xs text-slate-400 border-b bg-slate-50">
               <th className="px-5 py-2.5 font-medium">Período</th>
               <th className="px-5 py-2.5 font-medium text-right">Bruto</th>
               <th className="px-5 py-2.5 font-medium text-right">Líquido</th>
@@ -64,10 +64,10 @@ export function SalariesTab({ id }: Props) {
               const prev = sorted[i + 1];
               const delta = prev ? s.grossSalary - prev.grossSalary : 0;
               const TrendIcon = delta > 0 ? TrendingUp : delta < 0 ? TrendingDown : Minus;
-              const trendCls = delta > 0 ? 'text-green-600' : delta < 0 ? 'text-red-600' : 'text-gray-400';
+              const trendCls = delta > 0 ? 'text-green-600' : delta < 0 ? 'text-red-600' : 'text-slate-400';
               return (
-                <tr key={`${s.year}-${s.month}`} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-5 py-3 font-medium text-gray-800">
+                <tr key={`${s.year}-${s.month}`} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-5 py-3 font-medium text-slate-800">
                     {String(s.month).padStart(2, '0')}/{s.year}
                   </td>
                   <td className="px-5 py-3 text-right">
@@ -76,10 +76,10 @@ export function SalariesTab({ id }: Props) {
                       <span className="font-medium">{formatBRL(s.grossSalary)}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-3 text-right text-gray-700">
+                  <td className="px-5 py-3 text-right text-slate-700">
                     {formatBRL(s.netSalary)}
                   </td>
-                  <td className="px-5 py-3 text-right text-gray-500">
+                  <td className="px-5 py-3 text-right text-slate-500">
                     {s.allowances ? formatBRL(s.allowances) : '—'}
                   </td>
                 </tr>

@@ -27,12 +27,12 @@ export function AlertsFeed() {
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="rounded-xl border p-4 animate-pulse bg-white">
             <div className="flex items-start gap-3">
-              <div className="w-5 h-5 bg-gray-200 rounded flex-shrink-0 mt-0.5" />
+              <div className="w-5 h-5 bg-slate-200 rounded flex-shrink-0 mt-0.5" />
               <div className="flex-1 space-y-2">
-                <div className="h-3 bg-gray-200 rounded w-1/3" />
-                <div className="h-4 bg-gray-200 rounded w-full" />
-                <div className="h-4 bg-gray-200 rounded w-4/5" />
-                <div className="h-3 bg-gray-100 rounded w-1/4 mt-2" />
+                <div className="h-3 bg-slate-200 rounded w-1/3" />
+                <div className="h-4 bg-slate-200 rounded w-full" />
+                <div className="h-4 bg-slate-200 rounded w-4/5" />
+                <div className="h-3 bg-slate-100 rounded w-1/4 mt-2" />
               </div>
             </div>
           </div>
@@ -51,11 +51,11 @@ export function AlertsFeed() {
 
   if (!alerts || alerts.length === 0) {
     return (
-      <div className="text-center py-16 text-gray-500">
-        <Radio className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+      <div className="text-center py-16 text-slate-500">
+        <Radio className="h-12 w-12 mx-auto mb-4 text-slate-300" />
         <p className="font-medium">Nenhuma votação em andamento.</p>
         <p className="text-sm mt-2">O sistema verifica a Câmara e o Senado a cada 90 segundos.</p>
-        <p className="text-xs mt-1 text-gray-400">Fora do período de sessões não há votações ativas.</p>
+        <p className="text-xs mt-1 text-slate-400">Fora do período de sessões não há votações ativas.</p>
       </div>
     );
   }

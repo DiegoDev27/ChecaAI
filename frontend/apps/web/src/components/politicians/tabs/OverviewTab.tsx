@@ -39,8 +39,8 @@ export function OverviewTab({ p, id }: Props) {
 
         {/* What we're collecting */}
         <div className="rounded-xl border bg-white p-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">O que estamos coletando:</h3>
-          <ul className="space-y-2 text-sm text-gray-500">
+          <h3 className="text-sm font-semibold text-slate-700 mb-3">O que estamos coletando:</h3>
+          <ul className="space-y-2 text-sm text-slate-500">
             {[
               { label: 'Votos nominais em plenário', icon: '🗳️' },
               { label: 'Despesas de cota parlamentar (CEAP)', icon: '💳' },
@@ -65,8 +65,8 @@ export function OverviewTab({ p, id }: Props) {
       {/* Vote stats */}
       {p.voteStats && (
         <div className="bg-white rounded-xl border p-5">
-          <h2 className="font-semibold text-gray-800 flex items-center gap-2 mb-4">
-            <Vote className="h-4 w-4 text-brand-600" />
+          <h2 className="font-semibold text-slate-800 flex items-center gap-2 mb-4">
+            <Vote className="h-4 w-4 text-primary-600" />
             Estatísticas de voto
           </h2>
           <VoteStatsBar stats={p.voteStats} />
@@ -75,11 +75,11 @@ export function OverviewTab({ p, id }: Props) {
               { label: 'Sim', value: p.voteStats.yes, cls: 'text-green-700' },
               { label: 'Não', value: p.voteStats.no, cls: 'text-red-700' },
               { label: 'Abstenção', value: p.voteStats.abstention, cls: 'text-orange-700' },
-              { label: 'Ausente', value: p.voteStats.absent, cls: 'text-gray-600' },
+              { label: 'Ausente', value: p.voteStats.absent, cls: 'text-slate-600' },
             ].map((s) => (
               <div key={s.label}>
                 <div className={cn('text-xl font-bold', s.cls)}>{s.value}</div>
-                <div className="text-xs text-gray-500 mt-0.5">{s.label}</div>
+                <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
               </div>
             ))}
           </div>
@@ -89,26 +89,26 @@ export function OverviewTab({ p, id }: Props) {
       {/* Latest salary */}
       {p.latestSalary && (
         <div className="bg-white rounded-xl border p-5">
-          <h2 className="font-semibold text-gray-800 flex items-center gap-2 mb-4">
-            <DollarSign className="h-4 w-4 text-brand-600" />
+          <h2 className="font-semibold text-slate-800 flex items-center gap-2 mb-4">
+            <DollarSign className="h-4 w-4 text-primary-600" />
             Último salário registrado
           </h2>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <div className="text-xs text-gray-500 mb-1">Bruto</div>
-              <div className="text-lg font-bold text-gray-900">
+              <div className="text-xs text-slate-500 mb-1">Bruto</div>
+              <div className="text-lg font-bold text-slate-900">
                 {formatBRL(p.latestSalary.grossSalary)}
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500 mb-1">Líquido</div>
-              <div className="text-lg font-bold text-gray-900">
+              <div className="text-xs text-slate-500 mb-1">Líquido</div>
+              <div className="text-lg font-bold text-slate-900">
                 {formatBRL(p.latestSalary.netSalary)}
               </div>
             </div>
             <div>
-              <div className="text-xs text-gray-500 mb-1">Período</div>
-              <div className="text-lg font-bold text-gray-900">
+              <div className="text-xs text-slate-500 mb-1">Período</div>
+              <div className="text-lg font-bold text-slate-900">
                 {String(p.latestSalary.month).padStart(2, '0')}/{p.latestSalary.year}
               </div>
             </div>
@@ -120,16 +120,16 @@ export function OverviewTab({ p, id }: Props) {
       {p.expenseSummary && (
         <div className="bg-white rounded-xl border p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-brand-600" />
+            <h2 className="font-semibold text-slate-800 flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary-600" />
               Cota parlamentar (CEAP) — {p.expenseSummary.year}
             </h2>
           </div>
           <div className="flex items-baseline gap-3 mb-4">
-            <span className="text-3xl font-bold text-gray-900">
+            <span className="text-3xl font-bold text-slate-900">
               {formatBRL(p.expenseSummary.total)}
             </span>
-            <span className="text-sm text-gray-500">{p.expenseSummary.count} lançamentos</span>
+            <span className="text-sm text-slate-500">{p.expenseSummary.count} lançamentos</span>
           </div>
           <div className="space-y-2">
             {p.expenseSummary.byCategory.slice(0, 6).map((c) => {
@@ -139,14 +139,14 @@ export function OverviewTab({ p, id }: Props) {
               return (
                 <div key={c.category}>
                   <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600 truncate mr-3">{c.category}</span>
-                    <span className="font-medium text-gray-900 flex-shrink-0">
+                    <span className="text-slate-600 truncate mr-3">{c.category}</span>
+                    <span className="font-medium text-slate-900 flex-shrink-0">
                       {formatBRL(c.total)}
                     </span>
                   </div>
-                  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-brand-400 rounded-full"
+                      className="h-full bg-primary-400 rounded-full"
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -161,8 +161,8 @@ export function OverviewTab({ p, id }: Props) {
       {p.recentVotes && p.recentVotes.length > 0 && (
         <div className="bg-white rounded-xl border p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-800 flex items-center gap-2">
-              <Vote className="h-4 w-4 text-brand-600" />
+            <h2 className="font-semibold text-slate-800 flex items-center gap-2">
+              <Vote className="h-4 w-4 text-primary-600" />
               Últimas votações
             </h2>
           </div>
@@ -171,7 +171,7 @@ export function OverviewTab({ p, id }: Props) {
               <Link
                 key={v.sessionId}
                 href={`/votacoes/${v.sessionId}`}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group"
               >
                 <span className={cn(
                   'text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0 w-20 text-center',
@@ -180,10 +180,10 @@ export function OverviewTab({ p, id }: Props) {
                   {voteLabel(v.voteValue)}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm text-gray-800 truncate group-hover:text-brand-700">
+                  <div className="text-sm text-slate-800 truncate group-hover:text-primary-700">
                     {v.description}
                   </div>
-                  <div className="text-xs text-gray-400 mt-0.5">
+                  <div className="text-xs text-slate-400 mt-0.5">
                     {formatDate(v.votingDate)} • {v.chamber}
                   </div>
                 </div>

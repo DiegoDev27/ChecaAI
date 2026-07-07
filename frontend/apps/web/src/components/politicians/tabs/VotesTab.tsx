@@ -40,25 +40,25 @@ export function VotesTab({ id, voteStats }: Props) {
       {/* Distribution chart */}
       {voteStats && voteStats.total > 0 && (
         <div className="bg-white rounded-xl border p-5">
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">Distribuição dos votos</h3>
+          <h3 className="text-sm font-semibold text-slate-700 mb-4">Distribuição dos votos</h3>
           <VoteStatsBar stats={voteStats} />
         </div>
       )}
 
       <div className="bg-white rounded-xl border overflow-hidden">
         {/* Filters */}
-      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-gray-50">
+      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-slate-50">
         <select
           value={voteFilter}
           onChange={(e) => setVoteFilter(e.target.value)}
-          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
           {VOTE_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>
           ))}
         </select>
         {data && (
-          <span className="text-sm text-gray-500 ml-auto">
+          <span className="text-sm text-slate-500 ml-auto">
             {data.totalCount.toLocaleString('pt-BR')} votações no total
             {voteFilter && ` • ${displayData.length} nesta página`}
           </span>
@@ -68,7 +68,7 @@ export function VotesTab({ id, voteStats }: Props) {
       {/* Content */}
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-brand-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
         </div>
       ) : isError ? (
         <div className="text-center py-12 text-red-600 text-sm">Erro ao carregar votações.</div>
@@ -79,7 +79,7 @@ export function VotesTab({ id, voteStats }: Props) {
               <Link
                 key={v.sessionId}
                 href={`/votacoes/${v.sessionId}`}
-                className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors group"
+                className="flex items-center gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors group"
               >
                 <span className={cn(
                   'text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0 w-20 text-center',
@@ -88,10 +88,10 @@ export function VotesTab({ id, voteStats }: Props) {
                   {voteLabel(v.voteValue)}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm text-gray-800 truncate group-hover:text-brand-700">
+                  <div className="text-sm text-slate-800 truncate group-hover:text-primary-700">
                     {v.description}
                   </div>
-                  <div className="text-xs text-gray-400 mt-0.5">
+                  <div className="text-xs text-slate-400 mt-0.5">
                     {formatDate(v.votingDate)} • {v.chamber}
                   </div>
                 </div>
@@ -107,21 +107,21 @@ export function VotesTab({ id, voteStats }: Props) {
             ))}
             {displayData.length === 0 && (
               <div className="text-center py-12 px-6">
-                <svg className="h-10 w-10 mx-auto mb-3 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="h-10 w-10 mx-auto mb-3 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 {voteFilter ? (
-                  <p className="text-gray-400 text-sm">Nenhum voto do tipo &quot;{VOTE_OPTIONS.find(o => o.value === voteFilter)?.label}&quot; nesta página.</p>
+                  <p className="text-slate-400 text-sm">Nenhum voto do tipo &quot;{VOTE_OPTIONS.find(o => o.value === voteFilter)?.label}&quot; nesta página.</p>
                 ) : data && data.totalCount === 0 ? (
                   <div>
-                    <p className="text-gray-500 font-medium text-sm mb-1">Votos sendo sincronizados</p>
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-slate-500 font-medium text-sm mb-1">Votos sendo sincronizados</p>
+                    <p className="text-slate-400 text-sm">
                       Os votos nominais deste parlamentar estão sendo coletados das APIs da Câmara e do Senado.
                       Volte em alguns minutos.
                     </p>
                   </div>
                 ) : (
-                  <p className="text-gray-400 text-sm">Nenhuma votação encontrada.</p>
+                  <p className="text-slate-400 text-sm">Nenhuma votação encontrada.</p>
                 )}
               </div>
             )}
@@ -129,7 +129,7 @@ export function VotesTab({ id, voteStats }: Props) {
 
           {/* Pagination */}
           {data && data.totalPages > 1 && (
-            <div className="flex items-center justify-between px-5 py-3 border-t bg-gray-50">
+            <div className="flex items-center justify-between px-5 py-3 border-t bg-slate-50">
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={!data.hasPrevPage}
@@ -138,7 +138,7 @@ export function VotesTab({ id, voteStats }: Props) {
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
               </button>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-slate-500">
                 Página {data.page} de {data.totalPages}
               </span>
               <button

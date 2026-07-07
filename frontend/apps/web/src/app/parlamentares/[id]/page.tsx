@@ -15,7 +15,7 @@ export default function ParlamentarDetailPage({ params }: Props) {
 
   if (isNaN(id)) {
     return (
-      <div className="container mx-auto px-4 py-16 text-center text-gray-500">
+      <div className="container mx-auto px-4 py-16 text-center text-slate-500">
         ID inválido.
       </div>
     );

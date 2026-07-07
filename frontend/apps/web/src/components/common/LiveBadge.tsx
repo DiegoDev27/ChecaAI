@@ -36,11 +36,11 @@ export function LiveBadge() {
       'inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full',
       connected
         ? 'bg-green-100 text-green-700 border border-green-200'
-        : 'bg-gray-100 text-gray-500 border border-gray-200',
+        : 'bg-slate-100 text-slate-500 border border-slate-200',
     )}>
       <span className={cn(
         'h-1.5 w-1.5 rounded-full',
-        connected ? 'bg-green-500 animate-pulse' : 'bg-gray-400',
+        connected ? 'bg-green-500 animate-pulse' : 'bg-slate-400',
       )} />
       {connected ? 'Ao vivo' : 'Offline'}
     </span>

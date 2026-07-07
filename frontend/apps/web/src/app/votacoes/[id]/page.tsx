@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function VotacaoDetailPage({ params }: Props) {
   const id = parseInt(params.id, 10);
   if (isNaN(id)) {
-    return <div className="container mx-auto px-4 py-16 text-center text-gray-500">ID inválido.</div>;
+    return <div className="container mx-auto px-4 py-16 text-center text-slate-500">ID inválido.</div>;
   }
 
   return (

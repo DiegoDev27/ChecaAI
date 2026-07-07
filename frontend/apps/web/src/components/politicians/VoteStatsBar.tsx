@@ -12,7 +12,7 @@ export function VoteStatsBar({ stats }: Props) {
     { label: 'Sim',       value: stats.yes,        pct: stats.yes / total * 100,        color: 'bg-green-500' },
     { label: 'Não',       value: stats.no,         pct: stats.no / total * 100,         color: 'bg-red-500' },
     { label: 'Abstenção', value: stats.abstention,  pct: stats.abstention / total * 100, color: 'bg-orange-400' },
-    { label: 'Ausente',   value: stats.absent,     pct: stats.absent / total * 100,     color: 'bg-gray-300' },
+    { label: 'Ausente',   value: stats.absent,     pct: stats.absent / total * 100,     color: 'bg-slate-300' },
   ];
 
   return (
@@ -37,16 +37,16 @@ export function VoteStatsBar({ stats }: Props) {
           <div key={s.label} className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
               <div className={cn('w-2.5 h-2.5 rounded-full', s.color)} />
-              <span className="text-gray-600">{s.label}</span>
+              <span className="text-slate-600">{s.label}</span>
             </div>
-            <span className="font-medium text-gray-800">
+            <span className="font-medium text-slate-800">
               {s.value.toLocaleString('pt-BR')} ({s.pct.toFixed(1)}%)
             </span>
           </div>
         ))}
       </div>
 
-      <p className="text-xs text-gray-400 text-right">
+      <p className="text-xs text-slate-400 text-right">
         Total: {stats.total.toLocaleString('pt-BR')} votações
       </p>
     </div>

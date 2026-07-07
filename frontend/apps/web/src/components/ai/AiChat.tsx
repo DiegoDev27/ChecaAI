@@ -2,7 +2,7 @@
 
 import { useChat } from 'ai/react';
 import { useRef, useEffect } from 'react';
-import { Bot, Send, Loader2, User, RefreshCw } from 'lucide-react';
+import { Sparkles, Send, Loader2, User, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const SUGGESTED_QUESTIONS = [
@@ -47,17 +47,17 @@ export function AiChat() {
   return (
     <div className="flex flex-col bg-white rounded-xl border shadow-sm overflow-hidden" style={{ height: 'calc(100vh - 220px)', minHeight: 480 }}>
       {/* Header */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b bg-gradient-to-r from-civic-50 to-white">
-        <div className="bg-civic-100 rounded-full p-2">
-          <Bot className="h-5 w-5 text-civic-700" />
+      <div className="flex items-center gap-3 px-5 py-4 border-b bg-gradient-to-r from-primary-50 to-white">
+        <div className="bg-primary-100 rounded-full p-2">
+          <Sparkles className="h-5 w-5 text-primary-700" />
         </div>
         <div>
-          <div className="font-semibold text-gray-900 text-sm">ChecaAI — Assistente Político</div>
-          <div className="text-xs text-gray-500">Powered by Claude AI · transparência parlamentar</div>
+          <div className="font-semibold text-slate-900 text-sm">ChecaAI — Assistente Político</div>
+          <div className="text-xs text-slate-500">Powered by Claude AI · transparência parlamentar</div>
         </div>
         <div className="ml-auto flex items-center gap-1.5">
           <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-          <span className="text-xs text-gray-500">Online</span>
+          <span className="text-xs text-slate-500">Online</span>
         </div>
       </div>
 
@@ -72,13 +72,13 @@ export function AiChat() {
             <div
               className={cn(
                 'h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5',
-                m.role === 'user' ? 'bg-brand-600' : 'bg-civic-100',
+                m.role === 'user' ? 'bg-primary-600' : 'bg-primary-100',
               )}
             >
               {m.role === 'user' ? (
                 <User className="h-4 w-4 text-white" />
               ) : (
-                <Bot className="h-4 w-4 text-civic-700" />
+                <Sparkles className="h-4 w-4 text-primary-700" />
               )}
             </div>
 
@@ -87,8 +87,8 @@ export function AiChat() {
               className={cn(
                 'max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed',
                 m.role === 'user'
-                  ? 'bg-brand-600 text-white rounded-tr-sm'
-                  : 'bg-gray-100 text-gray-800 rounded-tl-sm',
+                  ? 'bg-primary-600 text-white rounded-tr-sm'
+                  : 'bg-slate-100 text-slate-800 rounded-tl-sm',
               )}
             >
               <p className="whitespace-pre-wrap">{m.content}</p>
@@ -99,13 +99,13 @@ export function AiChat() {
         {/* Loading indicator */}
         {isLoading && (
           <div className="flex gap-3">
-            <div className="h-8 w-8 rounded-full bg-civic-100 flex items-center justify-center flex-shrink-0">
-              <Bot className="h-4 w-4 text-civic-700" />
+            <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
+              <Sparkles className="h-4 w-4 text-primary-700" />
             </div>
-            <div className="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-gray-400 animate-bounce [animation-delay:0ms]" />
-              <span className="h-2 w-2 rounded-full bg-gray-400 animate-bounce [animation-delay:150ms]" />
-              <span className="h-2 w-2 rounded-full bg-gray-400 animate-bounce [animation-delay:300ms]" />
+            <div className="bg-slate-100 rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce [animation-delay:0ms]" />
+              <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce [animation-delay:150ms]" />
+              <span className="h-2 w-2 rounded-full bg-slate-400 animate-bounce [animation-delay:300ms]" />
             </div>
           </div>
         )}
@@ -129,14 +129,14 @@ export function AiChat() {
 
       {/* Suggested questions */}
       {showSuggestions && (
-        <div className="px-5 py-3 border-t bg-gray-50">
-          <p className="text-xs text-gray-500 mb-2 font-medium">Perguntas frequentes:</p>
+        <div className="px-5 py-3 border-t bg-slate-50">
+          <p className="text-xs text-slate-500 mb-2 font-medium">Perguntas frequentes:</p>
           <div className="flex flex-wrap gap-2">
             {SUGGESTED_QUESTIONS.map((q) => (
               <button
                 key={q}
                 onClick={() => handleSuggestion(q)}
-                className="text-xs bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-full hover:border-brand-400 hover:text-brand-700 transition-colors"
+                className="text-xs bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full hover:border-primary-400 hover:text-primary-700 transition-colors"
               >
                 {q}
               </button>
@@ -155,7 +155,7 @@ export function AiChat() {
           value={input}
           onChange={handleInputChange}
           placeholder="Digite sua pergunta sobre política brasileira..."
-          className="flex-1 text-sm border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none"
+          className="flex-1 text-sm border border-slate-200 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
           disabled={isLoading}
           autoComplete="off"
         />
@@ -165,8 +165,8 @@ export function AiChat() {
           className={cn(
             'h-10 w-10 rounded-xl flex items-center justify-center transition-colors flex-shrink-0',
             isLoading || !input.trim()
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-brand-600 text-white hover:bg-brand-700',
+              ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+              : 'bg-primary-600 text-white hover:bg-primary-700',
           )}
         >
           {isLoading ? (

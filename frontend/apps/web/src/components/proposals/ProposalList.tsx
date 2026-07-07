@@ -18,7 +18,7 @@ const STATUS_STYLE: Record<string, string> = {
   'Aprovado': 'bg-green-100 text-green-700',
   'Rejeitado': 'bg-red-100 text-red-700',
   'Em tramitação': 'bg-blue-100 text-blue-700',
-  'Arquivado': 'bg-gray-100 text-gray-600',
+  'Arquivado': 'bg-slate-100 text-slate-600',
   'Vetado': 'bg-orange-100 text-orange-700',
 };
 
@@ -56,13 +56,13 @@ export function ProposalList() {
       <div className="bg-white rounded-xl border p-4 space-y-3">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
             type="text"
             value={q}
             onChange={(e) => { setQ(e.target.value); setPage(1); }}
             placeholder="Buscar por título, ementa ou autor..."
-            className="w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="w-full pl-10 pr-4 py-2.5 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
         </div>
 
@@ -71,7 +71,7 @@ export function ProposalList() {
           <select
             value={type}
             onChange={(e) => { setType(e.target.value); setPage(1); }}
-            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             <option value="">Tipo</option>
             {PROPOSAL_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -80,7 +80,7 @@ export function ProposalList() {
           <select
             value={year ?? ''}
             onChange={(e) => { setYear(e.target.value ? Number(e.target.value) : undefined); setPage(1); }}
-            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             <option value="">Ano</option>
             {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
@@ -89,7 +89,7 @@ export function ProposalList() {
           <select
             value={chamber}
             onChange={(e) => { setChamber(e.target.value); setPage(1); }}
-            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             <option value="">Câmara</option>
             {CHAMBERS.map((c) => <option key={c} value={c}>{c}</option>)}
@@ -98,7 +98,7 @@ export function ProposalList() {
           <select
             value={status}
             onChange={(e) => { setStatus(e.target.value); setPage(1); }}
-            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
             <option value="">Status</option>
             {STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -107,14 +107,14 @@ export function ProposalList() {
           {hasFilters && (
             <button
               onClick={resetFilters}
-              className="text-sm text-gray-500 hover:text-gray-800 px-3 py-2 border rounded-lg hover:bg-gray-50 transition-colors"
+              className="text-sm text-slate-500 hover:text-slate-800 px-3 py-2 border rounded-lg hover:bg-slate-50 transition-colors"
             >
               Limpar filtros
             </button>
           )}
 
           {data && (
-            <span className="ml-auto text-sm text-gray-500 self-center">
+            <span className="ml-auto text-sm text-slate-500 self-center">
               {data.totalCount.toLocaleString('pt-BR')} proposições
             </span>
           )}
@@ -124,7 +124,7 @@ export function ProposalList() {
       {/* Results */}
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-brand-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
         </div>
       ) : isError ? (
         <div className="text-center py-12 text-red-600">Erro ao carregar proposições.</div>
@@ -135,41 +135,41 @@ export function ProposalList() {
               <Link
                 key={p.id}
                 href={`/proposicoes/${p.id}`}
-                className="block bg-white rounded-xl border hover:border-brand-300 hover:shadow-sm transition-all p-4 group"
+                className="block bg-white rounded-xl border hover:border-primary-300 hover:shadow-sm transition-all p-4 group"
               >
                 <div className="flex items-start gap-3">
-                  <FileText className="h-5 w-5 text-gray-300 flex-shrink-0 mt-0.5 group-hover:text-brand-400 transition-colors" />
+                  <FileText className="h-5 w-5 text-slate-300 flex-shrink-0 mt-0.5 group-hover:text-primary-400 transition-colors" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <span className="text-xs font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded">
+                      <span className="text-xs font-bold text-primary-700 bg-primary-50 px-2 py-0.5 rounded">
                         {p.type} {p.number && `${p.number}/`}{p.year}
                       </span>
                       <span className={cn(
                         'text-xs font-medium px-2 py-0.5 rounded',
-                        STATUS_STYLE[p.status] ?? 'bg-gray-100 text-gray-600',
+                        STATUS_STYLE[p.status] ?? 'bg-slate-100 text-slate-600',
                       )}>
                         {p.status}
                       </span>
-                      <span className="text-xs text-gray-400">{p.chamber}</span>
+                      <span className="text-xs text-slate-400">{p.chamber}</span>
                       {p.votingSessionCount > 0 && (
-                        <span className="text-xs text-civic-600">
+                        <span className="text-xs text-primary-600">
                           {p.votingSessionCount} votação{p.votingSessionCount > 1 ? 'ões' : ''}
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:text-brand-700 transition-colors line-clamp-2">
+                    <h3 className="text-sm font-semibold text-slate-900 leading-snug group-hover:text-primary-700 transition-colors line-clamp-2">
                       {p.title}
                     </h3>
 
                     {p.summary && (
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">
+                      <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
                         {p.summary}
                       </p>
                     )}
 
-                    <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-                      {p.author && <span>Autor: <span className="text-gray-600">{p.author}</span></span>}
+                    <div className="flex items-center gap-3 mt-2 text-xs text-slate-400">
+                      {p.author && <span>Autor: <span className="text-slate-600">{p.author}</span></span>}
                       {p.proposalDate && <span>• {formatDate(p.proposalDate)}</span>}
                     </div>
                   </div>
@@ -178,11 +178,11 @@ export function ProposalList() {
             ))}
 
             {(data?.data ?? []).length === 0 && (
-              <div className="text-center py-16 text-gray-400">
-                <FileText className="h-12 w-12 mx-auto mb-3 text-gray-200" />
+              <div className="text-center py-16 text-slate-400">
+                <FileText className="h-12 w-12 mx-auto mb-3 text-slate-200" />
                 <p>Nenhuma proposição encontrada.</p>
                 {hasFilters && (
-                  <button onClick={resetFilters} className="mt-3 text-sm text-brand-600 hover:underline">
+                  <button onClick={resetFilters} className="mt-3 text-sm text-primary-600 hover:underline">
                     Limpar filtros
                   </button>
                 )}
@@ -200,7 +200,7 @@ export function ProposalList() {
                 <ChevronLeft className="h-4 w-4" />
                 Anterior
               </button>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-slate-500">
                 Página {data.page} de {data.totalPages}
               </span>
               <button

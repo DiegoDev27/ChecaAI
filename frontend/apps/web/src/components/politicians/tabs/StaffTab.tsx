@@ -23,7 +23,7 @@ export function StaffTab({ id }: Props) {
   });
 
   if (isLoading) {
-    return <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-brand-600" /></div>;
+    return <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-primary-600" /></div>;
   }
 
   if (isError) {
@@ -33,8 +33,8 @@ export function StaffTab({ id }: Props) {
   if (!data || data.totalCount === 0) {
     return (
       <div className="bg-white rounded-xl border p-8 text-center">
-        <Users className="h-12 w-12 mx-auto mb-3 text-gray-200" />
-        <div className="text-gray-400 text-sm">
+        <Users className="h-12 w-12 mx-auto mb-3 text-slate-200" />
+        <div className="text-slate-400 text-sm">
           Nenhum dado de assessores disponível para {year}. Os dados são obtidos do Portal da Transparência (CGU).
         </div>
       </div>
@@ -43,15 +43,15 @@ export function StaffTab({ id }: Props) {
 
   return (
     <div className="bg-white rounded-xl border overflow-hidden">
-      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-gray-50">
+      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-slate-50">
         <select
           value={year}
           onChange={(e) => { setYear(Number(e.target.value)); setPage(1); }}
-          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
           {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
         </select>
-        <span className="text-sm text-gray-500 ml-auto">
+        <span className="text-sm text-slate-500 ml-auto">
           {data.totalCount} assessores registrados
         </span>
       </div>
@@ -59,7 +59,7 @@ export function StaffTab({ id }: Props) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-xs text-gray-400 border-b bg-gray-50">
+            <tr className="text-left text-xs text-slate-400 border-b bg-slate-50">
               <th className="px-5 py-2.5 font-medium">Nome</th>
               <th className="px-5 py-2.5 font-medium">Cargo</th>
               <th className="px-5 py-2.5 font-medium text-right">Salário bruto</th>
@@ -69,16 +69,16 @@ export function StaffTab({ id }: Props) {
           </thead>
           <tbody className="divide-y">
             {data.data.map((s, i) => (
-              <tr key={`${s.id}-${i}`} className="hover:bg-gray-50 transition-colors">
-                <td className="px-5 py-3 font-medium text-gray-800">{s.fullName}</td>
-                <td className="px-5 py-3 text-gray-600 text-xs">{s.role ?? '—'}</td>
+              <tr key={`${s.id}-${i}`} className="hover:bg-slate-50 transition-colors">
+                <td className="px-5 py-3 font-medium text-slate-800">{s.fullName}</td>
+                <td className="px-5 py-3 text-slate-600 text-xs">{s.role ?? '—'}</td>
                 <td className="px-5 py-3 text-right">
                   {s.grossSalary ? formatBRL(s.grossSalary) : '—'}
                 </td>
-                <td className="px-5 py-3 text-right text-gray-600">
+                <td className="px-5 py-3 text-right text-slate-600">
                   {s.netSalary ? formatBRL(s.netSalary) : '—'}
                 </td>
-                <td className="px-5 py-3 text-gray-500 text-xs">
+                <td className="px-5 py-3 text-slate-500 text-xs">
                   {s.month && s.year ? `${String(s.month).padStart(2,'0')}/${s.year}` : '—'}
                 </td>
               </tr>
@@ -88,7 +88,7 @@ export function StaffTab({ id }: Props) {
       </div>
 
       {data.totalPages > 1 && (
-        <div className="flex items-center justify-between px-5 py-3 border-t bg-gray-50">
+        <div className="flex items-center justify-between px-5 py-3 border-t bg-slate-50">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={!data.hasPrevPage}
@@ -97,7 +97,7 @@ export function StaffTab({ id }: Props) {
             <ChevronLeft className="h-4 w-4" />
             Anterior
           </button>
-          <span className="text-sm text-gray-500">Página {data.page} de {data.totalPages}</span>
+          <span className="text-sm text-slate-500">Página {data.page} de {data.totalPages}</span>
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={!data.hasNextPage}

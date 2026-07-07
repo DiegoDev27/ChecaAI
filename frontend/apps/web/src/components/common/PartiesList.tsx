@@ -53,7 +53,7 @@ export function PartiesList() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-16">
-        <Loader2 className="h-8 w-8 animate-spin text-brand-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
       </div>
     );
   }
@@ -67,22 +67,22 @@ export function PartiesList() {
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
             type="text"
             placeholder="Buscar partido, sigla ou presidente…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+            className="w-full pl-9 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <ArrowUpDown className="h-4 w-4 text-gray-400 flex-shrink-0" />
+          <ArrowUpDown className="h-4 w-4 text-slate-400 flex-shrink-0" />
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as SortKey)}
-            className="text-sm border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+            className="text-sm border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
           >
             <option value="members">Mais membros</option>
             <option value="acronym">Sigla (A–Z)</option>
@@ -92,13 +92,13 @@ export function PartiesList() {
       </div>
 
       {/* Count */}
-      <p className="text-sm text-gray-500">
+      <p className="text-sm text-slate-500">
         {filtered.length} partido{filtered.length !== 1 ? 's' : ''} encontrado{filtered.length !== 1 ? 's' : ''}
       </p>
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-slate-400">
           Nenhum partido encontrado para "{search}".
         </div>
       ) : (
@@ -144,7 +144,7 @@ function PartyCard({ party }: { party: Party }) {
   return (
     <Link
       href={`/partidos/${party.acronym}`}
-      className="group bg-white rounded-xl border hover:border-brand-300 hover:shadow-md transition-all p-4 flex flex-col gap-3"
+      className="group bg-white rounded-xl border hover:border-primary-300 hover:shadow-md transition-all p-4 flex flex-col gap-3"
     >
       {/* Header */}
       <div className="flex items-center gap-3">
@@ -172,13 +172,13 @@ function PartyCard({ party }: { party: Party }) {
         </div>
 
         <div className="min-w-0 flex-1">
-          <div className="font-semibold text-gray-900 text-sm leading-tight truncate group-hover:text-brand-700 transition-colors">
+          <div className="font-semibold text-slate-900 text-sm leading-tight truncate group-hover:text-primary-700 transition-colors">
             {party.fullName}
           </div>
           <div className="flex items-center gap-2 mt-1 flex-wrap">
-            <span className="text-xs font-bold text-gray-500">{party.acronym}</span>
+            <span className="text-xs font-bold text-slate-500">{party.acronym}</span>
             {party.number && (
-              <span className="text-xs text-gray-400 font-mono">Nº {party.number}</span>
+              <span className="text-xs text-slate-400 font-mono">Nº {party.number}</span>
             )}
           </div>
         </div>
@@ -186,19 +186,19 @@ function PartyCard({ party }: { party: Party }) {
 
       {/* President */}
       {party.president && (
-        <div className="text-xs text-gray-500 leading-snug">
-          <span className="text-gray-400">Presidente:</span>{' '}
-          <span className="text-gray-700">{party.president}</span>
+        <div className="text-xs text-slate-500 leading-snug">
+          <span className="text-slate-400">Presidente:</span>{' '}
+          <span className="text-slate-700">{party.president}</span>
         </div>
       )}
 
       {/* Member count */}
       <div className="flex items-center gap-1.5 mt-auto">
-        <Users className="h-3.5 w-3.5 text-brand-500" />
-        <span className="text-sm font-medium text-brand-700">
+        <Users className="h-3.5 w-3.5 text-primary-500" />
+        <span className="text-sm font-medium text-primary-700">
           {party.memberCount.toLocaleString('pt-BR')}
         </span>
-        <span className="text-sm text-gray-500">membros</span>
+        <span className="text-sm text-slate-500">membros</span>
       </div>
     </Link>
   );

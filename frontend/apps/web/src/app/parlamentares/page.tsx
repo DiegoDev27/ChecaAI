@@ -10,8 +10,8 @@ export default function ParlamentaresPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Parlamentares</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-slate-900 mb-2">Parlamentares</h1>
+        <p className="text-slate-600">
           Pesquise senadores, deputados, governadores, prefeitos e vereadores de todo o Brasil.
         </p>
       </div>

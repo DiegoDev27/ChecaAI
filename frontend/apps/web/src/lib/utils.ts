@@ -72,7 +72,7 @@ export function resultColor(result: string): string {
   const r = result.toLowerCase();
   if (r.includes('approved') || r.includes('aprovad')) return 'bg-green-100 text-green-800';
   if (r.includes('rejected') || r.includes('rejeitad')) return 'bg-red-100 text-red-800';
-  if (r.includes('prejudicad') || r.includes('withdrawn') || r.includes('retirad') || r.includes('arquivad')) return 'bg-gray-100 text-gray-700';
+  if (r.includes('prejudicad') || r.includes('withdrawn') || r.includes('retirad') || r.includes('arquivad')) return 'bg-slate-100 text-slate-700';
   return 'bg-blue-100 text-blue-800';
 }
 
@@ -82,7 +82,7 @@ export function voteColor(value: string): string {
     case 'Yes':        return 'bg-green-100 text-green-800';
     case 'No':         return 'bg-red-100 text-red-800';
     case 'Abstention': return 'bg-orange-100 text-orange-800';
-    default:           return 'bg-gray-100 text-gray-700';
+    default:           return 'bg-slate-100 text-slate-700';
   }
 }
 

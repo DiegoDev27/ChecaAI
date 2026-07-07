@@ -35,7 +35,7 @@ export function AllowancesTab({ id }: Props) {
   });
 
   if (isLoading) {
-    return <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-brand-600" /></div>;
+    return <div className="flex justify-center py-12"><Loader2 className="h-8 w-8 animate-spin text-primary-600" /></div>;
   }
 
   if (isError) {
@@ -45,7 +45,7 @@ export function AllowancesTab({ id }: Props) {
   if (!data || data.totalCount === 0) {
     return (
       <div className="bg-white rounded-xl border p-8 text-center">
-        <div className="text-gray-400 text-sm">
+        <div className="text-slate-400 text-sm">
           Nenhum dado de auxílios disponível para {year}. Os dados são obtidos do Portal da Transparência (CGU).
         </div>
       </div>
@@ -54,15 +54,15 @@ export function AllowancesTab({ id }: Props) {
 
   return (
     <div className="bg-white rounded-xl border overflow-hidden">
-      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-gray-50">
+      <div className="p-4 border-b flex items-center gap-3 flex-wrap bg-slate-50">
         <select
           value={year}
           onChange={(e) => { setYear(Number(e.target.value)); setPage(1); }}
-          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+          className="border rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
           {YEARS.map((y) => <option key={y} value={y}>{y}</option>)}
         </select>
-        <span className="text-sm text-gray-500 ml-auto">
+        <span className="text-sm text-slate-500 ml-auto">
           {data.totalCount} registros
         </span>
       </div>
@@ -71,36 +71,36 @@ export function AllowancesTab({ id }: Props) {
         {data.data.map((summary, i) => (
           <div key={`${summary.year}-${summary.month}-${i}`} className="px-5 py-4">
             <div className="flex items-center justify-between mb-3">
-              <div className="font-medium text-gray-800">
+              <div className="font-medium text-slate-800">
                 {String(summary.month).padStart(2, '0')}/{summary.year}
               </div>
-              <div className="text-sm font-bold text-gray-900">
+              <div className="text-sm font-bold text-slate-900">
                 Total: {formatBRL(summary.total)}
               </div>
             </div>
             {summary.items && summary.items.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {summary.items.map((item) => (
-                  <div key={item.id} className="bg-gray-50 rounded-lg p-2.5 text-sm">
-                    <div className="text-xs text-gray-500 mb-0.5">
+                  <div key={item.id} className="bg-slate-50 rounded-lg p-2.5 text-sm">
+                    <div className="text-xs text-slate-500 mb-0.5">
                       {ALLOWANCE_LABELS[item.allowanceType] ?? item.allowanceType}
                     </div>
-                    <div className="font-semibold text-gray-900">{formatBRL(item.amount)}</div>
+                    <div className="font-semibold text-slate-900">{formatBRL(item.amount)}</div>
                     {item.description && (
-                      <div className="text-xs text-gray-400 mt-0.5 truncate">{item.description}</div>
+                      <div className="text-xs text-slate-400 mt-0.5 truncate">{item.description}</div>
                     )}
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-sm text-gray-400">Sem itens detalhados</div>
+              <div className="text-sm text-slate-400">Sem itens detalhados</div>
             )}
           </div>
         ))}
       </div>
 
       {data.totalPages > 1 && (
-        <div className="flex items-center justify-between px-5 py-3 border-t bg-gray-50">
+        <div className="flex items-center justify-between px-5 py-3 border-t bg-slate-50">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={!data.hasPrevPage}
@@ -109,7 +109,7 @@ export function AllowancesTab({ id }: Props) {
             <ChevronLeft className="h-4 w-4" />
             Anterior
           </button>
-          <span className="text-sm text-gray-500">Página {data.page} de {data.totalPages}</span>
+          <span className="text-sm text-slate-500">Página {data.page} de {data.totalPages}</span>
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={!data.hasNextPage}

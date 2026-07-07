@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { useCompletion } from 'ai/react';
 import { positionLabel, presenceBadgeColor, cn } from '@/lib/utils';
 import {
-  User, Bot, X, Loader2, BarChart3, Vote, ArrowLeftRight,
+  User, Sparkles, X, Loader2, BarChart3, Vote, ArrowLeftRight,
 } from 'lucide-react';
 import { PoliticianPicker } from './PoliticianPicker';
 import { CompareStats } from './CompareStats';
@@ -47,7 +47,7 @@ export function PoliticianCompare() {
   const TABS = [
     { key: 'stats' as Tab, label: 'Estatísticas', icon: <BarChart3 className="h-4 w-4" /> },
     { key: 'votes' as Tab, label: 'Votos em comum', icon: <Vote className="h-4 w-4" /> },
-    { key: 'ai' as Tab, label: 'Análise IA', icon: <Bot className="h-4 w-4" /> },
+    { key: 'ai' as Tab, label: 'Análise IA', icon: <Sparkles className="h-4 w-4" /> },
   ];
 
   const handleAiOpen = () => {
@@ -76,8 +76,8 @@ export function PoliticianCompare() {
           excludeId={p2?.id}
         />
         <div className="hidden md:flex items-center justify-center">
-          <div className="bg-gray-100 rounded-full p-2">
-            <ArrowLeftRight className="h-5 w-5 text-gray-400" />
+          <div className="bg-slate-100 rounded-full p-2">
+            <ArrowLeftRight className="h-5 w-5 text-slate-400" />
           </div>
         </div>
         <PoliticianPicker
@@ -91,9 +91,9 @@ export function PoliticianCompare() {
       {/* Placeholder when nothing selected */}
       {!bothSelected && (
         <div className="bg-white rounded-xl border border-dashed p-12 text-center">
-          <ArrowLeftRight className="h-12 w-12 mx-auto mb-4 text-gray-200" />
-          <h3 className="text-gray-700 font-semibold mb-2">Compare dois parlamentares</h3>
-          <p className="text-gray-400 text-sm">
+          <ArrowLeftRight className="h-12 w-12 mx-auto mb-4 text-slate-200" />
+          <h3 className="text-slate-700 font-semibold mb-2">Compare dois parlamentares</h3>
+          <p className="text-slate-400 text-sm">
             Selecione dois parlamentares acima para ver votos em comum, diferenças e análise IA.
           </p>
         </div>
@@ -102,7 +102,7 @@ export function PoliticianCompare() {
       {/* Loading */}
       {bothSelected && (l1 || l2) && (
         <div className="flex justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-brand-600" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary-600" />
         </div>
       )}
 
@@ -112,8 +112,8 @@ export function PoliticianCompare() {
           {/* Profile headers side by side */}
           <div className="grid md:grid-cols-2 gap-4">
             {[
-              { data: detail1, color: 'border-brand-300 bg-brand-50', labelColor: 'text-brand-700' },
-              { data: detail2, color: 'border-civic-300 bg-civic-50', labelColor: 'text-civic-700' },
+              { data: detail1, color: 'border-primary-300 bg-primary-50', labelColor: 'text-primary-700' },
+              { data: detail2, color: 'border-primary-300 bg-primary-50', labelColor: 'text-primary-700' },
             ].map(({ data, color, labelColor }, i) => (
               <Link
                 key={data.id}
@@ -128,7 +128,7 @@ export function PoliticianCompare() {
                     <Image src={data.photoUrl} alt={data.fullName} fill className="object-cover object-top" sizes="56px" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <User className="h-8 w-8 text-gray-300" />
+                      <User className="h-8 w-8 text-slate-300" />
                     </div>
                   )}
                 </div>
@@ -136,7 +136,7 @@ export function PoliticianCompare() {
                   <div className={cn('font-bold text-sm leading-tight truncate', labelColor)}>
                     {data.fullName}
                   </div>
-                  <div className="text-xs text-gray-600 mt-0.5">
+                  <div className="text-xs text-slate-600 mt-0.5">
                     {positionLabel(data.politicalPosition)} • {data.party} • {data.state}
                   </div>
                   {data.voteStats && (
@@ -162,8 +162,8 @@ export function PoliticianCompare() {
                   className={cn(
                     'flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors',
                     tab === t.key
-                      ? 'border-brand-600 text-brand-700 bg-brand-50'
-                      : 'border-transparent text-gray-500 hover:text-gray-800',
+                      ? 'border-primary-600 text-primary-700 bg-primary-50'
+                      : 'border-transparent text-slate-500 hover:text-slate-800',
                   )}
                 >
                   {t.icon}
@@ -187,28 +187,28 @@ export function PoliticianCompare() {
               {tab === 'ai' && (
                 <div className="space-y-4">
                   {aiLoading && !completion && (
-                    <div className="flex items-center gap-3 text-gray-500 py-4">
+                    <div className="flex items-center gap-3 text-slate-500 py-4">
                       <Loader2 className="h-5 w-5 animate-spin" />
                       Gerando análise comparativa...
                     </div>
                   )}
                   {!completion && !aiLoading && (
                     <div className="text-center py-8">
-                      <Bot className="h-12 w-12 mx-auto mb-3 text-gray-200" />
-                      <p className="text-gray-500 text-sm">
+                      <Sparkles className="h-12 w-12 mx-auto mb-3 text-slate-200" />
+                      <p className="text-slate-500 text-sm">
                         Clique na aba "Análise IA" para gerar um comparativo inteligente.
                       </p>
                     </div>
                   )}
                   {completion && (
-                    <div className="prose prose-sm max-w-none text-gray-800 whitespace-pre-wrap leading-relaxed">
+                    <div className="prose prose-sm max-w-none text-slate-800 whitespace-pre-wrap leading-relaxed">
                       {completion}
                       {aiLoading && (
-                        <span className="inline-block w-1 h-4 bg-civic-600 animate-pulse ml-0.5" />
+                        <span className="inline-block w-1 h-4 bg-primary-600 animate-pulse ml-0.5" />
                       )}
                     </div>
                   )}
-                  <div className="text-xs text-gray-400 text-center pt-2 border-t">
+                  <div className="text-xs text-slate-400 text-center pt-2 border-t">
                     Análise gerada por Claude AI com dados reais do ChecaAI
                   </div>
                 </div>

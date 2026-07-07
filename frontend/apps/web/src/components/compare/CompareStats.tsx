@@ -30,17 +30,17 @@ function StatRow({
     <div className="grid grid-cols-3 gap-2 items-center py-3 border-b last:border-0">
       <div className={cn(
         'text-right text-sm font-semibold',
-        p1Wins ? 'text-brand-700' : 'text-gray-700',
+        p1Wins ? 'text-primary-700' : 'text-slate-700',
       )}>
         {v1 !== null ? format(v1) : '—'}
-        {p1Wins && <span className="ml-1 text-brand-500">↑</span>}
+        {p1Wins && <span className="ml-1 text-primary-500">↑</span>}
       </div>
-      <div className="text-center text-xs text-gray-500 font-medium">{label}</div>
+      <div className="text-center text-xs text-slate-500 font-medium">{label}</div>
       <div className={cn(
         'text-left text-sm font-semibold',
-        p2Wins ? 'text-civic-700' : 'text-gray-700',
+        p2Wins ? 'text-primary-700' : 'text-slate-700',
       )}>
-        {p2Wins && <span className="mr-1 text-civic-500">↑</span>}
+        {p2Wins && <span className="mr-1 text-primary-500">↑</span>}
         {v2 !== null ? format(v2) : '—'}
       </div>
     </div>
@@ -57,19 +57,19 @@ export function CompareStats({ p1, p2 }: Props) {
   return (
     <div className="bg-white rounded-xl border overflow-hidden">
       {/* Header */}
-      <div className="grid grid-cols-3 gap-4 bg-gray-50 border-b px-4 py-3">
+      <div className="grid grid-cols-3 gap-4 bg-slate-50 border-b px-4 py-3">
         <div className="text-right">
-          <div className="text-xs font-bold text-brand-700 uppercase tracking-wide">
+          <div className="text-xs font-bold text-primary-700 uppercase tracking-wide">
             {p1.fullName.split(' ')[0]}
           </div>
-          <div className="text-xs text-gray-500">{p1.party}</div>
+          <div className="text-xs text-slate-500">{p1.party}</div>
         </div>
-        <div className="text-center text-xs text-gray-400 font-medium self-center">vs</div>
+        <div className="text-center text-xs text-slate-400 font-medium self-center">vs</div>
         <div className="text-left">
-          <div className="text-xs font-bold text-civic-700 uppercase tracking-wide">
+          <div className="text-xs font-bold text-primary-700 uppercase tracking-wide">
             {p2.fullName.split(' ')[0]}
           </div>
-          <div className="text-xs text-gray-500">{p2.party}</div>
+          <div className="text-xs text-slate-500">{p2.party}</div>
         </div>
       </div>
 

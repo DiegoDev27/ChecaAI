@@ -58,14 +58,14 @@ function LiveStats() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           {stats.map((s) => (
             <div key={s.label}>
-              <div className="text-2xl md:text-3xl font-bold text-brand-700">
+              <div className="text-2xl md:text-3xl font-bold text-primary-700">
                 {s.loading ? (
-                  <span className="inline-block w-16 h-8 bg-gray-100 animate-pulse rounded" />
+                  <span className="inline-block w-16 h-8 bg-slate-100 animate-pulse rounded" />
                 ) : (
                   s.value
                 )}
               </div>
-              <div className="text-sm text-gray-500 mt-1">{s.label}</div>
+              <div className="text-sm text-slate-500 mt-1">{s.label}</div>
             </div>
           ))}
         </div>
@@ -86,14 +86,14 @@ function RecentAlerts() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="h-6 w-6 animate-spin text-brand-600" />
+        <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
       </div>
     );
   }
 
   if (!alerts || alerts.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-400 text-sm">
+      <div className="text-center py-8 text-slate-400 text-sm">
         Nenhum alerta no momento. O sistema monitora votações a cada 90 segundos.
       </div>
     );
@@ -143,13 +143,13 @@ function RecentSessions() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="h-6 w-6 animate-spin text-brand-600" />
+        <Loader2 className="h-6 w-6 animate-spin text-primary-600" />
       </div>
     );
   }
 
   if (!data || data.data.length === 0) {
-    return <div className="text-center py-8 text-gray-400 text-sm">Nenhuma votação disponível.</div>;
+    return <div className="text-center py-8 text-slate-400 text-sm">Nenhuma votação disponível.</div>;
   }
 
   return (
@@ -161,7 +161,7 @@ function RecentSessions() {
           <Link
             key={s.id}
             href={`/votacoes/${s.id}`}
-            className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors group"
           >
             <span className={cn(
               'text-xs font-bold px-2 py-0.5 rounded flex-shrink-0',
@@ -170,14 +170,14 @@ function RecentSessions() {
               {approved ? '✓' : '✗'}
             </span>
             <div className="flex-1 min-w-0">
-              <div className="text-sm text-gray-800 truncate group-hover:text-brand-700">
+              <div className="text-sm text-slate-800 truncate group-hover:text-primary-700">
                 {s.description}
               </div>
-              <div className="text-xs text-gray-400 mt-0.5">
+              <div className="text-xs text-slate-400 mt-0.5">
                 {s.chamber} • {formatDate(s.votingDate)}
               </div>
             </div>
-            <ChevronRight className="h-4 w-4 text-gray-300 flex-shrink-0 group-hover:text-brand-500" />
+            <ChevronRight className="h-4 w-4 text-slate-300 flex-shrink-0 group-hover:text-primary-500" />
           </Link>
         );
       })}
@@ -198,11 +198,11 @@ export function HomeDashboard() {
             {/* Alertas recentes */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                   <AlertTriangle className="h-5 w-5 text-orange-500" />
                   Alertas recentes
                 </h2>
-                <Link href="/alertas" className="text-sm text-civic-600 hover:underline">
+                <Link href="/alertas" className="text-sm text-primary-600 hover:underline">
                   Ver todos →
                 </Link>
               </div>
@@ -212,11 +212,11 @@ export function HomeDashboard() {
             {/* Últimas votações */}
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                  <Vote className="h-5 w-5 text-brand-600" />
+                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                  <Vote className="h-5 w-5 text-primary-600" />
                   Últimas votações
                 </h2>
-                <Link href="/votacoes" className="text-sm text-civic-600 hover:underline">
+                <Link href="/votacoes" className="text-sm text-primary-600 hover:underline">
                   Ver todas →
                 </Link>
               </div>

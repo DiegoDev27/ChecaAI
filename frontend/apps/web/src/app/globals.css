@@ -4,16 +4,16 @@
 
 @layer base {
   * {
-    @apply border-gray-200;
+    @apply border-slate-200;
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-slate-50 text-slate-900 antialiased;
   }
 
   /* Focus styles */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-civic-500;
+    @apply outline-2 outline-offset-2 outline-primary-500;
   }
 }
 

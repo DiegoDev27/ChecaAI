@@ -60,7 +60,7 @@ export function PoliticianProfile({ id }: Props) {
   if (isLoading) {
     return (
       <div className="flex justify-center py-24">
-        <Loader2 className="h-10 w-10 animate-spin text-brand-600" />
+        <Loader2 className="h-10 w-10 animate-spin text-primary-600" />
       </div>
     );
   }
@@ -76,17 +76,17 @@ export function PoliticianProfile({ id }: Props) {
   return (
     <div className="space-y-5">
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-500 flex items-center gap-1">
-        <Link href="/parlamentares" className="hover:text-brand-600">Parlamentares</Link>
+      <nav className="text-sm text-slate-500 flex items-center gap-1">
+        <Link href="/parlamentares" className="hover:text-primary-600">Parlamentares</Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-gray-800">{p.fullName}</span>
+        <span className="text-slate-800">{p.fullName}</span>
       </nav>
 
       {/* Hero card — always visible */}
       <div className="bg-white rounded-xl border p-6">
         <div className="flex flex-col sm:flex-row gap-5">
           {/* Photo */}
-          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-gray-100 flex-shrink-0 self-center sm:self-start border-4 border-white shadow-md">
+          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 self-center sm:self-start border-4 border-white shadow-md">
             {p.photoUrl && !imgError ? (
               <Image
                 src={p.photoUrl}
@@ -97,16 +97,16 @@ export function PoliticianProfile({ id }: Props) {
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                <User className="h-12 w-12 text-gray-400" />
+              <div className="w-full h-full flex items-center justify-center bg-slate-100">
+                <User className="h-12 w-12 text-slate-400" />
               </div>
             )}
           </div>
 
           {/* Info */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl font-bold text-gray-900 leading-tight">{p.fullName}</h1>
-            <p className="text-gray-600 mt-1 text-sm">
+            <h1 className="text-2xl font-bold text-slate-900 leading-tight">{p.fullName}</h1>
+            <p className="text-slate-600 mt-1 text-sm">
               {positionLabel(p.politicalPosition)}
               {p.state && <span> • {p.state}</span>}
               {p.party && (
@@ -114,7 +114,7 @@ export function PoliticianProfile({ id }: Props) {
                   •
                   <Link
                     href={`/parlamentares?party=${p.party}`}
-                    className="text-brand-700 font-medium hover:underline"
+                    className="text-primary-700 font-medium hover:underline"
                   >
                     {p.party}
                   </Link>
@@ -139,7 +139,7 @@ export function PoliticianProfile({ id }: Props) {
               {p.email && (
                 <a
                   href={`mailto:${p.email}`}
-                  className="flex items-center gap-1.5 text-xs text-civic-600 hover:underline"
+                  className="flex items-center gap-1.5 text-xs text-primary-600 hover:underline"
                 >
                   <Mail className="h-3.5 w-3.5" />
                   {p.email}
@@ -150,7 +150,7 @@ export function PoliticianProfile({ id }: Props) {
                   href={p.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-xs text-civic-600 hover:underline"
+                  className="flex items-center gap-1.5 text-xs text-primary-600 hover:underline"
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
                   Site oficial
@@ -178,8 +178,8 @@ export function PoliticianProfile({ id }: Props) {
                 className={cn(
                   'flex items-center gap-1 px-3 py-3 text-xs font-medium border-b-2 whitespace-nowrap transition-colors',
                   tab === t.key
-                    ? 'border-brand-600 text-brand-700 bg-brand-50'
-                    : 'border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50',
+                    ? 'border-primary-600 text-primary-700 bg-primary-50'
+                    : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50',
                 )}
               >
                 <span className="hidden sm:block">{t.icon}</span>

@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import { useState } from 'react';
-import { Bot, X, Loader2 } from 'lucide-react';
+import { Sparkles, X, Loader2 } from 'lucide-react';
 import { useCompletion } from 'ai/react';
 
 interface Props {
@@ -28,24 +28,24 @@ export function AiAnalysisButton({ politicianId, politicianName }: Props) {
     <>
       <button
         onClick={handleOpen}
-        className="flex items-center gap-2 text-sm bg-civic-50 text-civic-700 border border-civic-200 px-4 py-2 rounded-lg hover:bg-civic-100 transition-colors font-medium"
+        className="flex items-center gap-2 text-sm bg-primary-50 text-primary-700 border border-primary-200 px-4 py-2 rounded-lg hover:bg-primary-100 transition-colors font-medium"
       >
-        <Bot className="h-4 w-4" />
+        <Sparkles className="h-4 w-4" />
         Análise IA
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col animate-fade-scale-in">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b">
-              <div className="flex items-center gap-2 font-semibold text-gray-900">
-                <Bot className="h-5 w-5 text-civic-600" />
+              <div className="flex items-center gap-2 font-semibold text-slate-900">
+                <Sparkles className="h-5 w-5 text-primary-600" />
                 Análise IA — {politicianName}
               </div>
               <button
                 onClick={() => setOpen(false)}
-                className="p-1 rounded hover:bg-gray-100 text-gray-500"
+                className="p-1 rounded hover:bg-slate-100 text-slate-500"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -54,7 +54,7 @@ export function AiAnalysisButton({ politicianId, politicianName }: Props) {
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-5">
               {isLoading && !completion && (
-                <div className="flex items-center gap-3 text-gray-500">
+                <div className="flex items-center gap-3 text-slate-500">
                   <Loader2 className="h-5 w-5 animate-spin" />
                   Gerando análise...
                 </div>
@@ -65,14 +65,14 @@ export function AiAnalysisButton({ politicianId, politicianName }: Props) {
                 </div>
               )}
               {completion && (
-                <div className="prose prose-sm max-w-none text-gray-800 whitespace-pre-wrap leading-relaxed">
+                <div className="prose prose-sm max-w-none text-slate-800 whitespace-pre-wrap leading-relaxed">
                   {completion}
-                  {isLoading && <span className="inline-block w-1 h-4 bg-civic-600 animate-pulse ml-0.5" />}
+                  {isLoading && <span className="inline-block w-1 h-4 bg-primary-600 animate-pulse ml-0.5" />}
                 </div>
               )}
             </div>
 
-            <div className="p-3 border-t text-xs text-gray-400 text-center">
+            <div className="p-3 border-t text-xs text-slate-400 text-center">
               Análise gerada por Claude AI com dados reais do ChecaAI
             </div>
           </div>

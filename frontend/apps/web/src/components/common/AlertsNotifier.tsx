@@ -49,7 +49,7 @@ export function AlertsNotifier() {
   return (
     <>
       {/* Connection indicator — subtle dot in bottom-right */}
-      <div className="fixed bottom-4 right-4 z-40 flex items-center gap-1.5 text-xs text-gray-400">
+      <div className="fixed bottom-4 right-4 z-40 flex items-center gap-1.5 text-xs text-slate-400">
         {connected ? (
           <>
             <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
@@ -57,7 +57,7 @@ export function AlertsNotifier() {
           </>
         ) : (
           <>
-            <WifiOff className="h-3 w-3 text-gray-400" />
+            <WifiOff className="h-3 w-3 text-slate-400" />
             <span className="hidden sm:inline">Offline</span>
           </>
         )}
