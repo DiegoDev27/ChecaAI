@@ -124,29 +124,50 @@ public class SenateExpenseSyncService : BackgroundService
     {
         var url = $"{SenadoBaseUrl}/senador/{codigoParlamentar}/transparencia/despesas?ano={year}";
 
-        HttpResponseMessage response;
-        try
+        // Retries transient failures (network errors, 5xx, 429) so a single hiccup doesn't get
+        // treated the same as "senator has no expenses" and silently leave zero data.
+        const int maxAttempts = 3;
+        string? json = null;
+
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
-            response = await client.GetAsync(url, ct);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogDebug(ex, "[SenateExpenseSync] HTTP error for senator {Id}", codigoParlamentar);
-            return [];
+            try
+            {
+                var response = await client.GetAsync(url, ct);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return [];
+
+                if (response.IsSuccessStatusCode)
+                {
+                    json = await response.Content.ReadAsStringAsync(ct);
+                    break;
+                }
+
+                if (attempt == maxAttempts)
+                {
+                    _logger.LogWarning("[SenateExpenseSync] Giving up after {Attempts} attempts, HTTP {Status} for senator {Id} year {Year}",
+                        maxAttempts, response.StatusCode, codigoParlamentar, year);
+                    return [];
+                }
+
+                _logger.LogDebug("[SenateExpenseSync] HTTP {Status} on attempt {Attempt}/{Max} for senator {Id}, retrying",
+                    response.StatusCode, attempt, maxAttempts, codigoParlamentar);
+            }
+            catch (Exception ex) when (attempt < maxAttempts)
+            {
+                _logger.LogDebug(ex, "[SenateExpenseSync] HTTP error on attempt {Attempt}/{Max} for senator {Id}, retrying", attempt, maxAttempts, codigoParlamentar);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "[SenateExpenseSync] Giving up after {Attempts} attempts for senator {Id}", maxAttempts, codigoParlamentar);
+                return [];
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
         }
 
-        if (response.StatusCode == System.Net.HttpStatusCode.NotFound ||
-            response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-            return [];
-
-        if (!response.IsSuccessStatusCode)
-        {
-            _logger.LogDebug("[SenateExpenseSync] HTTP {Status} for senator {Id} year {Year}",
-                response.StatusCode, codigoParlamentar, year);
-            return [];
-        }
-
-        var json = await response.Content.ReadAsStringAsync(ct);
+        if (json == null) return [];
 
         try
         {

@@ -146,30 +146,52 @@ public class CguSalarySyncService : BackgroundService
         var mesAno = $"{year:D4}{month:D2}";
         var url = $"{CguApiBase}/servidores/remuneracao?cpf={cpf}&mesAno={mesAno}&pagina=1&tamanhoPagina=10";
 
-        HttpResponseMessage response;
-        try
+        // Retries 429/5xx/network hiccups instead of permanently giving up on this CPF+month —
+        // at 150ms between ~2000+ requests this endpoint gets rate-limited fairly often.
+        const int maxAttempts = 3;
+        string? json = null;
+
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
-            response = await client.GetAsync(url, ct);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogDebug(ex, "[CguSalarySync] HTTP error for CPF {Cpf}", cpf);
-            return [];
+            try
+            {
+                var response = await client.GetAsync(url, ct);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound ||
+                    response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                    response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    _logger.LogDebug("[CguSalarySync] HTTP {Status} for CPF {Cpf} {MesAno}", response.StatusCode, cpf, mesAno);
+                    return [];
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    json = await response.Content.ReadAsStringAsync(ct);
+                    break;
+                }
+
+                if (attempt == maxAttempts)
+                {
+                    _logger.LogDebug("[CguSalarySync] Giving up after {Attempts} attempts, HTTP {Status} for CPF {Cpf} {MesAno}",
+                        maxAttempts, response.StatusCode, cpf, mesAno);
+                    return [];
+                }
+            }
+            catch (Exception ex) when (attempt < maxAttempts)
+            {
+                _logger.LogDebug(ex, "[CguSalarySync] HTTP error on attempt {Attempt}/{Max} for CPF {Cpf}, retrying", attempt, maxAttempts, cpf);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "[CguSalarySync] Giving up after {Attempts} attempts for CPF {Cpf}", maxAttempts, cpf);
+                return [];
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
         }
 
-        if (response.StatusCode == System.Net.HttpStatusCode.NotFound ||
-            response.StatusCode == System.Net.HttpStatusCode.TooManyRequests ||
-            response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
-            response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-        {
-            _logger.LogDebug("[CguSalarySync] HTTP {Status} for CPF {Cpf} {MesAno}", response.StatusCode, cpf, mesAno);
-            return [];
-        }
-
-        if (!response.IsSuccessStatusCode)
-            return [];
-
-        var json = await response.Content.ReadAsStringAsync(ct);
+        if (json == null) return [];
 
         // Detect AWS WAF CAPTCHA challenge (returned as 200 OK with HTML body)
         if (json.TrimStart().StartsWith('<'))

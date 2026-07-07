@@ -161,30 +161,52 @@ public class CguAllowanceSyncService : BackgroundService
         var mesAno = $"{year:D4}{month:D2}";
         var url = $"{IndenizacoesPath}?cpf={Uri.EscapeDataString(cpf)}&mesAno={mesAno}&pagina=1&tamanhoPagina=10";
 
-        JsonElement root;
-        try
+        // Retries 429/5xx/network hiccups instead of permanently giving up on this CPF+month.
+        const int maxAttempts = 3;
+        string? json = null;
+
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
         {
-            using var resp = await client.GetAsync(url, ct);
-            if (!resp.IsSuccessStatusCode)
+            try
             {
-                _logger.LogDebug("[CguAllowanceSync] {Cpf} {MesAno}: HTTP {Status}",
-                    MaskCpf(cpf), mesAno, (int)resp.StatusCode);
+                using var resp = await client.GetAsync(url, ct);
+
+                if (resp.IsSuccessStatusCode)
+                {
+                    json = await resp.Content.ReadAsStringAsync(ct);
+                    break;
+                }
+
+                if (attempt == maxAttempts)
+                {
+                    _logger.LogDebug("[CguAllowanceSync] {Cpf} {MesAno}: giving up after {Attempts} attempts, HTTP {Status}",
+                        MaskCpf(cpf), mesAno, maxAttempts, (int)resp.StatusCode);
+                    return 0;
+                }
+            }
+            catch (Exception ex) when (attempt < maxAttempts)
+            {
+                _logger.LogDebug(ex, "[CguAllowanceSync] {Cpf} {MesAno}: attempt {Attempt}/{Max} failed, retrying", MaskCpf(cpf), mesAno, attempt, maxAttempts);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "[CguAllowanceSync] {Cpf} {MesAno}: giving up after {Attempts} attempts", MaskCpf(cpf), mesAno, maxAttempts);
                 return 0;
             }
-            var json = await resp.Content.ReadAsStringAsync(ct);
-            // Detect AWS WAF CAPTCHA (200 OK with HTML body)
-            if (json.TrimStart().StartsWith('<'))
-            {
-                _logger.LogWarning("[CguAllowanceSync] CGU API returned WAF/CAPTCHA HTML — allowance data unavailable from this environment.");
-                return 0;
-            }
-            root = JsonSerializer.Deserialize<JsonElement>(json, JsonOpts);
+
+            await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
         }
-        catch (Exception ex)
+
+        if (json == null) return 0;
+
+        // Detect AWS WAF CAPTCHA (200 OK with HTML body)
+        if (json.TrimStart().StartsWith('<'))
         {
-            _logger.LogDebug(ex, "[CguAllowanceSync] {Cpf} {MesAno}: request failed", MaskCpf(cpf), mesAno);
+            _logger.LogWarning("[CguAllowanceSync] CGU API returned WAF/CAPTCHA HTML — allowance data unavailable from this environment.");
             return 0;
         }
+
+        var root = JsonSerializer.Deserialize<JsonElement>(json, JsonOpts);
 
         // Response is an array; use first element (or the whole array)
         JsonElement[] rows;

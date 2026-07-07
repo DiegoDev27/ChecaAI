@@ -130,26 +130,7 @@ public class ChamberExpenseSyncService : BackgroundService
             var url = $"{CamaraBaseUrl}/deputados/{deputyExternalId}/despesas" +
                       $"?ano={year}&pagina={page}&itens=100&ordem=ASC&ordenarPor=mes";
 
-            HttpResponseMessage response;
-            try
-            {
-                response = await client.GetAsync(url, ct);
-            }
-            catch (Exception)
-            {
-                break;
-            }
-
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound ||
-                response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                break;
-
-            if (!response.IsSuccessStatusCode)
-                break;
-
-            var json = await response.Content.ReadAsStringAsync(ct);
-            var result = JsonSerializer.Deserialize<CamaraPagedResponse<ExpenseRecord>>(json, JsonOpts);
-
+            var result = await FetchPageWithRetryAsync(client, url, ct);
             if (result?.Dados == null || result.Dados.Count == 0)
                 break;
 
@@ -161,6 +142,53 @@ public class ChamberExpenseSyncService : BackgroundService
         }
 
         return all;
+    }
+
+    // Retries transient failures (network errors, 5xx, 429) so a single hiccup doesn't get
+    // misread as "no more expenses" and silently leave a deputy with zero/partial data.
+    private async Task<CamaraPagedResponse<ExpenseRecord>?> FetchPageWithRetryAsync(
+        HttpClient client, string url, CancellationToken ct)
+    {
+        const int maxAttempts = 3;
+        for (var attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                var response = await client.GetAsync(url, ct);
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    return null;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync(ct);
+                    return JsonSerializer.Deserialize<CamaraPagedResponse<ExpenseRecord>>(json, JsonOpts);
+                }
+
+                if (attempt == maxAttempts)
+                {
+                    _logger.LogWarning("[ChamberExpenseSync] Giving up after {Attempts} attempts, HTTP {Status}: {Url}",
+                        maxAttempts, response.StatusCode, url);
+                    return null;
+                }
+
+                _logger.LogWarning("[ChamberExpenseSync] HTTP {Status} on attempt {Attempt}/{Max}, retrying: {Url}",
+                    response.StatusCode, attempt, maxAttempts, url);
+            }
+            catch (Exception ex) when (attempt < maxAttempts)
+            {
+                _logger.LogWarning(ex, "[ChamberExpenseSync] Fetch failed on attempt {Attempt}/{Max}, retrying: {Url}",
+                    attempt, maxAttempts, url);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[ChamberExpenseSync] Giving up after {Attempts} attempts: {Url}", maxAttempts, url);
+                return null;
+            }
+
+            await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
+        }
+
+        return null;
     }
 
     private async Task<int> PersistExpensesAsync(
