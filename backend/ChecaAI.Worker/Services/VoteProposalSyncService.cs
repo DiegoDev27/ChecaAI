@@ -106,7 +106,10 @@ public class VoteProposalSyncService : BackgroundService
         {
             if (ct.IsCancellationRequested) break;
 
-            var url = $"{CamaraBaseUrl}/proposicoes?dataApresentacaoInicio={startDate}&pagina={page}&itens=100&ordem=DESC&ordenarPor=dataApresentacao";
+            // ordenarPor=dataApresentacao is no longer accepted by the Câmara API (HTTP 400,
+            // "Parâmetro(s) inválido(s)"). ordenarPor=id sorts newest-first equivalently here
+            // since dataApresentacaoInicio already scopes the window and ids are assigned in order.
+            var url = $"{CamaraBaseUrl}/proposicoes?dataApresentacaoInicio={startDate}&pagina={page}&itens=100&ordem=DESC&ordenarPor=id";
             var result = await FetchJsonAsync<CamaraPagedResponse<CamaraProposicaoDto>>(client, url, ct);
 
             if (result?.Dados == null || result.Dados.Count == 0) break;
