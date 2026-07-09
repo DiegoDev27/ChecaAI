@@ -185,7 +185,18 @@ public class ChamberExpenseSyncService : BackgroundService
                 return null;
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // A cancelled backoff delay must not escape as an unhandled exception — the
+                // outer ExecuteAsync loop treats "OperationCanceledException while
+                // stoppingToken.IsCancellationRequested" as a deliberate shutdown and breaks
+                // out permanently, killing this BackgroundService's periodic sync for good.
+                return null;
+            }
         }
 
         return null;

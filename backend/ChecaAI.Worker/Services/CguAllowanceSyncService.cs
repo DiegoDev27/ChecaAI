@@ -194,7 +194,17 @@ public class CguAllowanceSyncService : BackgroundService
                 return 0;
             }
 
-            await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(attempt * 2), ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // Must not escape uncaught — the outer ExecuteAsync loop treats any
+                // OperationCanceledException seen while stoppingToken.IsCancellationRequested
+                // as a deliberate shutdown and permanently stops this service's periodic sync.
+                return 0;
+            }
         }
 
         if (json == null) return 0;
