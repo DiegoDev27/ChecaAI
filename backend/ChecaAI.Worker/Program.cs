@@ -15,6 +15,15 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var builder = Host.CreateApplicationBuilder(args);
 
+// This Worker runs ~17 independent BackgroundServices in one process. The default
+// BackgroundServiceExceptionBehavior (StopHost) means an unhandled exception in ANY
+// one of them takes the entire host down, killing every other sync service too —
+// this is exactly what happened with TseElectionResultSyncService's ZIP download
+// dropping mid-stream. Each service already guards its own loop, but this is a
+// safety net for the next one that doesn't.
+builder.Services.Configure<Microsoft.Extensions.Hosting.HostOptions>(o =>
+    o.BackgroundServiceExceptionBehavior = Microsoft.Extensions.Hosting.BackgroundServiceExceptionBehavior.Ignore);
+
 // Configure logging
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -28,6 +37,8 @@ builder.Services.Configure<ChamberApiOptions>(
     builder.Configuration.GetSection(ChamberApiOptions.SectionName));
 builder.Services.Configure<PlenaryWatcherOptions>(
     builder.Configuration.GetSection(PlenaryWatcherOptions.SectionName));
+builder.Services.Configure<AgendaSyncOptions>(
+    builder.Configuration.GetSection(AgendaSyncOptions.SectionName));
 
 // Configure Entity Framework
 // PendingModelChangesWarning is suppressed here because Npgsql.EnableLegacyTimestampBehavior
@@ -82,6 +93,13 @@ builder.Services.AddHttpClient("StateDeputyInsecure", client =>
 
 // HTTP client for PlenaryWatcher (polling Câmara + Senado APIs)
 builder.Services.AddHttpClient("PlenaryWatcher", client =>
+{
+    client.DefaultRequestHeaders.Add("User-Agent", "ChecaAI-Worker/1.0");
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
+// HTTP client for AgendaSync (Câmara /eventos + /eventos/{id}/pauta)
+builder.Services.AddHttpClient("AgendaSync", client =>
 {
     client.DefaultRequestHeaders.Add("User-Agent", "ChecaAI-Worker/1.0");
     client.Timeout = TimeSpan.FromSeconds(30);
@@ -191,6 +209,7 @@ builder.Services.AddHostedService<AttendanceSyncService>();
 builder.Services.AddHostedService<CommitteeSyncService>();
 builder.Services.AddHostedService<VoteProposalSyncService>();
 builder.Services.AddHostedService<CpfBackfillService>();
+builder.Services.AddHostedService<AgendaSyncService>();
 
 // Build and configure host
 var host = builder.Build();

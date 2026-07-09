@@ -115,32 +115,44 @@ public class TseElectionResultSyncService : BackgroundService
         var url = VotacaoCdnUrl.Replace("{year}", year.ToString());
         _logger.LogInformation("[TseElectionResult] Downloading votacao_candidato_munzona {Year}...", year);
 
-        using var response = await TryGetAsync(client, url, ct);
-        if (response == null) return;
-
-        await using var zipStream = await response.Content.ReadAsStreamAsync(ct);
-        using var archive = new ZipArchive(zipStream, ZipArchiveMode.Read);
-
-        var entry = FindCsvEntry(archive);
-        if (entry == null)
+        // The download + ZIP read below can fail mid-stream (huge file, CDN drops the
+        // connection) well after TryGetAsync's own try/catch has returned successfully.
+        // Must not let that escape uncaught — HostOptions.BackgroundServiceExceptionBehavior
+        // defaults to StopHost, so an unhandled exception here kills the ENTIRE Worker
+        // process (every other sync service included), not just this one's seed for {year}.
+        try
         {
-            _logger.LogWarning("[TseElectionResult] No CSV found in archive for {Year}", year);
-            return;
+            using var response = await TryGetAsync(client, url, ct);
+            if (response == null) return;
+
+            await using var zipStream = await response.Content.ReadAsStreamAsync(ct);
+            using var archive = new ZipArchive(zipStream, ZipArchiveMode.Read);
+
+            var entry = FindCsvEntry(archive);
+            if (entry == null)
+            {
+                _logger.LogWarning("[TseElectionResult] No CSV found in archive for {Year}", year);
+                return;
+            }
+
+            _logger.LogInformation("[TseElectionResult] Parsing {Entry} for {Year}...", entry.Name, year);
+            var results = await AggregateResultsAsync(entry, year, lookup, ct);
+
+            if (results.Count == 0)
+            {
+                _logger.LogWarning("[TseElectionResult] No linked results found for {Year}", year);
+                return;
+            }
+
+            await PersistResultsAsync(results, ct);
+            _logger.LogInformation(
+                "[TseElectionResult] {Year}: persisted {Count} election results ({Elected} elected)",
+                year, results.Count, results.Count(r => r.IsElected));
         }
-
-        _logger.LogInformation("[TseElectionResult] Parsing {Entry} for {Year}...", entry.Name, year);
-        var results = await AggregateResultsAsync(entry, year, lookup, ct);
-
-        if (results.Count == 0)
+        catch (Exception ex) when (!ct.IsCancellationRequested)
         {
-            _logger.LogWarning("[TseElectionResult] No linked results found for {Year}", year);
-            return;
+            _logger.LogError(ex, "[TseElectionResult] Failed to seed election results for {Year} — skipping", year);
         }
-
-        await PersistResultsAsync(results, ct);
-        _logger.LogInformation(
-            "[TseElectionResult] {Year}: persisted {Count} election results ({Elected} elected)",
-            year, results.Count, results.Count(r => r.IsElected));
     }
 
     // ── Aggregation ───────────────────────────────────────────────────────────
