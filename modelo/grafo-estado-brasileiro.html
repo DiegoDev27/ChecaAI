@@ -1,0 +1,233 @@
+<title>Grafo do Estado Brasileiro — ChecaAI</title>
+<style>
+  :root {
+    --bg:#f7f7f5; --panel:#ffffff; --border:#e2e0db; --text:#2a2823; --text-muted:#6b6860;
+    --link:#c9c6bd; --node-root:#2f5d50; --node-cat:#4d7a6c; --node-dom-completo:#2f7d4f; --node-dom-conceitual:#3d6ea5;
+    --node-dom-none:#a39e93; --node-inst:#a56a2f; --node-orgao:#7a5ca8; --node-cargo:#b0554f; --tmpl:#c98a3f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#17181a; --panel:#1f2123; --border:#33353a; --text:#e9e8e4; --text-muted:#a1a099; --link:#454741;
+      --node-root:#6fbf9e; --node-cat:#5f9a86; --node-dom-completo:#5fce93; --node-dom-conceitual:#7fb2e8;
+      --node-dom-none:#7b7970; --node-inst:#e0ab6a; --node-orgao:#b39ddb; --node-cargo:#e08a83; --tmpl:#e0ab6a; }
+  }
+  :root[data-theme="dark"] { --bg:#17181a; --panel:#1f2123; --border:#33353a; --text:#e9e8e4; --text-muted:#a1a099; --link:#454741;
+    --node-root:#6fbf9e; --node-cat:#5f9a86; --node-dom-completo:#5fce93; --node-dom-conceitual:#7fb2e8;
+    --node-dom-none:#7b7970; --node-inst:#e0ab6a; --node-orgao:#b39ddb; --node-cargo:#e08a83; --tmpl:#e0ab6a; }
+  :root[data-theme="light"] { --bg:#f7f7f5; --panel:#ffffff; --border:#e2e0db; --text:#2a2823; --text-muted:#6b6860;
+    --link:#c9c6bd; --node-root:#2f5d50; --node-cat:#4d7a6c; --node-dom-completo:#2f7d4f; --node-dom-conceitual:#3d6ea5;
+    --node-dom-none:#a39e93; --node-inst:#a56a2f; --node-orgao:#7a5ca8; --node-cargo:#b0554f; --tmpl:#c98a3f; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  .top { padding: 16px 20px 8px; }
+  h1 { font-size:1.25rem; margin:0 0 4px; }
+  p.sub { color:var(--text-muted); font-size:0.85rem; margin:0 0 10px; max-width:80ch; line-height:1.5; }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; font-size:0.74rem; color:var(--text-muted); margin-bottom:8px; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+  .dot { width:9px; height:9px; border-radius:50%; display:inline-block; flex:none; }
+  .sq { width:9px; height:9px; display:inline-block; flex:none; }
+  .hint { font-size:0.74rem; color:var(--text-muted); margin-bottom:10px; }
+  #canvas-wrap { border-top:1px solid var(--border); overflow:auto; background:var(--panel); }
+  svg { display:block; }
+  .node circle, .node rect { cursor:pointer; stroke:var(--panel); stroke-width:2px; }
+  .node text { font-size:11px; fill:var(--text); pointer-events:none; }
+  .node .count { font-size:9px; fill:var(--text-muted); pointer-events:none; }
+  .link { fill:none; stroke:var(--link); stroke-width:1.4px; }
+  .node:hover circle, .node:hover rect { filter: brightness(1.15); }
+</style>
+
+<div class="top">
+  <h1>Grafo do Estado Brasileiro — Censo ChecaAI</h1>
+  <p class="sub">Estado Brasileiro no centro, ramificando em Categorias → Domínios → Instituições → Órgãos. Clique em qualquer nó para expandir/recolher os filhos. Cargos aparecem como contagem no nó do Órgão/Instituição — passe o mouse para ver os nomes.</p>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--node-root)"></i>Estado</span>
+    <span><i class="dot" style="background:var(--node-cat)"></i>Categoria</span>
+    <span><i class="dot" style="background:var(--node-dom-completo)"></i>Domínio — profundo</span>
+    <span><i class="dot" style="background:var(--node-dom-conceitual)"></i>Domínio — conceitual</span>
+    <span><i class="dot" style="background:var(--node-dom-none)"></i>Domínio — não iniciado</span>
+    <span><i class="dot" style="background:var(--node-inst)"></i>Instituição <i class="sq" style="background:var(--tmpl);border-radius:2px;"></i>= Template</span>
+    <span><i class="dot" style="background:var(--node-orgao)"></i>Órgão</span>
+  </div>
+  <div class="hint">Dica: comece clicando em "Poder Executivo", "Poder Legislativo" ou "Poder Judiciário" para ver a estrutura descer até Órgão.</div>
+</div>
+<div id="canvas-wrap"></div>
+
+<script>
+// ---- DATA ----
+const CATS = {
+"Estrutura Constitucional": [
+  ["Organização do Estado","none"],["Poder Executivo","completo"],["Poder Legislativo","completo"],
+  ["Poder Judiciário","completo"],["Ministério Público","completo"],["Defensoria Pública","none"],
+  ["Tribunais de Contas","completo"],["Relações Federativas","none"]
+],
+"Sistema Político": [["Sistema Eleitoral","completo"],["Partidos Políticos","completo"],["Processo Legislativo","none"],["Participação Social","none"]],
+"Administração Pública": [["Administração Pública Direta","none"],["Administração Pública Indireta","none"],["Empresas Estatais","none"],
+  ["Agências Reguladoras","none"],["Patrimônio Público","conceitual"],["Recursos Humanos do Estado","conceitual"],
+  ["Conselhos Profissionais","none"],["Conselhos de Políticas Públicas","none"]],
+"Governança": [["Sistema Tributário","none"],["Transparência Pública","conceitual"],["Orçamento Público","conceitual"],
+  ["Compras Governamentais","conceitual"],["Convênios e Transferências","conceitual"],["Controle e Fiscalização","none"],["Dados Abertos","none"]],
+"Justiça": [["Processo Judicial","conceitual"],["Legislação e Normas","conceitual"]],
+"Grandes Políticas Públicas": [["Segurança Pública","none"],["Forças Armadas","none"],["Políticas Públicas","none"],
+  ["Sistema Financeiro Nacional","none"],["Previdência Social","none"],["Saúde Pública","none"],["Educação Pública","none"],
+  ["Meio Ambiente","none"],["Povos Indígenas e Comunidades Tradicionais","none"],["Infraestrutura e Transportes","none"],
+  ["Energia e Recursos Naturais","none"],["Ciência, Tecnologia e Inovação","none"],["Cultura, Esporte e Turismo","none"],
+  ["Assistência Social","none"],["Defesa Civil e Gestão de Desastres","none"],["Sistema Prisional","none"],
+  ["Direitos Humanos","none"],["Defesa do Consumidor","none"],["Desenvolvimento Econômico","none"],
+  ["Agricultura e Pecuária","none"],["Trabalho e Emprego","none"],["Habitação e Desenvolvimento Urbano","none"],
+  ["Comunicações e Telecomunicações","none"]],
+"Conhecimento Nacional": [["Indicadores Governamentais","none"],["Estatísticas Oficiais","none"],["Geografia e Divisão Territorial","none"],["Arquivos e Documentos Públicos","none"]],
+"Relações Externas": [["Diplomacia e Relações Exteriores","none"],["Organizações Internacionais","none"]],
+"Justiça (novo)": [["Serviços Notariais e Registrais","none"]]
+};
+
+function org(name, cargos) { return { name, type:'orgao', cargos: cargos||[] }; }
+function inst(name, orgaos, tmpl, note) { return { name, type:'instituicao', tmpl:!!tmpl, note, children: orgaos }; }
+
+const INSTS = {
+"Poder Executivo": [
+  inst("Presidência da República", ["Gabinete Pessoal","Casa Civil","Gabinete de Segurança Institucional","Secretaria de Comunicação Social","Secretaria-Geral","Secretaria de Relações Institucionais"].map(o=>org(o))),
+  inst("Vice-Presidência da República", [org("(cargo direto)",["Vice-Presidente da República"])]),
+  inst("Advocacia-Geral da União (AGU)", [org("(cargo direto)",["Advogado-Geral da União"])]),
+  inst("Controladoria-Geral da União (CGU)", [org("(cargo direto)",["Titular da CGU"])]),
+  inst("31 Ministérios", [org("(cargo direto, comum aos 31)",["Ministro de Estado"])], false, "estrutura interna de cada ministério: onda futura")
+],
+"Poder Legislativo": [
+  inst("Câmara dos Deputados", [
+    org("Mesa Diretora", ["Presidente","1º/2º Vice-Presidente","1º-4º Secretário","1º-4º Suplente de Secretário"]),
+    org("Plenário", []), org("Comissões Permanentes (30)", ["Presidente de Comissão","Vice-Presidente de Comissão","Relator"]),
+    org("Comissões Temporárias", []), org("Secretaria-Geral da Mesa", []), org("Consultoria Legislativa", []),
+    org("Polícia Legislativa", []), org("Ouvidoria Parlamentar", ["Ouvidor Parlamentar"]), org("Corregedoria Parlamentar", ["Corregedor Parlamentar"]),
+    org("Procuradoria Parlamentar", []), org("(cargo direto)", ["Deputado Federal","Líder do Governo","Líder da Oposição","Líder de Partido/Bloco"])
+  ]),
+  inst("Senado Federal", [
+    org("Mesa Diretora", ["Presidente","1º/2º Vice-Presidente","1º-4º Secretário","1º-4º Suplente de Secretário"]),
+    org("Plenário", []), org("Comissões Permanentes (16)", ["Presidente de Comissão","Vice-Presidente de Comissão","Relator"]),
+    org("Comissões Temporárias", []), org("Secretaria-Geral da Mesa", []), org("Consultoria Legislativa", []),
+    org("Polícia Legislativa", []), org("Ouvidoria", ["Ouvidor"]), org("Procuradoria Especial", []),
+    org("Procuradoria Especial da Mulher", ["Procurador(a) Especial da Mulher"]), org("Corregedoria", ["Corregedor"]),
+    org("(cargo direto)", ["Senador","Líder do Governo","Líder da Oposição","Líder de Partido/Bloco"])
+  ]),
+  inst("Congresso Nacional", [
+    org("Sessão Conjunta", ["Presidente do Congresso Nacional"]), org("Comissão Mista de Orçamento (CMO)", ["Presidente de Comissão Mista","Relator-Geral do Orçamento"]),
+    org("Comissão Representativa", []), org("CPMI", []), org("CMMPV", []), org("CMMC", []), org("CCAI", []), org("CMCVM", []), org("CMMIR", [])
+  ])
+],
+"Poder Judiciário": [
+  inst("Supremo Tribunal Federal (STF)", [org("Plenário",["Ministro (11)"]), org("1ª Turma",[]), org("2ª Turma",[]), org("Ouvidoria",[]), org("Secretaria",[]), org("(cargo direto)",["Presidente","Vice-Presidente","Relator"])]),
+  inst("Conselho Nacional de Justiça (CNJ)", [org("Plenário",["Conselheiro (15)"]), org("Corregedoria Nacional",["Corregedor Nacional"]), org("Coordenadoria de Gestão dos Serviços Notariais e de Registro",[])]),
+  inst("Superior Tribunal de Justiça (STJ)", [org("Plenário",["Ministro (33)","Presidente","Vice-Presidente"]), org("Corte Especial",[]), org("1ª/2ª/3ª Seção",[]), org("Turmas (6)",[]), org("Corregedoria-Geral da Justiça Federal",["Corregedor-Geral"])]),
+  inst("Tribunal Superior do Trabalho (TST)", [org("Plenário",["Ministro (27)","Presidente","Vice-Presidente"]), org("Órgão Especial",[]), org("Seção Esp. Dissídios",[]), org("Turmas",[]), org("Corregedoria-Geral",["Corregedor-Geral"])]),
+  inst("Conselho Superior da Justiça do Trabalho (CSJT)", [org("Plenário",[])]),
+  inst("Tribunal Superior Eleitoral (TSE)", [org("Corte/Plenário",["Ministro (7)","Presidente","Vice-Presidente"]), org("Corregedoria-Geral Eleitoral",["Corregedor-Geral Eleitoral"]), org("Comissão de Transparência das Eleições",[])]),
+  inst("Superior Tribunal Militar (STM)", [org("Plenário",["Ministro (15)","Presidente"]), org("Diretoria-Geral",["Diretor-Geral"])]),
+  inst("Tribunal Regional Federal (TRF)", [org("Presidência",["Presidente"]), org("Vice-Presidência",["Vice-Presidente"]), org("Corregedoria Regional",["Corregedor Regional"]), org("Plenário",["Desembargador Federal","Relator"]), org("Corte Especial",[]), org("Seções Especializadas",[]), org("Turmas Especializadas",[]), org("Conselho de Administração",[])], true, "6 regiões reais — 0 instâncias nomeadas"),
+  inst("Tribunal Regional do Trabalho (TRT)", [org("Presidência",["Presidente"]), org("Vice-Presid. Judicial",[]), org("Vice-Presid. Administrativa",[]), org("Corregedoria Regional",["Corregedor Regional"]), org("Tribunal Pleno",["Desembargador do Trabalho"]), org("Órgão Especial",[]), org("Seções Especializadas",[]), org("Turmas",[]), org("Ouvidoria",[])], true, "24 regiões reais — 0 instâncias nomeadas"),
+  inst("Tribunal Regional Eleitoral (TRE)", [org("Presidência",["Presidente"]), org("Vice-Pres./Corregedoria",["Vice-Presidente e Corregedor Regional Eleitoral"]), org("Corte/Plenário",["Juiz do TRE"]), org("Zona Eleitoral (~2.619)",[]), org("Cartório Eleitoral",[]), org("Junta Eleitoral",["Presidente da Junta","Membro da Junta"]), org("Mesa Receptora de Votos",["Mesário"])], true, "27 tribunais reais — 0 instâncias nomeadas"),
+  inst("Tribunal de Justiça (TJ)", [org("Presidência",["Presidente"]), org("Vice-Presidência",["Vice-Presidente"]), org("Corregedoria-Geral de Justiça",["Corregedor-Geral"]), org("Órgão Especial/Pleno",["Desembargador","Relator"]), org("Câmaras Cíveis",[]), org("Câmaras Criminais",[]), org("Turmas Recursais",[]), org("Ouvidoria",[])], true, "27 tribunais reais — 0 instâncias nomeadas"),
+  inst("Tribunal de Justiça Militar (TJM)", [], false, "só existe em SP/MG/RS — estrutura própria não pesquisada")
+],
+"Ministério Público": [
+  inst("Ministério Público Federal (MPF)", [org("PGR",["Procurador-Geral da República"]), org("Câmaras de Coord. e Revisão (7)",[]), org("Conselho Superior",[]), org("Corregedoria",["Corregedor"]), org("Ouvidoria",[]), org("(cargo direto)",["Subprocurador-Geral (73)","Procurador Regional da República","Procurador da República"])]),
+  inst("Ministério Público do Trabalho (MPT)", [org("PGT",["Procurador-Geral do Trabalho"]), org("Colégio de Procuradores",[]), org("Conselho Superior",[]), org("Câmara de Coord. e Revisão",[]), org("Corregedoria",[]), org("(cargo direto)",["Vice/Subprocurador-Geral","Procurador Regional (24 PRTs)","Procurador do Trabalho"])]),
+  inst("Ministério Público Militar (MPM)", [org("Procuradoria-Geral",["Procurador-Geral de Justiça Militar"]), org("Colégio de Procuradores",[]), org("Conselho Superior",[]), org("Corregedoria",[]), org("(cargo direto)",["Procurador da Justiça Militar"])]),
+  inst("Ministério Público do DF e Territórios (MPDFT)", [org("Procuradoria-Geral",["Procurador-Geral de Justiça"]), org("Câmaras de Coord. e Revisão",[]), org("Ouvidoria",[]), org("Centro de Inteligência",[]), org("(cargo direto)",["Vice-Procurador-Geral","Promotor de Justiça","Procurador de Justiça"])]),
+  inst("Conselho Nacional do MP (CNMP)", [org("Plenário",["Conselheiro (14)"]), org("Corregedoria Nacional",["Corregedor Nacional"]), org("Ouvidoria",[])]),
+  inst("Ministério Público Estadual (MPE)", [org("Procuradoria-Geral de Justiça",["Procurador-Geral de Justiça"]), org("Subprocuradoria-Geral",[]), org("Colégio de Procuradores",[]), org("Conselho Superior",[]), org("Corregedoria-Geral",["Corregedor-Geral"]), org("Ouvidoria",[]), org("Diretoria-Geral",[]), org("(cargo direto)",["Procurador de Justiça","Promotor de Justiça"])], true, "27 estados reais — 0 instâncias nomeadas")
+],
+"Tribunais de Contas": [
+  inst("Tribunal de Contas da União (TCU)", [org("Plenário",["Ministro (9)","Presidente","Vice-Presidente"]), org("1ª/2ª Câmara",[]), org("Corregedoria",[]), org("Ouvidoria",[]), org("Secretaria-Geral de Controle Externo",[]), org("Ministério Público junto ao TCU",["Procurador (MPTCU)"]), org("(cargo direto)",["Ministro-Substituto (4)","Relator"])]),
+  inst("Tribunal de Contas do Estado (TCE)", [org("Plenário",["Presidente"]), org("Câmaras",[]), org("Presidência",[]), org("Vice-Presidência",["Vice-Presidente"]), org("Corregedoria",["Corregedor"]), org("Ouvidoria",[]), org("Ministério Público de Contas",["Procurador de Contas"]), org("(cargo direto)",["Conselheiro","Auditor/Conselheiro-Substituto"])], true, "26 estados + TCDF reais — 0 instâncias nomeadas"),
+  inst("Tribunal de Contas dos Municípios (TCM Estadual)", [org("Plenário",["Conselheiro"]), org("Presidência",["Presidente"])], true, "só existe em BA/GO/PA"),
+  inst("Tribunal de Contas do Município (TCM Municipal)", [org("Plenário",["Conselheiro","Presidente"])], true, "só existe em RJ e SP capital")
+],
+"Partidos Políticos": [
+  inst("Partido Político", [org("Convenção (3 níveis)",["Delegado à Convenção"]), org("Diretório (Nacional/Estadual/Municipal/Zonal)",["Presidente (3 níveis)"]), org("Comissão Provisória",[]), org("Comissão Executiva (3 níveis)",[]), org("Conselho Fiscal",[]), org("Conselho/Comissão de Ética",[]), org("(cargo direto)",["Vice-Presidente","Secretário-Geral","Tesoureiro","Filiado"])], true, "30 partidos reais registrados no TSE — 0 instâncias nomeadas"),
+  inst("Federação Partidária", [], false, "vínculo entre partidos, não instituição replicável")
+],
+"Defensoria Pública": [
+  inst("Defensoria Pública da União (DPU)", [org("Conselho Superior",[]), org("Corregedoria-Geral",["Corregedor-Geral Federal"]), org("Ouvidoria-Geral",[]), org("(cargo direto)",["Defensor Público-Geral Federal","Subdefensor Público-Geral Federal","Defensor Público Federal"])]),
+  inst("Defensoria Pública Estadual (DPE)", [org("Conselho Superior",[]), org("Corregedoria-Geral",["Corregedor-Geral"]), org("Ouvidoria-Geral Externa",["Ouvidor-Geral"]), org("(cargo direto)",["Defensor Público-Geral do Estado","Defensor Público"])], true, "27 estados reais — 0 instâncias nomeadas"),
+  inst("Defensoria Pública do Distrito Federal (DPDF)", [], false, "organizada pelo GDF desde a EC 69/2012")
+],
+"Serviços Notariais e Registrais": [
+  inst("Tabelionato de Notas", [org("(cargo direto)",["Tabelião de Notas"])], true, "milhares de serventias reais — 0 nomeadas"),
+  inst("Tabelionato de Protesto de Títulos", [org("(cargo direto)",["Tabelião de Protesto"])], true, "milhares de serventias reais — 0 nomeadas"),
+  inst("Registro Civil das Pessoas Naturais", [org("(cargo direto)",["Oficial de Registro Civil"])], true, "milhares de serventias reais — 0 nomeadas"),
+  inst("Registro de Imóveis", [org("(cargo direto)",["Oficial de Registro de Imóveis"])], true, "milhares de serventias reais — 0 nomeadas"),
+  inst("Registro de Títulos e Documentos e Civil de PJ", [org("(cargo direto)",["Oficial de Registro de Títulos e Documentos"])], true, "0 nomeadas"),
+  inst("Registro de Distribuição", [org("(cargo direto)",["Oficial de Distribuição"])], true, "0 nomeadas")
+]
+};
+
+// ---- BUILD TREE ----
+const domColor = { completo:'var(--node-dom-completo)', conceitual:'var(--node-dom-conceitual)', none:'var(--node-dom-none)' };
+const root = { name:"Estado Brasileiro", type:'root', _open:true, children: Object.entries(CATS).map(([catName, doms]) => ({
+  name: catName, type:'categoria', _open:true, children: doms.map(([domName, status]) => ({
+    name: domName, type:'dominio', status, _open:false,
+    children: (INSTS[domName]||[]).map(i => ({ ...i, _open:false }))
+  }))
+})) };
+
+// ---- LAYOUT (horizontal tidy tree, collapsible) ----
+const rowH = 26, colW = 210;
+let leafCounter;
+function visibleChildren(n) { return (n._open && n.children && n.children.length) ? n.children : null; }
+function layout(n, depth) {
+  n.depth = depth;
+  const kids = visibleChildren(n);
+  if (kids) {
+    kids.forEach(c => layout(c, depth+1));
+    n.y = kids.reduce((a,c)=>a+c.y,0) / kids.length;
+  } else {
+    n.y = leafCounter++ * rowH;
+  }
+  n.x = depth * colW;
+}
+function flatten(n, out) {
+  out.push(n);
+  const kids = visibleChildren(n);
+  if (kids) kids.forEach(c => flatten(c, out));
+  return out;
+}
+
+const wrap = document.getElementById('canvas-wrap');
+function render() {
+  leafCounter = 0;
+  layout(root, 0);
+  const nodes = flatten(root, []);
+  const maxY = Math.max(...nodes.map(n=>n.y)) + rowH*2;
+  const maxX = Math.max(...nodes.map(n=>n.x)) + colW;
+  let links = '';
+  let nodeEls = '';
+  nodes.forEach((n, i) => {
+    const kids = visibleChildren(n);
+    if (kids) kids.forEach(c => {
+      links += `<path class="link" d="M${n.x+70},${n.y+14} C${n.x+70+colW/2},${n.y+14} ${c.x+ (c.type==='cargo'?60:c.type==='orgao'?60:70) /2},${c.y+14} ${c.x},${c.y+14}"/>`;
+    });
+    const color = n.type==='root' ? 'var(--node-root)' : n.type==='categoria' ? 'var(--node-cat)' :
+      n.type==='dominio' ? domColor[n.status] : n.type==='instituicao' ? 'var(--node-inst)' :
+      n.type==='orgao' ? 'var(--node-orgao)' : 'var(--node-cargo)';
+    const hasKids = n.children && n.children.length > 0;
+    const label = n.name.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const cargoTitle = n.cargos && n.cargos.length ? n.cargos.join(', ') : '';
+    const tmplMark = n.tmpl ? `<rect x="${n.x+62}" y="${n.y+5}" width="8" height="8" rx="2" fill="var(--tmpl)"><title>Template — sem instâncias reais</title></rect>` : '';
+    const noteTitle = n.note ? ` — ${n.note}` : '';
+    nodeEls += `
+      <g class="node" data-idx="${i}" transform="translate(${n.x},${n.y})" style="${hasKids?'cursor:pointer':'cursor:default'}">
+        <circle r="6" cx="6" cy="14" fill="${color}" ${!hasKids && n.children ? 'opacity="0.35"' : ''}>
+          <title>${label}${noteTitle}${cargoTitle?(' | Cargos: '+cargoTitle):''}</title>
+        </circle>
+        ${tmplMark}
+        <text x="18" y="18">${label}${hasKids ? ` (${n.children.length})` : ''}</text>
+        ${n.cargos && n.cargos.length ? `<text class="count" x="18" y="30">${n.cargos.length} cargo(s)</text>` : ''}
+      </g>`;
+  });
+  wrap.innerHTML = `<svg width="${maxX}" height="${maxY}" viewBox="0 0 ${maxX} ${maxY}">${links}${nodeEls}</svg>`;
+  wrap.querySelectorAll('.node').forEach(el => {
+    el.addEventListener('click', () => {
+      const n = nodes[+el.dataset.idx];
+      if (n.children && n.children.length) { n._open = !n._open; render(); }
+    });
+  });
+}
+render();
+</script>

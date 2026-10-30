@@ -1,0 +1,1830 @@
+{
+    "categorias":  {
+                       "Estrutura Constitucional":  [
+                                                        [
+                                                            "Organização do Estado",
+                                                            "none"
+                                                        ],
+                                                        [
+                                                            "Poder Executivo",
+                                                            "completo"
+                                                        ],
+                                                        [
+                                                            "Poder Legislativo",
+                                                            "completo"
+                                                        ],
+                                                        [
+                                                            "Poder Judiciário",
+                                                            "completo"
+                                                        ],
+                                                        [
+                                                            "Ministério Público",
+                                                            "completo"
+                                                        ],
+                                                        [
+                                                            "Defensoria Pública",
+                                                            "none"
+                                                        ],
+                                                        [
+                                                            "Tribunais de Contas",
+                                                            "completo"
+                                                        ],
+                                                        [
+                                                            "Relações Federativas",
+                                                            "none"
+                                                        ]
+                                                    ],
+                       "Sistema Político":  [
+                                                [
+                                                    "Sistema Eleitoral",
+                                                    "completo"
+                                                ],
+                                                [
+                                                    "Partidos Políticos",
+                                                    "completo"
+                                                ],
+                                                [
+                                                    "Processo Legislativo",
+                                                    "none"
+                                                ],
+                                                [
+                                                    "Participação Social",
+                                                    "none"
+                                                ]
+                                            ],
+                       "Administração Pública":  [
+                                                     [
+                                                         "Administração Pública Direta",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Administração Pública Indireta",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Empresas Estatais",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Agências Reguladoras",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Patrimônio Público",
+                                                         "conceitual"
+                                                     ],
+                                                     [
+                                                         "Recursos Humanos do Estado",
+                                                         "conceitual"
+                                                     ],
+                                                     [
+                                                         "Conselhos Profissionais",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Conselhos de Políticas Públicas",
+                                                         "none"
+                                                     ]
+                                                 ],
+                       "Governança":  [
+                                          [
+                                              "Sistema Tributário",
+                                              "none"
+                                          ],
+                                          [
+                                              "Transparência Pública",
+                                              "conceitual"
+                                          ],
+                                          [
+                                              "Orçamento Público",
+                                              "conceitual"
+                                          ],
+                                          [
+                                              "Compras Governamentais",
+                                              "conceitual"
+                                          ],
+                                          [
+                                              "Convênios e Transferências",
+                                              "conceitual"
+                                          ],
+                                          [
+                                              "Controle e Fiscalização",
+                                              "none"
+                                          ],
+                                          [
+                                              "Dados Abertos",
+                                              "none"
+                                          ]
+                                      ],
+                       "Justiça":  [
+                                       [
+                                           "Processo Judicial",
+                                           "conceitual"
+                                       ],
+                                       [
+                                           "Legislação e Normas",
+                                           "conceitual"
+                                       ]
+                                   ],
+                       "Grandes Políticas Públicas":  [
+                                                          [
+                                                              "Segurança Pública",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Forças Armadas",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Políticas Públicas",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Sistema Financeiro Nacional",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Previdência Social",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Saúde Pública",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Educação Pública",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Meio Ambiente",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Povos Indígenas e Comunidades Tradicionais",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Infraestrutura e Transportes",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Energia e Recursos Naturais",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Ciência, Tecnologia e Inovação",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Cultura, Esporte e Turismo",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Assistência Social",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Defesa Civil e Gestão de Desastres",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Sistema Prisional",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Direitos Humanos",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Defesa do Consumidor",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Desenvolvimento Econômico",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Agricultura e Pecuária",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Trabalho e Emprego",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Habitação e Desenvolvimento Urbano",
+                                                              "none"
+                                                          ],
+                                                          [
+                                                              "Comunicações e Telecomunicações",
+                                                              "none"
+                                                          ]
+                                                      ],
+                       "Conhecimento Nacional":  [
+                                                     [
+                                                         "Indicadores Governamentais",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Estatísticas Oficiais",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Geografia e Divisão Territorial",
+                                                         "none"
+                                                     ],
+                                                     [
+                                                         "Arquivos e Documentos Públicos",
+                                                         "none"
+                                                     ]
+                                                 ],
+                       "Relações Externas":  [
+                                                 [
+                                                     "Diplomacia e Relações Exteriores",
+                                                     "none"
+                                                 ],
+                                                 [
+                                                     "Organizações Internacionais",
+                                                     "none"
+                                                 ]
+                                             ],
+                       "Justiça (novo)":  [
+                                              [
+                                                  "Serviços Notariais e Registrais",
+                                                  "none"
+                                              ]
+                                          ]
+                   },
+    "instituicoes":  {
+                         "Poder Executivo":  [
+                                                 {
+                                                     "name":  "Presidência da República",
+                                                     "type":  "instituicao",
+                                                     "tmpl":  false,
+                                                     "children":  [
+                                                                      {
+                                                                          "name":  "Gabinete Pessoal",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+
+                                                                                     ]
+                                                                      },
+                                                                      {
+                                                                          "name":  "Casa Civil",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+
+                                                                                     ]
+                                                                      },
+                                                                      {
+                                                                          "name":  "Gabinete de Segurança Institucional",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+
+                                                                                     ]
+                                                                      },
+                                                                      {
+                                                                          "name":  "Secretaria de Comunicação Social",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+
+                                                                                     ]
+                                                                      },
+                                                                      {
+                                                                          "name":  "Secretaria-Geral",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+
+                                                                                     ]
+                                                                      },
+                                                                      {
+                                                                          "name":  "Secretaria de Relações Institucionais",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+
+                                                                                     ]
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "name":  "Vice-Presidência da República",
+                                                     "type":  "instituicao",
+                                                     "tmpl":  false,
+                                                     "children":  [
+                                                                      {
+                                                                          "name":  "(cargo direto)",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+                                                                                         "Vice-Presidente da República"
+                                                                                     ]
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "name":  "Advocacia-Geral da União (AGU)",
+                                                     "type":  "instituicao",
+                                                     "tmpl":  false,
+                                                     "children":  [
+                                                                      {
+                                                                          "name":  "(cargo direto)",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+                                                                                         "Advogado-Geral da União"
+                                                                                     ]
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "name":  "Controladoria-Geral da União (CGU)",
+                                                     "type":  "instituicao",
+                                                     "tmpl":  false,
+                                                     "children":  [
+                                                                      {
+                                                                          "name":  "(cargo direto)",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+                                                                                         "Titular da CGU"
+                                                                                     ]
+                                                                      }
+                                                                  ]
+                                                 },
+                                                 {
+                                                     "name":  "31 Ministérios",
+                                                     "type":  "instituicao",
+                                                     "tmpl":  false,
+                                                     "note":  "estrutura interna de cada ministério: onda futura",
+                                                     "children":  [
+                                                                      {
+                                                                          "name":  "(cargo direto, comum aos 31)",
+                                                                          "type":  "orgao",
+                                                                          "cargos":  [
+                                                                                         "Ministro de Estado"
+                                                                                     ]
+                                                                      }
+                                                                  ]
+                                                 }
+                                             ],
+                         "Poder Legislativo":  [
+                                                   {
+                                                       "name":  "Câmara dos Deputados",
+                                                       "type":  "instituicao",
+                                                       "tmpl":  false,
+                                                       "children":  [
+                                                                        {
+                                                                            "name":  "Mesa Diretora",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Presidente",
+                                                                                           "1º/2º Vice-Presidente",
+                                                                                           "1º-4º Secretário",
+                                                                                           "1º-4º Suplente de Secretário"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Plenário",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Comissões Permanentes (30)",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Presidente de Comissão",
+                                                                                           "Vice-Presidente de Comissão",
+                                                                                           "Relator"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Comissões Temporárias",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Secretaria-Geral da Mesa",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Consultoria Legislativa",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Polícia Legislativa",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Ouvidoria Parlamentar",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Ouvidor Parlamentar"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Corregedoria Parlamentar",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Corregedor Parlamentar"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Procuradoria Parlamentar",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "(cargo direto)",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Deputado Federal",
+                                                                                           "Líder do Governo",
+                                                                                           "Líder da Oposição",
+                                                                                           "Líder de Partido/Bloco"
+                                                                                       ]
+                                                                        }
+                                                                    ]
+                                                   },
+                                                   {
+                                                       "name":  "Senado Federal",
+                                                       "type":  "instituicao",
+                                                       "tmpl":  false,
+                                                       "children":  [
+                                                                        {
+                                                                            "name":  "Mesa Diretora",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Presidente",
+                                                                                           "1º/2º Vice-Presidente",
+                                                                                           "1º-4º Secretário",
+                                                                                           "1º-4º Suplente de Secretário"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Plenário",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Comissões Permanentes (16)",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Presidente de Comissão",
+                                                                                           "Vice-Presidente de Comissão",
+                                                                                           "Relator"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Comissões Temporárias",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Secretaria-Geral da Mesa",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Consultoria Legislativa",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Polícia Legislativa",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Ouvidoria",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Ouvidor"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Procuradoria Especial",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Procuradoria Especial da Mulher",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Procurador(a) Especial da Mulher"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Corregedoria",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Corregedor"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "(cargo direto)",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Senador",
+                                                                                           "Líder do Governo",
+                                                                                           "Líder da Oposição",
+                                                                                           "Líder de Partido/Bloco"
+                                                                                       ]
+                                                                        }
+                                                                    ]
+                                                   },
+                                                   {
+                                                       "name":  "Congresso Nacional",
+                                                       "type":  "instituicao",
+                                                       "tmpl":  false,
+                                                       "children":  [
+                                                                        {
+                                                                            "name":  "Sessão Conjunta",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Presidente do Congresso Nacional"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Comissão Mista de Orçamento (CMO)",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+                                                                                           "Presidente de Comissão Mista",
+                                                                                           "Relator-Geral do Orçamento"
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "Comissão Representativa",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "CPMI",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "CMMPV",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "CMMC",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "CCAI",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "CMCVM",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        },
+                                                                        {
+                                                                            "name":  "CMMIR",
+                                                                            "type":  "orgao",
+                                                                            "cargos":  [
+
+                                                                                       ]
+                                                                        }
+                                                                    ]
+                                                   }
+                                               ],
+                         "Poder Judiciário":  [
+                                                  {
+                                                      "name":  "Supremo Tribunal Federal (STF)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Ministro (11)"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "1ª Turma",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "2ª Turma",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Ouvidoria",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Secretaria",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "(cargo direto)",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Presidente",
+                                                                                          "Vice-Presidente",
+                                                                                          "Relator"
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Conselho Nacional de Justiça (CNJ)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Conselheiro (15)"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corregedoria Nacional",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Corregedor Nacional"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Coordenadoria de Gestão dos Serviços Notariais e de Registro",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Superior Tribunal de Justiça (STJ)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Ministro (33)",
+                                                                                          "Presidente",
+                                                                                          "Vice-Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corte Especial",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "1ª/2ª/3ª Seção",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Turmas (6)",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corregedoria-Geral da Justiça Federal",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Corregedor-Geral"
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Tribunal Superior do Trabalho (TST)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Ministro (27)",
+                                                                                          "Presidente",
+                                                                                          "Vice-Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Órgão Especial",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Seção Esp. Dissídios",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Turmas",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corregedoria-Geral",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Corregedor-Geral"
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Conselho Superior da Justiça do Trabalho (CSJT)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Tribunal Superior Eleitoral (TSE)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Corte/Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Ministro (7)",
+                                                                                          "Presidente",
+                                                                                          "Vice-Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corregedoria-Geral Eleitoral",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Corregedor-Geral Eleitoral"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Comissão de Transparência das Eleições",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Superior Tribunal Militar (STM)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Ministro (15)",
+                                                                                          "Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Diretoria-Geral",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Diretor-Geral"
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Tribunal Regional Federal (TRF)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  true,
+                                                      "note":  "6 regiões reais — 0 instâncias nomeadas",
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Presidência",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Vice-Presidência",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Vice-Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corregedoria Regional",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Corregedor Regional"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Desembargador Federal",
+                                                                                          "Relator"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corte Especial",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Seções Especializadas",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Turmas Especializadas",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Conselho de Administração",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Tribunal Regional do Trabalho (TRT)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  true,
+                                                      "note":  "24 regiões reais — 0 instâncias nomeadas",
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Presidência",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Vice-Presid. Judicial",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Vice-Presid. Administrativa",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corregedoria Regional",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Corregedor Regional"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Tribunal Pleno",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Desembargador do Trabalho"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Órgão Especial",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Seções Especializadas",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Turmas",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Ouvidoria",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Tribunal Regional Eleitoral (TRE)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  true,
+                                                      "note":  "27 tribunais reais — 0 instâncias nomeadas",
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Presidência",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Vice-Pres./Corregedoria",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Vice-Presidente e Corregedor Regional Eleitoral"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corte/Plenário",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Juiz do TRE"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Zona Eleitoral (~2.619)",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Cartório Eleitoral",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Junta Eleitoral",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Presidente da Junta",
+                                                                                          "Membro da Junta"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Mesa Receptora de Votos",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Mesário"
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Tribunal de Justiça (TJ)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  true,
+                                                      "note":  "27 tribunais reais — 0 instâncias nomeadas",
+                                                      "children":  [
+                                                                       {
+                                                                           "name":  "Presidência",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Vice-Presidência",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Vice-Presidente"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Corregedoria-Geral de Justiça",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Corregedor-Geral"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Órgão Especial/Pleno",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+                                                                                          "Desembargador",
+                                                                                          "Relator"
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Câmaras Cíveis",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Câmaras Criminais",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Turmas Recursais",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       },
+                                                                       {
+                                                                           "name":  "Ouvidoria",
+                                                                           "type":  "orgao",
+                                                                           "cargos":  [
+
+                                                                                      ]
+                                                                       }
+                                                                   ]
+                                                  },
+                                                  {
+                                                      "name":  "Tribunal de Justiça Militar (TJM)",
+                                                      "type":  "instituicao",
+                                                      "tmpl":  false,
+                                                      "note":  "só existe em SP/MG/RS — estrutura própria não pesquisada",
+                                                      "children":  [
+
+                                                                   ]
+                                                  }
+                                              ],
+                         "Ministério Público":  [
+                                                    {
+                                                        "name":  "Ministério Público Federal (MPF)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "PGR",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Procurador-Geral da República"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Câmaras de Coord. e Revisão (7)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Conselho Superior",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Corregedoria",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Corregedor"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Ouvidoria",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Subprocurador-Geral (73)",
+                                                                                            "Procurador Regional da República",
+                                                                                            "Procurador da República"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Ministério Público do Trabalho (MPT)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "PGT",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Procurador-Geral do Trabalho"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Colégio de Procuradores",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Conselho Superior",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Câmara de Coord. e Revisão",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Corregedoria",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Vice/Subprocurador-Geral",
+                                                                                            "Procurador Regional (24 PRTs)",
+                                                                                            "Procurador do Trabalho"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Ministério Público Militar (MPM)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "Procuradoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Procurador-Geral de Justiça Militar"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Colégio de Procuradores",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Conselho Superior",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Corregedoria",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Procurador da Justiça Militar"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Ministério Público do DF e Territórios (MPDFT)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "Procuradoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Procurador-Geral de Justiça"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Câmaras de Coord. e Revisão",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Ouvidoria",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Centro de Inteligência",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Vice-Procurador-Geral",
+                                                                                            "Promotor de Justiça",
+                                                                                            "Procurador de Justiça"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Conselho Nacional do MP (CNMP)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "Plenário",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Conselheiro (14)"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Corregedoria Nacional",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Corregedor Nacional"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Ouvidoria",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Ministério Público Estadual (MPE)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  true,
+                                                        "note":  "27 estados reais — 0 instâncias nomeadas",
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "Procuradoria-Geral de Justiça",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Procurador-Geral de Justiça"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Subprocuradoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Colégio de Procuradores",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Conselho Superior",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Corregedoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Corregedor-Geral"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Ouvidoria",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Diretoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Procurador de Justiça",
+                                                                                            "Promotor de Justiça"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    }
+                                                ],
+                         "Tribunais de Contas":  [
+                                                     {
+                                                         "name":  "Tribunal de Contas da União (TCU)",
+                                                         "type":  "instituicao",
+                                                         "tmpl":  false,
+                                                         "children":  [
+                                                                          {
+                                                                              "name":  "Plenário",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Ministro (9)",
+                                                                                             "Presidente",
+                                                                                             "Vice-Presidente"
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "1ª/2ª Câmara",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Corregedoria",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Ouvidoria",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Secretaria-Geral de Controle Externo",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Ministério Público junto ao TCU",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Procurador (MPTCU)"
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "(cargo direto)",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Ministro-Substituto (4)",
+                                                                                             "Relator"
+                                                                                         ]
+                                                                          }
+                                                                      ]
+                                                     },
+                                                     {
+                                                         "name":  "Tribunal de Contas do Estado (TCE)",
+                                                         "type":  "instituicao",
+                                                         "tmpl":  true,
+                                                         "note":  "26 estados + TCDF reais — 0 instâncias nomeadas",
+                                                         "children":  [
+                                                                          {
+                                                                              "name":  "Plenário",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Presidente"
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Câmaras",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Presidência",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Vice-Presidência",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Vice-Presidente"
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Corregedoria",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Corregedor"
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Ouvidoria",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Ministério Público de Contas",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Procurador de Contas"
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "(cargo direto)",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Conselheiro",
+                                                                                             "Auditor/Conselheiro-Substituto"
+                                                                                         ]
+                                                                          }
+                                                                      ]
+                                                     },
+                                                     {
+                                                         "name":  "Tribunal de Contas dos Municípios (TCM Estadual)",
+                                                         "type":  "instituicao",
+                                                         "tmpl":  true,
+                                                         "note":  "só existe em BA/GO/PA",
+                                                         "children":  [
+                                                                          {
+                                                                              "name":  "Plenário",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Conselheiro"
+                                                                                         ]
+                                                                          },
+                                                                          {
+                                                                              "name":  "Presidência",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Presidente"
+                                                                                         ]
+                                                                          }
+                                                                      ]
+                                                     },
+                                                     {
+                                                         "name":  "Tribunal de Contas do Município (TCM Municipal)",
+                                                         "type":  "instituicao",
+                                                         "tmpl":  true,
+                                                         "note":  "só existe em RJ e SP capital",
+                                                         "children":  [
+                                                                          {
+                                                                              "name":  "Plenário",
+                                                                              "type":  "orgao",
+                                                                              "cargos":  [
+                                                                                             "Conselheiro",
+                                                                                             "Presidente"
+                                                                                         ]
+                                                                          }
+                                                                      ]
+                                                     }
+                                                 ],
+                         "Partidos Políticos":  [
+                                                    {
+                                                        "name":  "Partido Político",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  true,
+                                                        "note":  "30 partidos reais registrados no TSE — 0 instâncias nomeadas",
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "Convenção (3 níveis)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Delegado à Convenção"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Diretório (Nacional/Estadual/Municipal/Zonal)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Presidente (3 níveis)"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Comissão Provisória",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Comissão Executiva (3 níveis)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Conselho Fiscal",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Conselho/Comissão de Ética",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Vice-Presidente",
+                                                                                            "Secretário-Geral",
+                                                                                            "Tesoureiro",
+                                                                                            "Filiado"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Federação Partidária",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "note":  "vínculo entre partidos, não instituição replicável",
+                                                        "children":  [
+
+                                                                     ]
+                                                    }
+                                                ],
+                         "Defensoria Pública":  [
+                                                    {
+                                                        "name":  "Defensoria Pública da União (DPU)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "Conselho Superior",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Corregedoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Corregedor-Geral Federal"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Ouvidoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Defensor Público-Geral Federal",
+                                                                                            "Subdefensor Público-Geral Federal",
+                                                                                            "Defensor Público Federal"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Defensoria Pública Estadual (DPE)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  true,
+                                                        "note":  "27 estados reais — 0 instâncias nomeadas",
+                                                        "children":  [
+                                                                         {
+                                                                             "name":  "Conselho Superior",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Corregedoria-Geral",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Corregedor-Geral"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "Ouvidoria-Geral Externa",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Ouvidor-Geral"
+                                                                                        ]
+                                                                         },
+                                                                         {
+                                                                             "name":  "(cargo direto)",
+                                                                             "type":  "orgao",
+                                                                             "cargos":  [
+                                                                                            "Defensor Público-Geral do Estado",
+                                                                                            "Defensor Público"
+                                                                                        ]
+                                                                         }
+                                                                     ]
+                                                    },
+                                                    {
+                                                        "name":  "Defensoria Pública do Distrito Federal (DPDF)",
+                                                        "type":  "instituicao",
+                                                        "tmpl":  false,
+                                                        "note":  "organizada pelo GDF desde a EC 69/2012",
+                                                        "children":  [
+
+                                                                     ]
+                                                    }
+                                                ],
+                         "Serviços Notariais e Registrais":  [
+                                                                 {
+                                                                     "name":  "Tabelionato de Notas",
+                                                                     "type":  "instituicao",
+                                                                     "tmpl":  true,
+                                                                     "note":  "milhares de serventias reais — 0 nomeadas",
+                                                                     "children":  [
+                                                                                      {
+                                                                                          "name":  "(cargo direto)",
+                                                                                          "type":  "orgao",
+                                                                                          "cargos":  [
+                                                                                                         "Tabelião de Notas"
+                                                                                                     ]
+                                                                                      }
+                                                                                  ]
+                                                                 },
+                                                                 {
+                                                                     "name":  "Tabelionato de Protesto de Títulos",
+                                                                     "type":  "instituicao",
+                                                                     "tmpl":  true,
+                                                                     "note":  "milhares de serventias reais — 0 nomeadas",
+                                                                     "children":  [
+                                                                                      {
+                                                                                          "name":  "(cargo direto)",
+                                                                                          "type":  "orgao",
+                                                                                          "cargos":  [
+                                                                                                         "Tabelião de Protesto"
+                                                                                                     ]
+                                                                                      }
+                                                                                  ]
+                                                                 },
+                                                                 {
+                                                                     "name":  "Registro Civil das Pessoas Naturais",
+                                                                     "type":  "instituicao",
+                                                                     "tmpl":  true,
+                                                                     "note":  "milhares de serventias reais — 0 nomeadas",
+                                                                     "children":  [
+                                                                                      {
+                                                                                          "name":  "(cargo direto)",
+                                                                                          "type":  "orgao",
+                                                                                          "cargos":  [
+                                                                                                         "Oficial de Registro Civil"
+                                                                                                     ]
+                                                                                      }
+                                                                                  ]
+                                                                 },
+                                                                 {
+                                                                     "name":  "Registro de Imóveis",
+                                                                     "type":  "instituicao",
+                                                                     "tmpl":  true,
+                                                                     "note":  "milhares de serventias reais — 0 nomeadas",
+                                                                     "children":  [
+                                                                                      {
+                                                                                          "name":  "(cargo direto)",
+                                                                                          "type":  "orgao",
+                                                                                          "cargos":  [
+                                                                                                         "Oficial de Registro de Imóveis"
+                                                                                                     ]
+                                                                                      }
+                                                                                  ]
+                                                                 },
+                                                                 {
+                                                                     "name":  "Registro de Títulos e Documentos e Civil de PJ",
+                                                                     "type":  "instituicao",
+                                                                     "tmpl":  true,
+                                                                     "note":  "0 nomeadas",
+                                                                     "children":  [
+                                                                                      {
+                                                                                          "name":  "(cargo direto)",
+                                                                                          "type":  "orgao",
+                                                                                          "cargos":  [
+                                                                                                         "Oficial de Registro de Títulos e Documentos"
+                                                                                                     ]
+                                                                                      }
+                                                                                  ]
+                                                                 },
+                                                                 {
+                                                                     "name":  "Registro de Distribuição",
+                                                                     "type":  "instituicao",
+                                                                     "tmpl":  true,
+                                                                     "note":  "0 nomeadas",
+                                                                     "children":  [
+                                                                                      {
+                                                                                          "name":  "(cargo direto)",
+                                                                                          "type":  "orgao",
+                                                                                          "cargos":  [
+                                                                                                         "Oficial de Distribuição"
+                                                                                                     ]
+                                                                                      }
+                                                                                  ]
+                                                                 }
+                                                             ]
+                     }
+}

@@ -1,0 +1,161 @@
+# Catálogo de fontes de dados do ChecaAI.
+# Cada fonte tem: órgão, URL, formato, frequência, chave de ligação com outras fontes,
+# licença, volume estimado, onda de ingestão e status.
+# status: coletado_v0 (a v0 coletava; reescrever) | planejado | pesquisar
+# As "armadilhas" vêm dos bugs corrigidos na v0 e são o conhecimento mais caro de reobter.
+
+fontes:
+  # ---------- Onda 1: políticos (v0) ----------
+  - id: camara-deputados
+    orgao: Câmara dos Deputados
+    url: https://dadosabertos.camara.leg.br/api/v2
+    formato: JSON (REST paginado)
+    recursos: [deputados, despesas (CEAP), votacoes, votos, proposicoes, frequencias, eventos/pauta]
+    frequencia: diária
+    chave_ligacao: id do deputado; CPF parcial via TSE
+    licenca: aberta (dados abertos da Câmara)
+    onda: 1
+    status: coletado_v0
+    armadilhas:
+      - /proposicoes rejeita ordenarPor=dataApresentacao (use o padrão ou ordenarPor=id)
+      - timeouts e 5xx transitórios; precisa de retry com backoff
+      - também há arquivos em lote (https://dadosabertos.camara.leg.br/arquivos), melhores para carga histórica
+
+  - id: senado-dados-abertos
+    orgao: Senado Federal
+    url: https://legis.senado.leg.br/dadosabertos
+    formato: XML/JSON (adicione .json ao endpoint)
+    recursos: [senador/lista/atual, mandatos, comissoes, votacoes do plenário, despesas (CEAPS)]
+    frequencia: diária
+    chave_ligacao: CodigoParlamentar
+    licenca: aberta
+    onda: 1
+    status: coletado_v0
+    armadilhas:
+      - os endpoints de comissões mudaram de formato em 2026; o parser antigo quebrou
+      - JSON com objeto único vs. lista no mesmo campo (normalizar)
+
+  - id: tse-dados-abertos
+    orgao: Tribunal Superior Eleitoral
+    url: https://dadosabertos.tse.jus.br
+    cdn: https://cdn.tse.jus.br/estatistica/sead/odsele/
+    formato: CSV dentro de ZIP (latin-1, separador ;)
+    recursos:
+      - consulta_cand/consulta_cand_{ano}.zip
+      - bem_candidato/bem_candidato_{ano}.zip
+      - prestacao_contas/despesas_contratadas_candidatos_{ano}_BR.zip
+      - prestacao_contas/prestacao_de_contas_eleitorais_candidatos_{ano}.zip
+      - votacao_candidato_munzona/
+    frequencia: por eleição (mais retificações)
+    chave_ligacao: SQ_CANDIDATO, NR_CPF_CANDIDATO (quando publicado), CNPJ de fornecedores e doadores
+    licenca: aberta
+    volume: GBs por eleição
+    onda: 1
+    status: coletado_v0
+    armadilhas:
+      - downloads grandes caem no meio; baixe para disco com retomada e só depois processe
+      - na v0, uma exceção nesse download derrubava o processo inteiro (isolar cada coletor)
+
+  - id: cgu-portal-transparencia
+    orgao: Controladoria-Geral da União
+    url: https://api.portaldatransparencia.gov.br/api-de-dados
+    formato: JSON (exige o header chave-api-dados)
+    recursos: [servidores (remuneração), viagens/diárias, servidores/indenizacoes, CEIS, CNEP, contratos, convênios]
+    frequencia: mensal
+    chave_ligacao: CPF mascarado, código do órgão SIAPE, CNPJ
+    licenca: aberta (exige cadastro de chave)
+    onda: 1
+    status: coletado_v0
+    armadilhas:
+      - WAF da AWS bloqueia; a v0 usava um cookie aws-waf-token copiado do navegador (frágil, não repetir)
+      - prefira os downloads em lote (https://portaldatransparencia.gov.br/download-de-dados) à API
+      - códigos de órgão (uorgExercicio) não batem com os nomes; houve correção manual na v0
+
+  - id: assembleias-estaduais
+    orgao: Assembleias Legislativas (16 na v0)
+    formato: misto (API, XML, HTML, SAPL)
+    fontes_conhecidas:
+      SP: https://www.al.sp.gov.br/repositorioDados/deputados/deputados.xml
+      MG: https://dadosabertos.almg.gov.br
+      PE: https://dadosabertos.alepe.pe.gov.br/api/v1/parlamentares/
+      DF: https://dadosabertos.cl.df.gov.br
+      CE: https://www2.al.ce.gov.br/api
+      ES: https://www3.al.es.gov.br/api/publico/parlamentar/
+      PR: http://webservices.assembleia.pr.leg.br
+      RJ: https://www.alerj.rj.gov.br/Deputados/QuemSao (HTML)
+      BA: https://www.al.ba.leg.br/deputados (HTML)
+      RS: https://ww4.al.rs.gov.br/deputados (HTML)
+      SC: https://www.alesc.sc.leg.br/deputados (HTML)
+      GO: https://www.alego.go.leg.br/deputados (HTML)
+      PA: https://www.alepa.pa.leg.br/deputados (HTML)
+      AP: https://www.aleap.ap.leg.br/deputados (HTML)
+      outros: instâncias do SAPL (Interlegis), formato padronizado
+    frequencia: semanal
+    chave_ligacao: nome e partido (fraca), cruzar com o TSE
+    onda: 1
+    status: coletado_v0
+    armadilhas:
+      - CE e ES com certificado SSL inválido
+      - os HTMLs mudam sem aviso; o SAPL é a melhor aposta para padronizar
+
+  - id: camaras-municipais
+    orgao: Câmaras Municipais (3 na v0)
+    fontes_conhecidas:
+      Rio de Janeiro: https://www.camara.rj.gov.br
+      Belo Horizonte: https://www.cmbh.mg.gov.br
+      São Paulo: https://www.saopaulo.sp.leg.br
+    onda: 1
+    status: coletado_v0
+
+  # ---------- Onda 2: empresas, sanções e contratos ----------
+  - id: receita-cnpj
+    orgao: Receita Federal
+    url: https://dadosabertos.rfb.gov.br/CNPJ/
+    formato: CSV em ZIP (latin-1, separador ;)
+    recursos: [empresas, estabelecimentos, socios, simples, cnaes, municipios]
+    frequencia: mensal
+    chave_ligacao: CNPJ básico (8 dígitos); sócios com CPF mascarado
+    licenca: aberta
+    volume: cerca de 5 GB compactado, mais de 20 GB descompactado
+    onda: 2
+    status: planejado
+    nota: candidata ao walking skeleton
+
+  - id: cgu-ceis-cnep
+    orgao: CGU
+    url: https://portaldatransparencia.gov.br/download-de-dados/ceis
+    formato: CSV
+    chave_ligacao: CNPJ/CPF do sancionado
+    onda: 2
+    status: planejado
+
+  - id: pncp-contratos
+    orgao: Portal Nacional de Contratações Públicas
+    url: https://pncp.gov.br/api/consulta
+    formato: JSON
+    chave_ligacao: CNPJ do fornecedor e do órgão
+    onda: 2
+    status: pesquisar
+
+  # ---------- Ondas 3 e 4 ----------
+  - id: cnj-datajud
+    orgao: Conselho Nacional de Justiça
+    url: https://datajud-wiki.cnj.jus.br/api-publica/
+    formato: JSON (Elasticsearch, chave pública)
+    onda: 3
+    status: pesquisar
+
+  - id: datasus-cnes
+    orgao: Ministério da Saúde
+    url: https://opendatasus.saude.gov.br
+    formato: CSV
+    chave_ligacao: CNES, CNPJ
+    onda: 4
+    status: pesquisar
+
+  # ---------- Agregadores (avaliar como fonte secundária) ----------
+  - id: base-dos-dados
+    orgao: Base dos Dados (sociedade civil)
+    url: https://basedosdados.org
+    nota: datalake já tratado; conferir a licença de cada tabela antes de usar
+    status: pesquisar

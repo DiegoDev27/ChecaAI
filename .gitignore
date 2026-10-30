@@ -1,0 +1,25 @@
+# dados (nunca versionar)
+dados/
+*.parquet
+*.duckdb
+
+# .NET
+bin/
+obj/
+*.user
+
+# Python
+__pycache__/
+.venv/
+*.egg-info/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.env*.local
+
+# IDEs
+.idea/
+.vs/
+.vscode/
