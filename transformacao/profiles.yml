@@ -1,0 +1,8 @@
+# Lido por estar na pasta do projeto (dbt >= 1.8 procura profiles.yml no diretório atual).
+checaai:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: ../dados/checaai.duckdb
+      threads: 4

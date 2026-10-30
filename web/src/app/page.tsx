@@ -14,7 +14,7 @@ export default function Home() {
       <form action="/busca" className="flex flex-col gap-3 sm:flex-row">
         <input
           name="q"
-          placeholder="Busque um político, órgão ou empresa"
+          placeholder="Digite um CNPJ (busca por nome em breve)"
           className="flex-1 rounded-lg border border-borda bg-superficie px-4 py-3 text-texto placeholder:text-texto-suave focus:border-destaque focus:outline-none"
         />
         <button

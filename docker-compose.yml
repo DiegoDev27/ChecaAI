@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: checaai-postgres
+    environment:
+      POSTGRES_DB: checaai
+      POSTGRES_USER: checaai
+      POSTGRES_PASSWORD: checaai_dev
+    ports:
+      - "5442:5432"
+    volumes:
+      - checaai-pg:/var/lib/postgresql/data
+
+volumes:
+  checaai-pg:

@@ -110,16 +110,23 @@ fontes:
   # ---------- Onda 2: empresas, sanções e contratos ----------
   - id: receita-cnpj
     orgao: Receita Federal
-    url: https://dadosabertos.rfb.gov.br/CNPJ/
-    formato: CSV em ZIP (latin-1, separador ;)
+    url: https://arquivos.receitafederal.gov.br/index.php/s/YggdBLfdninEJX9
+    acesso: WebDAV público em https://arquivos.receitafederal.gov.br/public.php/webdav/ (usuário = token do compartilhamento, sem senha)
+    formato: CSV em ZIP (latin-1, separador ;, sem cabeçalho), uma pasta por mês (AAAA-MM)
     recursos: [empresas, estabelecimentos, socios, simples, cnaes, municipios]
     frequencia: mensal
     chave_ligacao: CNPJ básico (8 dígitos); sócios com CPF mascarado
     licenca: aberta
-    volume: cerca de 5 GB compactado, mais de 20 GB descompactado
+    volume: cerca de 7 GB compactado (2026-10), mais de 20 GB descompactado
     onda: 2
-    status: planejado
-    nota: candidata ao walking skeleton
+    status: walking_skeleton
+    coletor: ingestao/src/checaai_ingestao/coletores/receita_cnpj.py
+    armadilhas:
+      - o endereço antigo (dadosabertos.rfb.gov.br) foi desativado; hoje é um compartilhamento do Nextcloud (SERPRO)
+      - a listagem HTML do Nextcloud exige JavaScript; use PROPFIND no WebDAV
+      - Empresas0 e Estabelecimentos0 são muito maiores que as outras fatias (cerca de 6x)
+      - as fatias não são alinhadas por CNPJ; com uma fatia só, muitas empresas ficam sem estabelecimento ou sem sócios
+      - o leitor latin-1 do DuckDB recusa Estabelecimentos ("File is not latin-1 encoded"); decodificar em Python e regravar em UTF-8
 
   - id: cgu-ceis-cnep
     orgao: CGU

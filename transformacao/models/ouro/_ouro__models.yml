@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: entidade
+    description: >
+      Nó do grafo. Toda coisa identificável (empresa, pessoa, órgão, cargo…) vira uma linha.
+      O id é '<tipo>:<chave natural>' e é estável entre cargas.
+    columns:
+      - name: id
+        data_tests: [not_null, unique]
+      - name: tipo
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [empresa, pessoa, pessoa_estrangeira]
+  - name: relacao
+    description: Aresta do grafo (origem → destino), com o tipo da relação e a fonte.
+    columns:
+      - name: origem_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('entidade'), field: id}
+      - name: destino_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('entidade'), field: id}

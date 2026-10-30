@@ -1,14 +1,10 @@
-"""Convenções da camada bronze: dado bruto, imutável, particionado por fonte e data de coleta."""
+"""Convenções da camada bronze: dado bruto, imutável, particionado por fonte e referência.
 
-from datetime import date
+Layout em disco (fora do git):
+    dados/brutos/<fonte>/<referencia>/...          arquivos originais baixados (cache)
+    dados/bronze/<fonte>/referencia=<ref>/<tabela>/*.parquet
+"""
+
 from pathlib import Path
 
 RAIZ_DADOS = Path(__file__).resolve().parents[3] / "dados"
-
-
-def pasta_bronze(fonte_id: str, coleta: date | None = None) -> Path:
-    """Ex.: dados/bronze/receita-cnpj/coleta=2026-10-29/"""
-    coleta = coleta or date.today()
-    pasta = RAIZ_DADOS / "bronze" / fonte_id / f"coleta={coleta.isoformat()}"
-    pasta.mkdir(parents=True, exist_ok=True)
-    return pasta

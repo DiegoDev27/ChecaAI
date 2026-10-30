@@ -1,0 +1,9 @@
+[project]
+name = "checaai-transformacao"
+version = "0.1.0"
+description = "Camadas prata e ouro do ChecaAI (dbt + DuckDB) e publicação no PostgreSQL de servir."
+requires-python = ">=3.12"
+dependencies = [
+    "dbt-duckdb>=1.9",
+    "duckdb>=1.3",
+]

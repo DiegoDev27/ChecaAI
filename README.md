@@ -30,6 +30,31 @@ fontes (APIs, CSV, ZIP, HTML)
   → web/ (Next.js)            → páginas para pessoas e buscadores
 ```
 
+## Como rodar (walking skeleton do CNPJ)
+Pré-requisitos: [uv](https://docs.astral.sh/uv/) (Python), Node.js LTS, .NET 10 SDK e Docker Desktop.
+
+```bash
+# 0. Banco de servir (PostgreSQL 17 na porta 5442)
+docker compose up -d
+
+# 1. Bronze: baixa a fatia 1 do CNPJ do mês mais recente (~450 MB) e grava Parquet em dados/
+cd ingestao && uv run python -m checaai_ingestao.cli receita-cnpj   # --fatias 0-9 para a base inteira
+
+# 2. Prata e ouro: modelos e testes do dbt (dados/checaai.duckdb)
+cd ../transformacao && uv run dbt build
+
+# 3. Publica a camada ouro no PostgreSQL (troca atômica de schema)
+uv run python scripts/publicar.py
+
+# 4. API em http://localhost:5179  →  GET /v1/empresas/{cnpj}
+cd ../api/ChecaAI.Api && dotnet run --launch-profile http
+
+# 5. Site em http://localhost:3000  →  /empresa/{cnpj}
+cd ../../web && npm install && npm run dev
+```
+
+No Windows, rode o coletor com `python -m` (como acima): o Controle de Aplicativo do Windows bloqueia o `.exe` que o uv gera para `checaai-coletar`.
+
 ## Ondas de ingestão
 1. Políticos (Câmara, Senado, TSE, CGU), migrando o conhecimento da v0.
 2. CNPJ (Receita), sanções CEIS/CNEP e contratos públicos.

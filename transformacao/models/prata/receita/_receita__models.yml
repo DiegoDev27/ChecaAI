@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_receita__empresas
+    description: Empresas (raiz do CNPJ, 8 dígitos), última referência disponível.
+    columns:
+      - name: cnpj_basico
+        data_tests: [not_null, unique]
+  - name: stg_receita__estabelecimentos
+    description: >
+      Estabelecimentos (matriz e filiais). Telefone e e-mail ficam de fora de propósito
+      (minimização da LGPD: muitos são de pessoas físicas, como MEIs).
+    columns:
+      - name: cnpj
+        data_tests: [not_null, unique]
+  - name: stg_receita__socios
+    description: Quadro de sócios e administradores. O CPF vem mascarado pela Receita (***123456**).
+    columns:
+      - name: cnpj_basico
+        data_tests: [not_null]
+  - name: stg_receita__cnaes
+  - name: stg_receita__municipios
+  - name: stg_receita__naturezas
+  - name: stg_receita__qualificacoes
